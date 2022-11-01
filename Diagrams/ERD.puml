@@ -14,22 +14,27 @@ Last login : DATE
 }
 
 entity KARYAWAN_DETAIL{
-* PK | Username : VARCHAR
+* PK | id : INT
 --
-Name : VARCHAR
-Bagian id : INT
+* Username : VARCHAR
+* Name : VARCHAR
+* Bagian id : INT
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity KARYAWAN_BAGIAN{
 * PK | Bagian id : INT
 --
 Name : VARCHAR
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity SESSIONS{
-* PK | Username : VARCHAR
+* PK | id : VARCHAR
 --
-* Session id : VARCHAR
+* Username : VARCHAR
 }
 
 entity LOG{
@@ -44,6 +49,8 @@ entity CATEGORY{
 * PK | id : INT
 --
 * name : VARCHAR
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity K2F{
@@ -51,6 +58,8 @@ entity K2F{
 --
 * Name : VARCHAR
 * Qty : INT
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity K1A{
@@ -58,6 +67,8 @@ entity K1A{
 --
 * Name : VARCHAR
 * Qty : INT
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity MAINJIG{
@@ -65,6 +76,8 @@ entity MAINJIG{
 --
 * Name : VARCHAR
 * Qty : INT
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity MESSBOAT{
@@ -72,6 +85,8 @@ entity MESSBOAT{
 --
 * Name : VARCHAR
 * Qty : INT
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity tx_K2F{
@@ -148,6 +163,8 @@ entity SURAT_JALAN_CATEGORY{
 * id : INT
 --
 * name : VARCHAR
+* Created at : DATETIME
+Updated at : DATETIME
 }
 
 entity tx_SURAT_JALAN{
