@@ -6,8 +6,8 @@ hide circle
 entity KARYAWAN{
 * PK | Username : VARCHAR
 --
-Password : VARCHAR
-Created at : DATETIME
+* Password : VARCHAR
+* Created at : DATETIME
 Update password at : DATETIME
 Status online : BOOLEAN
 Last login : DATE

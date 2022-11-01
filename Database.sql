@@ -15,7 +15,8 @@ CREATE TABLE karyawans
 
 CREATE TABLE karyawan_details
 (
-    username  VARCHAR(55) PRIMARY KEY,
+    id  INT PRIMARY KEY AUTO_INCREMENT,
+    username  VARCHAR(55) NOT NULL ,
     name      VARCHAR(55) NOT NULL,
     bagian_id INTEGER     NOT NULL
 ) ENGINE = InnoDB
@@ -219,9 +220,19 @@ alter table messboat
     add updated_at datetime null;
 
 alter table karyawan_details
-    modify id int auto_increment,
-    add username varchar(55) not null,
     add constraint karyawan_details_karyawans_null_fk
         foreign key (username) references subjig_report.karyawans (username)
             on update cascade on delete cascade;
 
+
+SELECT karyawans.username, karyawan_details.name
+FROM karyawan_details JOIN karyawans ON karyawan_details.username = karyawans.username;
+
+SELECT k.username, kd.name, kb.name
+FROM karyawan_details as kd
+INNER JOIN karyawans as k ON k.username = kd.username
+INNER JOIN karyawan_bagians as kb ON kb.id = kd.bagian_id;
+
+alter table category
+#     modify created_at timestamp not null,
+    modify updated_at timestamp null;
