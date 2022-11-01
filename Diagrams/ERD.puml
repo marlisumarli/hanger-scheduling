@@ -1,0 +1,177 @@
+@startuml
+
+hide circle
+!theme plain
+
+entity KARYAWAN{
+* PK | Username : VARCHAR
+--
+Password : VARCHAR
+Created at : DATETIME
+Update password at : DATETIME
+Status online : BOOLEAN
+Last login : DATE
+}
+
+entity KARYAWAN_DETAIL{
+* PK | Username : VARCHAR
+--
+Name : VARCHAR
+Bagian id : INT
+}
+
+entity KARYAWAN_BAGIAN{
+* PK | Bagian id : INT
+--
+Name : VARCHAR
+}
+
+entity SESSIONS{
+* PK | Username : VARCHAR
+--
+* Session id : VARCHAR
+}
+
+entity LOG{
+* PK | Log id : INT
+--
+* PK | Username : VARCHAR
+* Action : VARCHAR
+* Action at : DATETIME
+}
+
+entity CATEGORY{
+* PK | id : INT
+--
+* name : VARCHAR
+}
+
+entity K2F{
+* PK | id : INT
+--
+* Name : VARCHAR
+* Qty : INT
+}
+
+entity K1A{
+* PK | id : INT
+--
+* Name : VARCHAR
+* Qty : INT
+}
+
+entity MAINJIG{
+* PK | id : INT
+--
+* Name : VARCHAR
+* Qty : INT
+}
+
+entity MESSBOAT{
+* PK | id : INT
+--
+* Name : VARCHAR
+* Qty : INT
+}
+
+entity tx_K2F{
+* PK | id : VARCHAR
+--
+* Category id : INT
+* Type : VARCHAR
+* Year : DATE
+Speedometer A : INT
+Speedometer B : INT
+Ring Speedometer : INT
+Front R : INT
+Front L : INT
+Front Top : INT
+Fender : INT
+Under RL : INT
+Lid Pocket : INT
+Body RL : INT
+Center Upper : INT
+RR Center : INT
+Center : INT
+Inner Upper : INT
+Supply Tanggal : DATE
+Perbaikan Tanggal : DATE
+Selesai Tanggal : DATE
+}
+
+entity tx_K1A{
+* PK | id : VARCHAR
+--
+* Category id : INT
+* Type : VARCHAR
+* Year : DATE
+CHF : INT
+SPDMT : INT
+Body R : INT
+Body L : INT
+Fender : INT
+Supply Tanggal : DATE
+Perbaikan Tanggal : DATE
+Selesai Tanggal : DATE
+Pic : VARCHAR
+Datang Tanggal : DATE
+Keterangan : VARCHAR
+}
+
+entity tx_MAINJIG{
+* id : INT
+--
+* Category id : INT
+* Year : DATE
+* Jumlah : INT
+Supply Tanggal : DATE
+Perbaikan Tanggal : DATE
+Pic : VARCHAR
+Selesai Tanggal : DATE
+}
+
+entity tx_MESSBOAT{
+* id : INT
+--
+* Category id : INT
+* Year : DATE
+* Jumlah : INT
+Supply Tanggal : DATE
+Perbaikan Tanggal : DATE
+Pic : VARCHAR
+Selesai Tanggal : DATE
+}
+
+
+
+entity SURAT_JALAN_CATEGORY{
+* id : INT
+--
+* name : VARCHAR
+}
+
+entity tx_SURAT_JALAN{
+* id : INT
+--
+* Category id : INT
+* Tanggal : DATE
+K2F : INT
+K1A : INT
+Mainjig Line A : INT
+Mainjig Line B : INT
+Mainjig Line C : INT
+Messboat Line A : INT
+Messboat Line B : INT
+Messboat Line C : INT
+}
+
+KARYAWAN_BAGIAN||--|{KARYAWAN_DETAIL
+KARYAWAN||--||KARYAWAN_DETAIL
+KARYAWAN||--||SESSIONS
+CATEGORY||--|{tx_K2F
+CATEGORY||--|{tx_K1A
+CATEGORY||--|{tx_MAINJIG
+CATEGORY||--|{tx_MESSBOAT
+SURAT_JALAN_CATEGORY||--|{tx_SURAT_JALAN
+
+@enduml
