@@ -13,7 +13,7 @@ class View
         require __DIR__ . "/../View/Template/footer.php";
     }
 
-    public static function redirect(string $url)
+    public static function redirect(string $url): void
     {
         header("Location: $url");
     }
