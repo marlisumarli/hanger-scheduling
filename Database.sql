@@ -15,8 +15,8 @@ CREATE TABLE karyawans
 
 CREATE TABLE karyawan_details
 (
-    id  INT PRIMARY KEY AUTO_INCREMENT,
-    username  VARCHAR(55) NOT NULL ,
+    id        INT PRIMARY KEY AUTO_INCREMENT,
+    username  VARCHAR(55) NOT NULL,
     name      VARCHAR(55) NOT NULL,
     bagian_id INTEGER     NOT NULL
 ) ENGINE = InnoDB
@@ -226,13 +226,19 @@ alter table karyawan_details
 
 
 SELECT karyawans.username, karyawan_details.name
-FROM karyawan_details JOIN karyawans ON karyawan_details.username = karyawans.username;
+FROM karyawan_details
+         JOIN karyawans ON karyawan_details.username = karyawans.username;
 
 SELECT k.username, kd.name, kb.name
 FROM karyawan_details as kd
-INNER JOIN karyawans as k ON k.username = kd.username
-INNER JOIN karyawan_bagians as kb ON kb.id = kd.bagian_id;
+         INNER JOIN karyawans as k ON k.username = kd.username
+         INNER JOIN karyawan_bagians as kb ON kb.id = kd.bagian_id;
 
 alter table category
 #     modify created_at timestamp not null,
     modify updated_at timestamp null;
+
+
+alter table category
+    add constraint category_pk
+        unique (name);
