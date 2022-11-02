@@ -2,7 +2,7 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Domain\Karyawan;
+use Subjig\Report\Entity\Karyawan;
 
 class KaryawanRepository
 {

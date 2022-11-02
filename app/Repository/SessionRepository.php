@@ -2,7 +2,7 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Domain\Session;
+use Subjig\Report\Entity\Session;
 
 class SessionRepository
 {

@@ -4,8 +4,8 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Domain\Karyawan;
-use Subjig\Report\Domain\KaryawanDetail;
+use Subjig\Report\Entity\Karyawan;
+use Subjig\Report\Entity\KaryawanDetail;
 
 class KaryawanDetailRepositoryTest extends TestCase
 {

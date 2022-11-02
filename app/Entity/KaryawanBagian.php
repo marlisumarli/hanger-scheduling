@@ -1,6 +1,6 @@
 <?php
 
-namespace Subjig\Report\Domain;
+namespace Subjig\Report\Entity;
 
 class KaryawanBagian
 {
