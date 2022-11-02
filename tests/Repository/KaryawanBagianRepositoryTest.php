@@ -10,7 +10,7 @@ class KaryawanBagianRepositoryTest extends TestCase
 {
     private KaryawanBagianRepository $karyawanBagianRepository;
 
-    public function testSuccess()
+    public function testSaveSuccess()
     {
         $karyawanBagian = new KaryawanBagian();
         $karyawanBagian->bagianId = 1;
