@@ -92,9 +92,9 @@ Updated at : TIMESTAMP
 entity tx_K2F{
 * PK | id : VARCHAR
 --
-* Category id : INT
+* Category id : VARCHAR
 * Type : VARCHAR
-* Year : DATE
+* Year : YEAR
 Speedometer A : INT
 Speedometer B : INT
 Ring Speedometer : INT
@@ -110,14 +110,18 @@ RR Center : INT
 Center : INT
 Inner Upper : INT
 Supply Tanggal : DATE
-Perbaikan Tanggal : DATE
 Selesai Tanggal : DATE
+Datang Tanggal : DATE
+Perbaikan Tanggal : DATE
+Pic : VARCHAR
+Keterangan : VARCHAR
+Updated At : TIMESTAMP
 }
 
 entity tx_K1A{
 * PK | id : VARCHAR
 --
-* Category id : INT
+* Category id : VARCHAR
 * Type : VARCHAR
 * Year : DATE
 CHF : INT
@@ -126,11 +130,12 @@ Body R : INT
 Body L : INT
 Fender : INT
 Supply Tanggal : DATE
-Perbaikan Tanggal : DATE
 Selesai Tanggal : DATE
-Pic : VARCHAR
 Datang Tanggal : DATE
+Perbaikan Tanggal : DATE
+Pic : VARCHAR
 Keterangan : VARCHAR
+Updated At : TIMESTAMP
 }
 
 entity tx_MAINJIG{
@@ -140,21 +145,27 @@ entity tx_MAINJIG{
 * Year : DATE
 * Jumlah : INT
 Supply Tanggal : DATE
+Selesai Tanggal : DATE
+Datang Tanggal : DATE
 Perbaikan Tanggal : DATE
 Pic : VARCHAR
-Selesai Tanggal : DATE
+Keterangan : VARCHAR
+Updated At : TIMESTAMP
 }
 
 entity tx_MESSBOAT{
 * id : INT
 --
-* Category id : INT
+* Category id : VARCHAR
 * Year : DATE
 * Jumlah : INT
 Supply Tanggal : DATE
+Selesai Tanggal : DATE
+Datang Tanggal : DATE
 Perbaikan Tanggal : DATE
 Pic : VARCHAR
-Selesai Tanggal : DATE
+Keterangan : VARCHAR
+Updated At : TIMESTAMP
 }
 
 

@@ -175,19 +175,9 @@ CREATE TABLE tx_messboat
 ) ENGINE = InnoDB
   CHARSET = utf8mb4;
 
-CREATE TABLE tx_surat_jalan
+CREATE TABLE coba
 (
-    id              INTEGER PRIMARY KEY AUTO_INCREMENT,
-    category_id     INT  NOT NULL,
-    tanggal         DATE NOT NULL,
-    k2f             INT,
-    k1a             INT,
-    mainjig_line_a  INT,
-    mainjig_line_b  INT,
-    mainjig_line_c  INT,
-    messboat_line_a INT,
-    messboat_line_b INT,
-    messboat_line_c INT
+    kode varchar(11) PRIMARY KEY NOT NULL
 ) ENGINE = InnoDB
   CHARSET = utf8mb4;
 
@@ -242,3 +232,7 @@ alter table category
 alter table category
     add constraint category_pk
         unique (name);
+
+alter table tx_k2f
+    add constraint fk_tx_k2f_category
+        FOREIGN KEY (kode_category) REFERENCES category (kode);
