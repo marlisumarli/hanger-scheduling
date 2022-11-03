@@ -7,8 +7,8 @@ entity KARYAWAN{
 * PK | Username : VARCHAR
 --
 * Password : VARCHAR
-* Created at : DATETIME
-Update password at : DATETIME
+* Created at : TIMESTAMP
+Update password at : TIMESTAMP
 Status online : BOOLEAN
 Last login : DATE
 }
@@ -19,16 +19,16 @@ entity KARYAWAN_DETAIL{
 * Username : VARCHAR
 * Name : VARCHAR
 * Bagian id : INT
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity KARYAWAN_BAGIAN{
 * PK | Bagian id : INT
 --
 Name : VARCHAR
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity SESSIONS{
@@ -42,15 +42,15 @@ entity LOG{
 --
 * PK | Username : VARCHAR
 * Action : VARCHAR
-* Action at : DATETIME
+* Action at : TIMESTAMP
 }
 
 entity CATEGORY{
 * PK | id : INT
 --
 * name : VARCHAR
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity K2F{
@@ -58,8 +58,8 @@ entity K2F{
 --
 * Name : VARCHAR
 * Qty : INT
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity K1A{
@@ -67,8 +67,8 @@ entity K1A{
 --
 * Name : VARCHAR
 * Qty : INT
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity MAINJIG{
@@ -76,8 +76,8 @@ entity MAINJIG{
 --
 * Name : VARCHAR
 * Qty : INT
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity MESSBOAT{
@@ -85,8 +85,8 @@ entity MESSBOAT{
 --
 * Name : VARCHAR
 * Qty : INT
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity tx_K2F{
@@ -163,8 +163,8 @@ entity SURAT_JALAN_CATEGORY{
 * id : INT
 --
 * name : VARCHAR
-* Created at : DATETIME
-Updated at : DATETIME
+* Created at : TIMESTAMP
+Updated at : TIMESTAMP
 }
 
 entity tx_SURAT_JALAN{
