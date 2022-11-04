@@ -4,8 +4,8 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\Karyawan;
 use Subjig\Report\Entity\Session;
+use Subjig\Report\Entity\User;
 
 class SessionRepositoryTest extends TestCase
 {
@@ -60,13 +60,13 @@ class SessionRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $karyawanRepository = new KaryawanRepository(Database::getConnection());
+        $karyawanRepository = new UserRepository(Database::getConnection());
         $this->sessionRepository = new SessionRepository(Database::getConnection());
 
         $this->sessionRepository->deleteAll();
         $karyawanRepository->deleteAll();
 
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
         $user->password = "cobain";
 

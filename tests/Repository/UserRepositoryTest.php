@@ -4,22 +4,22 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\Karyawan;
+use Subjig\Report\Entity\User;
 
-class KaryawanRepositoryTest extends TestCase
+class UserRepositoryTest extends TestCase
 {
 
-    private KaryawanRepository $karyawanRepository;
+    private UserRepository $userRepository;
 
     public function testSave()
     {
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
         $user->password = "marleess";
 
-        $this->karyawanRepository->save($user);
+        $this->userRepository->save($user);
 
-        $result = $this->karyawanRepository->findByUsername($user->username);
+        $result = $this->userRepository->findByUsername($user->username);
 
         self::assertEquals($user->username, $result->username);
         self::assertEquals($user->password, $result->password);
@@ -31,19 +31,19 @@ class KaryawanRepositoryTest extends TestCase
 
     public function testUpdate()
     {
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
         $user->password = "marleess";
 
-        $this->karyawanRepository->save($user);
+        $this->userRepository->save($user);
 
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
         $user->password = "anyingganti";
 
-        $this->karyawanRepository->update($user);
+        $this->userRepository->update($user);
 
-        $result = $this->karyawanRepository->findByUsername($user->username);
+        $result = $this->userRepository->findByUsername($user->username);
 
         self::assertEquals($user->password, $result->password);
         self::assertNotNull($result->updatePasswordAt);
@@ -52,16 +52,16 @@ class KaryawanRepositoryTest extends TestCase
     public function testDelete()
     {
 
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
         $user->password = "marleess";
 
-        $this->karyawanRepository->save($user);
+        $this->userRepository->save($user);
 
-        $user = new Karyawan();
+        $user = new User();
         $user->username = "marleess";
-        $this->karyawanRepository->deleteByUsername($user->username);
-        $result = $this->karyawanRepository->findByUsername($user->username);
+        $this->userRepository->deleteByUsername($user->username);
+        $result = $this->userRepository->findByUsername($user->username);
 
 
         self::assertNull($result);
@@ -69,8 +69,8 @@ class KaryawanRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->karyawanRepository = new KaryawanRepository(Database::getConnection());
-        $this->karyawanRepository->deleteAll();
+        $this->userRepository = new UserRepository(Database::getConnection());
+        $this->userRepository->deleteAll();
     }
 
 }
