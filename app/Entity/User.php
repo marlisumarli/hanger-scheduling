@@ -2,7 +2,7 @@
 
 namespace Subjig\Report\Entity;
 
-class Karyawan
+class User
 {
     public string $username;
     public string $password;
