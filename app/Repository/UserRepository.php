@@ -2,9 +2,9 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\Karyawan;
+use Subjig\Report\Entity\User;
 
-class KaryawanRepository
+class UserRepository
 {
     private \PDO $connection;
 
@@ -13,31 +13,31 @@ class KaryawanRepository
         $this->connection = $connection;
     }
 
-    public function save(Karyawan $user): Karyawan
+    public function save(User $user): User
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO karyawans(username, password, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
+            ->prepare("INSERT INTO users(username, password, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
         $statement->execute([$user->username, $user->password]);
         return $user;
     }
 
-    public function update(Karyawan $user): Karyawan
+    public function update(User $user): User
     {
         $statement = $this->connection
-            ->prepare("UPDATE karyawans SET password = ?, update_password_at = CURRENT_TIMESTAMP WHERE  username = ?");
+            ->prepare("UPDATE users SET password = ?, update_password_at = CURRENT_TIMESTAMP WHERE  username = ?");
         $statement->execute([$user->password, $user->username]);
         return $user;
     }
 
-    public function findByUsername(string $username): ?Karyawan
+    public function findByUsername(string $username): ?User
     {
         $statement = $this->connection
-            ->prepare("SELECT username, password, created_at, update_password_at, online_status, last_login FROM karyawans WHERE username = ? ");
+            ->prepare("SELECT username, password, created_at, update_password_at, online_status, last_login FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
         try {
             if ($row = $statement->fetch()) {
-                $user = new Karyawan();
+                $user = new User();
                 $user->username = $row['username'];
                 $user->password = $row['password'];
                 $user->createdAt = $row['created_at'];
@@ -56,13 +56,13 @@ class KaryawanRepository
 
     public function deleteByUsername(string $username): void
     {
-        $statement = $this->connection->prepare("DELETE FROM karyawans WHERE username = ?");
+        $statement = $this->connection->prepare("DELETE FROM users WHERE username = ?");
         $statement->execute([$username]);
     }
 
     public function deleteAll(): void
     {
-        $this->connection->exec("DELETE from karyawans");
+        $this->connection->exec("DELETE from users");
     }
 
 }
