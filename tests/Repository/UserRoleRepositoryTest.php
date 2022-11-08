@@ -9,6 +9,7 @@ use Subjig\Report\Entity\UserRole;
 class UserRoleRepositoryTest extends TestCase
 {
     private UserRoleRepository $userRoleRepository;
+    private UserDetailRepository $userDetailRepository;
 
     public function testSaveSuccess()
     {
@@ -76,6 +77,8 @@ class UserRoleRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $this->userRoleRepository = new UserRoleRepository(Database::getConnection());
+        $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
+        $this->userDetailRepository->deleteAll();
         $this->userRoleRepository->deleteAll();
     }
 }

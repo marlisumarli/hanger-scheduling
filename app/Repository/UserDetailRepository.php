@@ -40,10 +40,10 @@ class UserDetailRepository
             if ($row = $statement->fetch()) {
                 $userDetail = new UserDetail();
                 $userDetail->id = $row['id'];
-                $userDetail->credential = $row['credential'];
-                $userDetail->fullName = $row['full_name'];
-                $userDetail->roleId = $row['role_id'];
-                $userDetail->updatedAt = $row['updated_at'];
+                $userDetail->setCredential($row['credential']);
+                $userDetail->setFullName($row['full_name']);
+                $userDetail->setRoleId($row['role_id']);
+                $userDetail->setUpdatedAt($row['updated_at']);
                 return $userDetail;
             } else {
                 return null;
@@ -52,10 +52,5 @@ class UserDetailRepository
         } finally {
             $statement->closeCursor();
         }
-    }
-
-    public function deleteAll(): void
-    {
-        $this->connection->exec("DELETE FROM user_details");
     }
 }

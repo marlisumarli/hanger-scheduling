@@ -219,10 +219,17 @@ SELECT karyawans.username, karyawan_details.name
 FROM karyawan_details
          JOIN karyawans ON karyawan_details.username = karyawans.username;
 
-SELECT k.username, kd.name, kb.name
-FROM karyawan_details as kd
-         INNER JOIN karyawans as k ON k.username = kd.username
-         INNER JOIN karyawan_bagians as kb ON kb.id = kd.bagian_id;
+SELECT usr.username,
+       usr_d.full_name,
+       usr_r.name,
+       usr.created_at,
+       usr_d.updated_at,
+       usr.update_password_at,
+       usr.password
+FROM user_details as usr_d
+         INNER JOIN users as usr ON usr.username = usr_d.credential
+         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
+WHERE usr_r.id = 2;
 
 alter table category
 #     modify created_at timestamp not null,
@@ -236,3 +243,462 @@ alter table category
 alter table tx_k2f
     add constraint fk_tx_k2f_category
         FOREIGN KEY (kode_category) REFERENCES category (kode);
+
+
+
+CREATE DATABASE subjig_report;
+
+create table category
+(
+    kode       varchar(55) not null
+        primary key,
+    name       varchar(55) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null,
+    constraint category_pk
+        unique (name)
+);
+
+create table category_surat_jalan
+(
+    id         varchar(11) not null
+        primary key,
+    name       varchar(55) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null
+);
+
+create table k1a
+(
+    kode       varchar(55) not null
+        primary key,
+    name       varchar(55) not null,
+    qty        int         not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null
+);
+
+create table k2f
+(
+    kode       varchar(55) not null
+        primary key,
+    name       varchar(55) not null,
+    qty        int         not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null
+);
+
+create table karyawan_bagians
+(
+    id         int         not null
+        primary key,
+    name       varchar(55) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null,
+    constraint karyawan_bagians_pk
+        unique (name)
+);
+
+create table karyawans
+(
+    username           varchar(55)          not null
+        primary key,
+    password           varchar(255)         not null,
+    created_at         datetime             not null,
+    update_password_at datetime             null,
+    online_status      tinyint(1) default 0 not null,
+    last_login         timestamp            null
+);
+
+create table karyawan_details
+(
+    id         int auto_increment
+        primary key,
+    username   varchar(55) not null,
+    name       varchar(55) not null,
+    bagian_id  int         not null,
+    updated_at timestamp   null,
+    constraint karyawan_details_pk
+        unique (username),
+    constraint karyawan_details_karyawan_bagians_null_fk
+        foreign key (bagian_id) references karyawan_bagians (id)
+            on update cascade,
+    constraint karyawan_details_karyawans_null_fk
+        foreign key (username) references karyawans (username)
+            on update cascade on delete cascade
+);
+
+create table log
+(
+    id        int auto_increment
+        primary key,
+    username  varchar(55) not null,
+    action    varchar(55) not null,
+    action_at datetime    not null
+);
+
+create table mainjig
+(
+    kode       varchar(55) not null
+        primary key,
+    name       varchar(55) not null,
+    qty        int         not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null
+);
+
+create table messboat
+(
+    id         int         not null
+        primary key,
+    name       varchar(55) not null,
+    qty        int         not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null
+);
+
+create table sessions
+(
+    id       varchar(55)  not null
+        primary key,
+    username varchar(120) not null,
+    constraint fk_sessions_user
+        foreign key (username) references karyawans (username)
+            on update cascade on delete cascade
+);
+
+create table tx_k1a
+(
+    id                varchar(55) not null
+        primary key,
+    category_code     varchar(11) not null,
+    type              varchar(10) not null,
+    year              year        null,
+    chf               int         null,
+    spdmt             int         null,
+    body_r            int         null,
+    body_l            int         null,
+    fender            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null,
+    updated_at        timestamp   null,
+    constraint tx_k1a_category_null_fk
+        foreign key (category_code) references category (kode)
+);
+
+create table tx_k2f
+(
+    id                varchar(55) not null
+        primary key,
+    category_code     varchar(11) not null,
+    type              varchar(10) not null,
+    year              year        null,
+    speedometer_a     int         null,
+    speedometer_b     int         null,
+    ring_speedometer  int         null,
+    front_r           int         null,
+    front_l           int         null,
+    front_top         int         null,
+    fender            int         null,
+    under_rl          int         null,
+    lid_pocket        int         null,
+    body_rl           int         null,
+    center_upper      int         null,
+    rr_center         int         null,
+    center            int         null,
+    inner_upper       int         null,
+    cinner            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null,
+    updated_at        timestamp   null,
+    constraint tx_k2f_category_null_fk
+        foreign key (category_code) references category (kode)
+);
+
+create table tx_mainjig
+(
+    id                int auto_increment
+        primary key,
+    category_id       int         not null,
+    type              varchar(10) not null,
+    year              date        null,
+    jumlah            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null
+);
+
+create table tx_messboat
+(
+    id                int auto_increment
+        primary key,
+    category_id       int         not null,
+    type              varchar(10) not null,
+    year              date        null,
+    jumlah            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null
+);
+
+create table tx_surat_jalan
+(
+    id              int auto_increment
+        primary key,
+    category_id     int  not null,
+    tanggal         date not null,
+    k2f             int  null,
+    k1a             int  null,
+    mainjig_line_a  int  null,
+    mainjig_line_b  int  null,
+    mainjig_line_c  int  null,
+    messboat_line_a int  null,
+    messboat_line_b int  null,
+    messboat_line_c int  null
+);
+
+alter table subjig_report_test.user_details
+    add constraint user_details_users_null_fk
+        foreign key (credential) references subjig_report_test.users (username);
+
+
+
+CREATE DATABASE subjig_report;
+
+create table category
+(
+    kode       varchar(55) not null
+        primary key,
+    name       varchar(55) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null,
+    constraint category_pk
+        unique (name)
+);
+
+create table category_surat_jalan
+(
+    id         varchar(11) charset utf8mb3 not null
+        primary key,
+    name       varchar(55) charset utf8mb3 not null,
+    created_at timestamp                   not null,
+    updated_at timestamp                   null
+);
+
+create table k1a
+(
+    kode       varchar(55) charset utf8mb3 not null
+        primary key,
+    name       varchar(55) charset utf8mb3 not null,
+    qty        int                         not null,
+    created_at timestamp                   not null,
+    updated_at timestamp                   null
+);
+
+create table k2f
+(
+    kode       varchar(55) charset utf8mb3 not null
+        primary key,
+    name       varchar(55) charset utf8mb3 not null,
+    qty        int                         not null,
+    created_at timestamp                   not null,
+    updated_at timestamp                   null
+);
+
+create table log
+(
+    id        int auto_increment
+        primary key,
+    username  varchar(55) not null,
+    action    varchar(55) not null,
+    action_at datetime    not null
+);
+
+create table mainjig
+(
+    kode       varchar(55) charset utf8mb3 not null
+        primary key,
+    name       varchar(55) charset utf8mb3 not null,
+    qty        int                         not null,
+    created_at timestamp                   not null,
+    updated_at timestamp                   null
+);
+
+create table messboat
+(
+    id         int                         not null
+        primary key,
+    name       varchar(55) charset utf8mb3 not null,
+    qty        int                         not null,
+    created_at timestamp                   not null,
+    updated_at timestamp                   null
+);
+
+create table tx_k1a
+(
+    id                varchar(55) not null
+        primary key,
+    category_code     varchar(11) not null,
+    type              varchar(10) not null,
+    year              year        null,
+    chf               int         null,
+    spdmt             int         null,
+    body_r            int         null,
+    body_l            int         null,
+    fender            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null,
+    updated_at        timestamp   null,
+    constraint tx_k1a_category_null_fk
+        foreign key (category_code) references category (kode)
+);
+
+create table tx_k2f
+(
+    id                varchar(55) not null
+        primary key,
+    category_code     varchar(11) not null,
+    type              varchar(10) not null,
+    year              year        null,
+    speedometer_a     int         null,
+    speedometer_b     int         null,
+    ring_speedometer  int         null,
+    front_r           int         null,
+    front_l           int         null,
+    front_top         int         null,
+    fender            int         null,
+    under_rl          int         null,
+    lid_pocket        int         null,
+    body_rl           int         null,
+    center_upper      int         null,
+    rr_center         int         null,
+    center            int         null,
+    inner_upper       int         null,
+    cinner            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null,
+    updated_at        timestamp   null,
+    constraint tx_k2f_category_null_fk
+        foreign key (category_code) references category (kode)
+);
+
+create table tx_mainjig
+(
+    id                int auto_increment
+        primary key,
+    category_id       int         not null,
+    type              varchar(10) not null,
+    year              date        null,
+    jumlah            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null
+);
+
+create table tx_messboat
+(
+    id                int auto_increment
+        primary key,
+    category_id       int         not null,
+    type              varchar(10) not null,
+    year              date        null,
+    jumlah            int         null,
+    supply_tanggal    date        null,
+    perbaikan_tanggal date        null,
+    selesai_tanggal   date        null,
+    pic               varchar(55) null,
+    datang_tanggal    date        null,
+    keterangan        varchar(55) null
+);
+
+create table tx_surat_jalan
+(
+    id              int auto_increment
+        primary key,
+    category_id     int  not null,
+    tanggal         date not null,
+    k2f             int  null,
+    k1a             int  null,
+    mainjig_line_a  int  null,
+    mainjig_line_b  int  null,
+    mainjig_line_c  int  null,
+    messboat_line_a int  null,
+    messboat_line_b int  null,
+    messboat_line_c int  null
+);
+
+create table user_roles
+(
+    id         int         not null
+        primary key,
+    name       varchar(55) not null,
+    created_at timestamp   not null,
+    updated_at timestamp   null,
+    constraint karyawan_bagians_pk
+        unique (name)
+);
+
+create table users
+(
+    username           varchar(55)          not null
+        primary key,
+    password           varchar(255)         not null,
+    created_at         datetime             not null,
+    update_password_at datetime             null,
+    online_status      tinyint(1) default 0 not null,
+    last_login         timestamp            null
+);
+
+create table sessions
+(
+    id
+             varchar(55)  not null
+        primary key,
+    username varchar(120) not null,
+    constraint fk_sessions_user
+        foreign key (username) references users (username)
+            on update cascade on delete cascade
+);
+
+create table user_details
+(
+    id         varchar(55) not null
+        primary key,
+    credential varchar(55) not null,
+    full_name  varchar(55) not null,
+    role_id    int         not null,
+    updated_at timestamp   null,
+    constraint karyawan_details_pk
+        unique (credential),
+    constraint user_details_user_roles_null_fk
+        foreign key (role_id) references user_roles (id)
+            on update cascade,
+    constraint user_details_users_null_fk
+        foreign key (credential) references users (username)
+);
+

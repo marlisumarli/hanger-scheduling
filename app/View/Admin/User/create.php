@@ -1,17 +1,21 @@
-<form action="/admin/user-create" method="post">
+<?php if (isset($model['error'])) : ?>
+    <?= $model["error"] ?>
+<?php endif; ?>
+<form action="/admin/user/create" method="post">
     <label>Nama
-        <input type="text" required name="name">
+        <input type="text" required name="name" value="">
     </label>
     <br>
     <legend>Bagian:</legend>
-    <?php
-    foreach ($model['role'] as $role => $value): ?>
-        <div>
-            <input type="radio" id="role" name="role" value="<?= $value->getRoleId() ?>"
-                   checked>
-            <label for="role"><?= $value->getName() ?></label>
-        </div>
-    <?php endforeach; ?>
+    <div>
+        <input type="radio" id="role" name="role"
+               value="1">
+        <label for="role">Admin</label>
+        <input type="radio" id="role" name="role"
+               value="2"
+               checked>
+        <label for="role">Subjig</label>
+    </div>
     <label>Username
         <input type="text" required name="username">
     </label>
@@ -23,3 +27,9 @@
     <button type="submit">submit</button>
     <a href="/admin/user">kembali</a>
 </form>
+<?php if (isset($model['success'])) : ?>
+    <script>
+        alert('<?= $model["success"] ?>');
+        document.location.href = '/admin/user/create';
+    </script>
+<?php endif; ?>

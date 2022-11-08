@@ -2,8 +2,7 @@
 
 namespace Subjig\Report\Model;
 
-class UserFactory
+class UserDeleteRequest extends UserFactory
 {
     public string $username;
-    public string $password;
 }

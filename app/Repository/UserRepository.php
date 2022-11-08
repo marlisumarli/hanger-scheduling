@@ -32,7 +32,7 @@ class UserRepository
     public function findByUsername(string $username): ?User
     {
         $statement = $this->connection
-            ->prepare("SELECT username, password, created_at, update_password_at, online_status, last_login FROM users WHERE username = ? ");
+            ->prepare("SELECT username, password, created_at, update_password_at, last_login FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
         try {
@@ -42,7 +42,6 @@ class UserRepository
                 $user->password = $row['password'];
                 $user->createdAt = $row['created_at'];
                 $user->updatePasswordAt = $row['update_password_at'];
-                $user->onlineStatus = $row['online_status'];
                 $user->lastLogin = $row['last_login'];
 
                 return $user;
@@ -52,6 +51,29 @@ class UserRepository
         } finally {
             $statement->closeCursor();
         }
+    }
+
+    public function findAll(): array
+    {
+        $sql = "SELECT username, password, created_at, update_password_at, last_login FROM users";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+
+        $result = [];
+
+        $user = $statement->fetchAll();
+
+        foreach ($user as $row) {
+            $user = new User();
+            $user->setUsername($row['username']);
+            $user->setOnlineStatus($row['online_status']);
+            $user->setLastLogin($row['last_login']);
+            $user->setUpdatePasswordAt($row['update_password_at']);
+            $user->setCreatedAt($row['create_at']);
+
+            $result[] = $user;
+        }
+        return $result;
     }
 
     public function deleteByUsername(string $username): void

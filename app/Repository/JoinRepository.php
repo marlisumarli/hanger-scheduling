@@ -1,0 +1,53 @@
+<?php
+
+namespace Subjig\Report\Repository;
+
+use Subjig\Report\Entity\Join;
+
+class JoinRepository
+{
+    private \PDO $connection;
+
+    public function __construct(\PDO $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    public function userData(int $roleId): array
+    {
+        $sql = "SELECT usr.username,
+       usr_d.full_name,
+       usr_r.name,
+       usr.created_at,
+       usr.last_login,
+       usr_d.updated_at,
+       usr.update_password_at,
+       usr.password
+FROM user_details as usr_d
+         INNER JOIN users as usr ON usr.username = usr_d.credential
+         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
+WHERE usr_r.id = ?";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute([$roleId]);
+
+        $result = [];
+        $user = $statement->fetchAll();
+
+        foreach ($user as $row) {
+            $userData = new Join();
+            $userData->setUsername($row['username']);
+            $userData->setFullName($row['full_name']);
+            $userData->setNameRole($row['name']);
+            $userData->setLastLogin($row['last_login']);
+            $userData->setCreatedAt($row['created_at']);
+            $userData->setUsrDetailUpdatedAt($row['updated_at']);
+            $userData->setUsrUpdatePasswordAt($row['update_password_at']);
+            $userData->setPassword($row['password']);
+
+            $result[] = $userData;
+        }
+
+        return $result;
+    }
+}

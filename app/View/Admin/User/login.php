@@ -1,3 +1,6 @@
+<?php if (isset($model['error'])) : ?>
+    <?= $model['error'] ?>
+<?php endif; ?>
 <form action="" method="post">
     <label for="username">Username</label>
     <input type="text" name="username" id="username" required autofocus>

@@ -63,7 +63,6 @@ class UserRepositoryTest extends TestCase
         $this->userRepository->deleteByUsername($user->username);
         $result = $this->userRepository->findByUsername($user->username);
 
-
         self::assertNull($result);
     }
 

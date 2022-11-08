@@ -2,8 +2,9 @@
 
 namespace Subjig\Report\Model;
 
-class UserLoginRequest extends UserFactory
+class UserUpdateRequest extends UserFactory
 {
     public string $username;
     public string $password;
+    public string $repeatPassword;
 }
