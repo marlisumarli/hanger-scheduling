@@ -6,27 +6,9 @@ class User
 {
     public string $username;
     public string $password;
-    public string $createdAt;
-    public ?string $updatePasswordAt = null;
-    public ?string $onlineStatus = null;
-    public ?string $lastLogin = null;
-    public ?string $token = null;
-
-    /**
-     * @return string|null
-     */
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    /**
-     * @param string|null $token
-     */
-    public function setToken(?string $token): void
-    {
-        $this->token = $token;
-    }
+    public string $created_at;
+    public ?string $update_password_at = null;
+    public ?string $last_login = null;
 
     /**
      * @return string
@@ -65,15 +47,15 @@ class User
      */
     public function getCreatedAt(): string
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
-     * @param string $createdAt
+     * @param string $created_at
      */
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(string $created_at): void
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
     }
 
     /**
@@ -81,31 +63,15 @@ class User
      */
     public function getUpdatePasswordAt(): ?string
     {
-        return $this->updatePasswordAt;
+        return $this->update_password_at;
     }
 
     /**
-     * @param string|null $updatePasswordAt
+     * @param string|null $update_password_at
      */
-    public function setUpdatePasswordAt(?string $updatePasswordAt): void
+    public function setUpdatePasswordAt(?string $update_password_at): void
     {
-        $this->updatePasswordAt = $updatePasswordAt;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getOnlineStatus(): ?string
-    {
-        return $this->onlineStatus;
-    }
-
-    /**
-     * @param string|null $onlineStatus
-     */
-    public function setOnlineStatus(?string $onlineStatus): void
-    {
-        $this->onlineStatus = $onlineStatus;
+        $this->update_password_at = $update_password_at;
     }
 
     /**
@@ -113,14 +79,15 @@ class User
      */
     public function getLastLogin(): ?string
     {
-        return $this->lastLogin;
+        return $this->last_login;
     }
 
     /**
-     * @param string|null $lastLogin
+     * @param string|null $last_login
      */
-    public function setLastLogin(?string $lastLogin): void
+    public function setLastLogin(?string $last_login): void
     {
-        $this->lastLogin = $lastLogin;
+        $this->last_login = $last_login;
     }
+
 }

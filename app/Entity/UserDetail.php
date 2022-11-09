@@ -4,26 +4,42 @@ namespace Subjig\Report\Entity;
 
 class UserDetail
 {
-    public string $id;
-    public string $credential;
-    public string $fullName;
-    public int $roleId;
-    public ?string $updatedAt = null;
+    public string $user_detail_id;
+    public string $username;
+    public string $full_name;
+    public int $role_id;
+    public ?string $updated_at = null;
 
     /**
      * @return string
      */
-    public function getCredential(): string
+    public function getUserDetailId(): string
     {
-        return $this->credential;
+        return $this->user_detail_id;
     }
 
     /**
-     * @param string $credential
+     * @param string $user_detail_id
      */
-    public function setCredential(string $credential): void
+    public function setUserDetailId(string $user_detail_id): void
     {
-        $this->credential = $credential;
+        $this->user_detail_id = $user_detail_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
     }
 
     /**
@@ -31,15 +47,15 @@ class UserDetail
      */
     public function getFullName(): string
     {
-        return $this->fullName;
+        return $this->full_name;
     }
 
     /**
-     * @param string $fullName
+     * @param string $full_name
      */
-    public function setFullName(string $fullName): void
+    public function setFullName(string $full_name): void
     {
-        $this->fullName = $fullName;
+        $this->full_name = $full_name;
     }
 
     /**
@@ -47,15 +63,15 @@ class UserDetail
      */
     public function getRoleId(): int
     {
-        return $this->roleId;
+        return $this->role_id;
     }
 
     /**
-     * @param int $roleId
+     * @param int $role_id
      */
-    public function setRoleId(int $roleId): void
+    public function setRoleId(int $role_id): void
     {
-        $this->roleId = $roleId;
+        $this->role_id = $role_id;
     }
 
     /**
@@ -63,14 +79,16 @@ class UserDetail
      */
     public function getUpdatedAt(): ?string
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     /**
-     * @param string|null $updatedAt
+     * @param string|null $updated_at
      */
-    public function setUpdatedAt(?string $updatedAt): void
+    public function setUpdatedAt(?string $updated_at): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
     }
+
+
 }

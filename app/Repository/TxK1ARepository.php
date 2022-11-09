@@ -16,25 +16,25 @@ class TxK1ARepository
     public function save(TxK1A $txK1A): TxK1A
     {
         $statement = $this->connection->prepare("INSERT INTO tx_k1a(
-                   id, 
-                   category_code,
-                   type,
-                   year, 
-                   chf,
-                   spdmt,
-                   body_r,
-                   body_l,
-                   fender,
-                   supply_tanggal,
-                   perbaikan_tanggal,
-                   selesai_tanggal,
-                   datang_tanggal,
-                   keterangan
+                   tx_k1a_id, 
+                   category_id,
+                   tx_k1a_type,
+                   tx_k1a_year, 
+                   tx_k1a_chf,
+                   tx_k1a_speedometer,
+                   tx_k1a_body_r,
+                   tx_k1a_body_l,
+                   tx_k1a_fender,
+                   tx_k1a_supply_tanggal,
+                   tx_k1a_perbaikan_tanggal,
+                   tx_k1a_selesai_tanggal,
+                   tx_k1a_datang_tanggal,
+                   tx_k1a_keterangan
                    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $statement->execute([
-            $txK1A->id, $txK1A->categoryCode, $txK1A->type, $txK1A->year,
-            $txK1A->chf, $txK1A->speedometer, $txK1A->bodyR, $txK1A->bodyL, $txK1A->fender,
-            $txK1A->supplyTanggal, $txK1A->perbaikanTanggal, $txK1A->selesaiTanggal, $txK1A->datangTanggal, $txK1A->keterangan
+            $txK1A->tx_k1a_id, $txK1A->category_id, $txK1A->tx_k1a_type, $txK1A->tx_k1a_year,
+            $txK1A->tx_k1a_chf, $txK1A->tx_k1a_speedometer, $txK1A->tx_k1a_body_r, $txK1A->tx_k1a_body_l, $txK1A->tx_k1a_fender,
+            $txK1A->tx_k1a_supply_tanggal, $txK1A->tx_k1a_perbaikan_tanggal, $txK1A->tx_k1a_selesai_tanggal, $txK1A->tx_k1a_datang_tanggal, $txK1A->tx_k1a_keterangan
         ]);
         return $txK1A;
     }
@@ -42,67 +42,67 @@ class TxK1ARepository
     public function update(TxK1A $txK1A): TxK1A
     {
         $statement = $this->connection->prepare("UPDATE tx_k1a SET 
-                  category_code = ?, 
-                   chf = ?,
-                   spdmt = ?,
-                   body_r = ?,
-                   body_l = ?,
-                   fender = ?,
-                   supply_tanggal = ?,
-                   perbaikan_tanggal = ?,
-                   selesai_tanggal = ?,
-                   datang_tanggal = ?,
+                  category_id = ?, 
+                   tx_k1a_chf = ?,
+                   tx_k1a_speedometer = ?,
+                   tx_k1a_body_r = ?,
+                   tx_k1a_body_l = ?,
+                   tx_k1a_fender = ?,
+                   tx_k1a_supply_tanggal = ?,
+                   tx_k1a_perbaikan_tanggal = ?,
+                   tx_k1a_selesai_tanggal = ?,
+                   tx_k1a_datang_tanggal = ?,
                    updated_at = CURRENT_TIMESTAMP
-              WHERE id = ?");
+              WHERE tx_k1a_id = ?");
 
         $statement->execute([
-            $txK1A->categoryCode,
-            $txK1A->chf, $txK1A->speedometer, $txK1A->bodyR, $txK1A->bodyL, $txK1A->fender,
-            $txK1A->supplyTanggal, $txK1A->perbaikanTanggal, $txK1A->selesaiTanggal, $txK1A->datangTanggal,
-            $txK1A->id
+            $txK1A->category_id,
+            $txK1A->tx_k1a_chf, $txK1A->tx_k1a_speedometer, $txK1A->tx_k1a_body_r, $txK1A->tx_k1a_body_l, $txK1A->tx_k1a_fender,
+            $txK1A->tx_k1a_supply_tanggal, $txK1A->tx_k1a_perbaikan_tanggal, $txK1A->tx_k1a_selesai_tanggal, $txK1A->tx_k1a_datang_tanggal,
+            $txK1A->tx_k1a_id
         ]);
         return $txK1A;
     }
 
     public function findById(string $id): ?TxK1A
     {
-        $statement = $this->connection->prepare("SELECT id, 
-                   category_code,
-                   type,
-                   year, 
-                   chf,
-                   spdmt,
-                   body_r,
-                   body_l,
-                   fender,
-                   supply_tanggal,
-                   perbaikan_tanggal,
-                   selesai_tanggal,
-                   pic,
-                   datang_tanggal,
-                   keterangan ,
-                   updated_at FROM tx_k1a WHERE id = ?");
+        $statement = $this->connection->prepare("SELECT tx_k1a_id, 
+                   category_id,
+                   tx_k1a_type,
+                   tx_k1a_year, 
+                   tx_k1a_chf,
+                   tx_k1a_speedometer,
+                   tx_k1a_body_r,
+                   tx_k1a_body_l,
+                   tx_k1a_fender,
+                   tx_k1a_supply_tanggal,
+                   tx_k1a_perbaikan_tanggal,
+                   tx_k1a_selesai_tanggal,
+                   tx_k1a_pic,
+                   tx_k1a_datang_tanggal,
+                   tx_k1a_keterangan ,
+                   updated_at FROM tx_k1a WHERE tx_k1a_id = ?");
         $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $txK1A = new TxK1A();
-                $txK1A->id = $row['id'];
-                $txK1A->categoryCode = $row['category_code'];
-                $txK1A->type = $row['type'];
-                $txK1A->year = $row['year'];
-                $txK1A->chf = $row['chf'];
-                $txK1A->speedometer = $row['spdmt'];
-                $txK1A->bodyR = $row['body_r'];
-                $txK1A->bodyL = $row['body_l'];
-                $txK1A->fender = $row['fender'];
-                $txK1A->supplyTanggal = $row['supply_tanggal'];
-                $txK1A->perbaikanTanggal = $row['perbaikan_tanggal'];
-                $txK1A->selesaiTanggal = $row['selesai_tanggal'];
-                $txK1A->pic = $row['pic'];
-                $txK1A->datangTanggal = $row['datang_tanggal'];
-                $txK1A->keterangan = $row['keterangan'];
-                $txK1A->updatedAt = $row['updated_at'];
+                $txK1A->tx_k1a_id = $row['tx_k1a_id'];
+                $txK1A->category_id = $row['category_id'];
+                $txK1A->tx_k1a_type = $row['tx_k1a_type'];
+                $txK1A->tx_k1a_year = $row['tx_k1a_year'];
+                $txK1A->tx_k1a_chf = $row['tx_k1a_chf'];
+                $txK1A->tx_k1a_speedometer = $row['tx_k1a_speedometer'];
+                $txK1A->tx_k1a_body_r = $row['tx_k1a_body_r'];
+                $txK1A->tx_k1a_body_l = $row['tx_k1a_body_l'];
+                $txK1A->tx_k1a_fender = $row['tx_k1a_fender'];
+                $txK1A->tx_k1a_supply_tanggal = $row['tx_k1a_supply_tanggal'];
+                $txK1A->tx_k1a_perbaikan_tanggal = $row['tx_k1a_perbaikan_tanggal'];
+                $txK1A->tx_k1a_selesai_tanggal = $row['tx_k1a_selesai_tanggal'];
+                $txK1A->tx_k1a_pic = $row['tx_k1a_pic'];
+                $txK1A->tx_k1a_datang_tanggal = $row['tx_k1a_datang_tanggal'];
+                $txK1A->tx_k1a_keterangan = $row['tx_k1a_keterangan'];
+                $txK1A->updated_at = $row['updated_at'];
                 return $txK1A;
             } else {
                 return null;
@@ -114,7 +114,7 @@ class TxK1ARepository
 
     public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM tx_k1a WHERE id = ?");
+        $statement = $this->connection->prepare("DELETE FROM tx_k1a WHERE tx_k1a_id = ?");
         $statement->execute([$id]);
     }
 

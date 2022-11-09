@@ -4,5 +4,5 @@ namespace Subjig\Report\Model;
 
 class K2FDeleteRequest
 {
-    public string $code;
+    public string $id;
 }

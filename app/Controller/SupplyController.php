@@ -25,7 +25,7 @@ class SupplyController
 
     public function supply(string $id): void
     {
-//        $this->categoryRepository->findByKode();
+//        $this->categoryRepository->findByKode(); TODO Belom
         View::render('Admin/Supply/K2F/index', [
             'title' => 'Supply Subjig',
             'id' => $id

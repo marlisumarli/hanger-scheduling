@@ -4,41 +4,41 @@ namespace Subjig\Report\Entity;
 
 class Category
 {
-    public string $kode;
-    public string $name;
-    public string $createdAt;
-    public ?string $updatedAt = null;
+    public string $category_id;
+    public string $category_name;
+    public string $created_at;
+    public ?string $updated_at = null;
 
     /**
      * @return string
      */
-    public function getKode(): string
+    public function getCategoryId(): string
     {
-        return $this->kode;
+        return $this->category_id;
     }
 
     /**
-     * @param string $kode
+     * @param string $category_id
      */
-    public function setKode(string $kode): void
+    public function setCategoryId(string $category_id): void
     {
-        $this->kode = $kode;
+        $this->category_id = $category_id;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getCategoryName(): string
     {
-        return $this->name;
+        return $this->category_name;
     }
 
     /**
-     * @param string $name
+     * @param string $category_name
      */
-    public function setName(string $name): void
+    public function setCategoryName(string $category_name): void
     {
-        $this->name = $name;
+        $this->category_name = $category_name;
     }
 
     /**
@@ -46,15 +46,15 @@ class Category
      */
     public function getCreatedAt(): string
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
-     * @param string $createdAt
+     * @param string $created_at
      */
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(string $created_at): void
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
     }
 
     /**
@@ -62,14 +62,16 @@ class Category
      */
     public function getUpdatedAt(): ?string
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     /**
-     * @param string|null $updatedAt
+     * @param string|null $updated_at
      */
-    public function setUpdatedAt(?string $updatedAt): void
+    public function setUpdatedAt(?string $updated_at): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
     }
+
+
 }

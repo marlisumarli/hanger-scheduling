@@ -13,35 +13,35 @@ class MessboatRepository
         $this->connection = $connection;
     }
 
-    public function save(Messboat $mainjig): Messboat
+    public function save(Messboat $messboat): Messboat
     {
-        $statement = $this->connection->prepare("INSERT INTO mainjig(kode, name, qty, created_at) VALUES (?,?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$mainjig->kode, $mainjig->name, $mainjig->qty]);
-        return $mainjig;
+        $statement = $this->connection->prepare("INSERT INTO messboat(messboat_id, messboat_name, messboat_qty) VALUES (?,?,?)");
+        $statement->execute([$messboat->messboat_id, $messboat->messboat_name, $messboat->messboat_qty]);
+        return $messboat;
     }
 
-    public function update(Messboat $mainjig): Messboat
+    public function update(Messboat $messboat): Messboat
     {
         $statement = $this->connection
-            ->prepare("UPDATE mainjig SET name = ?, updated_at = CURRENT_TIMESTAMP WHERE  kode = ?");
-        $statement->execute([$mainjig->name, $mainjig->kode]);
-        return $mainjig;
+            ->prepare("UPDATE messboat SET messboat_name = ?, messboat_qty = ? WHERE  messboat_id = ?");
+        $statement->execute([$messboat->messboat_name, $messboat->messboat_qty, $messboat->messboat_id]);
+        return $messboat;
     }
 
-    public function findByKode(string $kode): ?Messboat
+    public function findById(string $id): ?Messboat
     {
-        $statement = $this->connection->prepare("SELECT kode, name, qty, created_at, updated_at FROM mainjig WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("SELECT messboat_id, messboat_name, messboat_qty FROM messboat WHERE messboat_id = ?");
+        $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
-                $category = new Messboat();
-                $category->kode = $row['kode'];
-                $category->name = $row['name'];
-                $category->qty = $row['qty'];
-                $category->createdAt = $row['created_at'];
-                $category->updatedAt = $row['updated_at'];
-                return $category;
+
+                $messboat = new Messboat();
+                $messboat->messboat_id = $row['messboat_id'];
+                $messboat->messboat_name = $row['messboat_name'];
+                $messboat->messboat_qty = $row['messboat_qty'];
+
+                return $messboat;
             } else {
                 return null;
             }
@@ -50,14 +50,14 @@ class MessboatRepository
         }
     }
 
-    public function deleteByKode(string $kode): void
+    public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM mainjig WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("DELETE FROM messboat WHERE messboat_id = ?");
+        $statement->execute([$id]);
     }
 
     public function deleteAll(): void
     {
-        $this->connection->exec("DELETE FROM mainjig");
+        $this->connection->exec("DELETE FROM messboat");
     }
 }

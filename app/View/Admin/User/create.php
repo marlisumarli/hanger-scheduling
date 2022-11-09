@@ -3,18 +3,18 @@
 <?php endif; ?>
 <form action="/admin/user-create" method="post">
     <label>Nama
-        <input type="text" required name="name" value="">
+        <input type="text" required name="name">
     </label>
     <br>
     <legend>Bagian:</legend>
     <div>
-        <input type="radio" id="role" name="role"
+        <label for="roleId">Admin</label>
+        <input type="radio" id="roleId" name="roleId"
                value="1">
-        <label for="role">Admin</label>
-        <input type="radio" id="role" name="role"
+        <label for="roleId">Subjig</label>
+        <input type="radio" id="roleId" name="roleId"
                value="2"
                checked>
-        <label for="role">Subjig</label>
     </div>
     <label>Username
         <input type="text" required name="username">

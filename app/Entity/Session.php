@@ -4,6 +4,6 @@ namespace Subjig\Report\Entity;
 
 class Session
 {
-    public string $id;
+    public string $session_id;
     public string $username;
 }

@@ -27,18 +27,18 @@ class K2FService
         try {
             Database::beginTransaction();
 
-            $k2fCode = $this->k2FRepository->findByCode($request->code);
+            $k2fId = $this->k2FRepository->findById($request->id);
             $k2fName = $this->k2FRepository->findByName($request->name);
-            if ($k2fCode != null) {
-                throw new ValidationException("Code : $request->code sudah ada");
+            if ($k2fId != null) {
+                throw new ValidationException("Id : $request->id sudah ada");
             } elseif ($k2fName != null) {
                 throw new ValidationException("Nama : $request->name sudah ada");
             }
 
             $k2f = new K2F();
-            $k2f->code = strtoupper(trim($request->code));
-            $k2f->name = ucwords(strtolower(trim($request->name)));
-            $k2f->qty = $request->qty;
+            $k2f->k2f_id = strtoupper(trim($request->id));
+            $k2f->k2f_name = ucwords(strtolower(trim($request->name)));
+            $k2f->k2f_qty = $request->qty;
             $this->k2FRepository->save($k2f);
 
             $response = new K2FResponse();
@@ -55,10 +55,10 @@ class K2FService
 
     private function validateColumnCreateRequest(K2FCreateRequest $request): void
     {
-        if ($request->code == null || $request->name == null || $request->qty == null ||
-            trim($request->code) == '' || trim($request->name) == '' || trim($request->qty) == '') {
+        if ($request->id == null || $request->name == null || $request->qty == null ||
+            trim($request->id) == '' || trim($request->name) == '' || trim($request->qty) == '') {
             throw new ValidationException('Kolom tidak boleh kosong');
-        } elseif (preg_match('/[^A-Z0-9]/i', $request->code) || preg_match('/[^a-zA-Z| ]/i', $request->name) ||
+        } elseif (preg_match('/[^A-Z0-9]/i', $request->id) || preg_match('/[^a-zA-Z| ]/i', $request->name) ||
             preg_match('/[^0-9]/i', $request->qty)) {
             throw new ValidationException('Invalid character');
         }
@@ -70,15 +70,15 @@ class K2FService
         try {
             Database::beginTransaction();
 
-            $supplyK2f = $this->k2FRepository->findByCode($request->code);
-            if ($supplyK2f == null) {
+            $k2fId = $this->k2FRepository->findById($request->id);
+            if ($k2fId == null) {
                 throw new ValidationException("is null");
             }
 
             $k2f = new K2F();
-            $k2f->code = strtoupper(trim($request->code));
-            $k2f->name = ucwords(strtolower(trim($request->name)));
-            $k2f->qty = $request->qty;
+            $k2f->k2f_id = strtoupper(trim($request->id));
+            $k2f->k2f_name = ucwords(strtolower(trim($request->name)));
+            $k2f->k2f_qty = $request->qty;
             $this->k2FRepository->update($k2f);
 
             $response = new K2FResponse();
@@ -104,13 +104,13 @@ class K2FService
 
     public function requestDelete(K2FDeleteRequest $request): K2FResponse
     {
-        $k2f = $this->k2FRepository->findByCode($request->code);
+        $k2f = $this->k2FRepository->findById($request->id);
         if ($k2f == null) {
             throw new ValidationException('Hapus gagal');
         } else {
             $k2f = new  K2F();
-            $k2f->code = $request->code;
-            $this->k2FRepository->deleteByCode($k2f->code);
+            $k2f->id = $request->id;
+            $this->k2FRepository->deleteById($k2f->id);
         }
         $response = new K2FResponse();
         $response->k2F = $k2f;

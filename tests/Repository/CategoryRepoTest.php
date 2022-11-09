@@ -13,15 +13,15 @@ class CategoryRepoTest extends TestCase
     public function testSaveSuccess()
     {
         $category = new Category();
-        $category->kode = 'SK2FLNA';
-        $category->name = 'Supply K2F Line A';
+        $category->category_id = 'SK2FLNA';
+        $category->category_name = 'Supply K2F Line A';
 
         $this->categoryRepository->save($category);
 
-        $result = $this->categoryRepository->findByKode($category->kode);
-        self::assertEquals($category->kode, $result->kode);
-        self::assertEquals($category->name, $result->name);
-        self::assertNotNull($result->createdAt);
+        $result = $this->categoryRepository->findById($category->category_id);
+        self::assertEquals($category->category_id, $result->category_id);
+        self::assertEquals($category->category_name, $result->category_name);
+        self::assertNotNull($result->created_at);
 
     }
 

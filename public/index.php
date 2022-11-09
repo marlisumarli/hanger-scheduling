@@ -41,8 +41,8 @@ Router::get('GET', '/admin/list-item', ListItemController::class, 'index', [Mand
 Router::get('GET', '/admin/list-item/subjig', ListItemController::class, 'subjig', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/list-item/subjig/k2f', ListItemController::class, 'k2f', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/list-item/subjig/k2f', ListItemController::class, 'postK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-edit', ListItemController::class, 'editK2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/list-item/subjig/k2f-edit', ListItemController::class, 'postUpdateK2f', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'updateK2f', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'postUpdateK2f', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/list-item/subjig/k2f-delete', ListItemController::class, 'delete', [MandatoryLoginMiddleware::class]);
 
 // Supply

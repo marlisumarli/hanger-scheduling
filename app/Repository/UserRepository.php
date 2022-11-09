@@ -40,9 +40,9 @@ class UserRepository
                 $user = new User();
                 $user->username = $row['username'];
                 $user->password = $row['password'];
-                $user->createdAt = $row['created_at'];
-                $user->updatePasswordAt = $row['update_password_at'];
-                $user->lastLogin = $row['last_login'];
+                $user->created_at = $row['created_at'];
+                $user->update_password_at = $row['update_password_at'];
+                $user->last_login = $row['last_login'];
 
                 return $user;
             } else {
@@ -66,7 +66,6 @@ class UserRepository
         foreach ($user as $row) {
             $user = new User();
             $user->setUsername($row['username']);
-            $user->setOnlineStatus($row['online_status']);
             $user->setLastLogin($row['last_login']);
             $user->setUpdatePasswordAt($row['update_password_at']);
             $user->setCreatedAt($row['create_at']);

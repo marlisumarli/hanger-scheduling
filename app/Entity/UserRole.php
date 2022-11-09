@@ -4,41 +4,41 @@ namespace Subjig\Report\Entity;
 
 class UserRole
 {
-    public int $roleId;
-    public string $name;
-    public string $createdAt;
-    public ?string $updatedAt = null;
+    public int $user_role_id;
+    public string $user_role_name;
+    public string $created_at;
+    public ?string $updated_at = null;
 
     /**
      * @return int
      */
-    public function getRoleId(): int
+    public function getUserRoleId(): int
     {
-        return $this->roleId;
+        return $this->user_role_id;
     }
 
     /**
-     * @param int $roleId
+     * @param int $user_role_id
      */
-    public function setRoleId(int $roleId): void
+    public function setUserRoleId(int $user_role_id): void
     {
-        $this->roleId = $roleId;
+        $this->user_role_id = $user_role_id;
     }
 
     /**
      * @return string
      */
-    public function getName(): string
+    public function getUserRoleName(): string
     {
-        return $this->name;
+        return $this->user_role_name;
     }
 
     /**
-     * @param string $name
+     * @param string $user_role_name
      */
-    public function setName(string $name): void
+    public function setUserRoleName(string $user_role_name): void
     {
-        $this->name = $name;
+        $this->user_role_name = $user_role_name;
     }
 
     /**
@@ -46,15 +46,15 @@ class UserRole
      */
     public function getCreatedAt(): string
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
-     * @param string $createdAt
+     * @param string $created_at
      */
-    public function setCreatedAt(string $createdAt): void
+    public function setCreatedAt(string $created_at): void
     {
-        $this->createdAt = $createdAt;
+        $this->created_at = $created_at;
     }
 
     /**
@@ -62,15 +62,15 @@ class UserRole
      */
     public function getUpdatedAt(): ?string
     {
-        return $this->updatedAt;
+        return $this->updated_at;
     }
 
     /**
-     * @param string|null $updatedAt
+     * @param string|null $updated_at
      */
-    public function setUpdatedAt(?string $updatedAt): void
+    public function setUpdatedAt(?string $updated_at): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated_at = $updated_at;
     }
 
 }

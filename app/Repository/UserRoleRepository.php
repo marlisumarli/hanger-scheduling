@@ -16,31 +16,31 @@ class UserRoleRepository
     public function save(UserRole $userRole): UserRole
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO user_roles(id, name, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)");
-        $statement->execute([$userRole->roleId, $userRole->name]);
+            ->prepare("INSERT INTO user_roles(user_role_id, user_role_name, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)");
+        $statement->execute([$userRole->user_role_id, $userRole->user_role_name]);
         return $userRole;
     }
 
     public function update(UserRole $userRole): UserRole
     {
         $statement = $this->connection
-            ->prepare("UPDATE user_roles SET name = ? ,updated_at = CURRENT_TIMESTAMP WHERE  id = ?");
-        $statement->execute([$userRole->name, $userRole->roleId]);
+            ->prepare("UPDATE user_roles SET user_role_name = ? ,updated_at = CURRENT_TIMESTAMP WHERE  user_role_id = ?");
+        $statement->execute([$userRole->user_role_name, $userRole->user_role_id]);
         return $userRole;
     }
 
     public function findById(int $id): ?UserRole
     {
-        $statement = $this->connection->prepare("SELECT id, name, created_at, updated_at FROM user_roles WHERE id = ?");
+        $statement = $this->connection->prepare("SELECT user_role_id, user_role_name, created_at, updated_at FROM user_roles WHERE user_role_id = ?");
         $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $userRole = new UserRole();
-                $userRole->roleId = $row['id'];
-                $userRole->name = $row['name'];
-                $userRole->createdAt = $row['created_at'];
-                $userRole->updatedAt = $row['updated_at'];
+                $userRole->user_role_id = $row['user_role_id'];
+                $userRole->user_role_name = $row['user_role_name'];
+                $userRole->created_at = $row['created_at'];
+                $userRole->updated_at = $row['updated_at'];
                 return $userRole;
             } else {
                 return null;
@@ -52,7 +52,7 @@ class UserRoleRepository
 
     public function deleteById(int $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM user_roles WHERE id = ?");
+        $statement = $this->connection->prepare("DELETE FROM user_roles WHERE user_role_id = ?");
         $statement->execute([$id]);
     }
 
@@ -63,7 +63,7 @@ class UserRoleRepository
 
     public function findAll(): array
     {
-        $sql = "SELECT id, name, created_at, updated_at FROM user_roles";
+        $sql = "SELECT user_role_id, user_role_name, created_at, updated_at FROM user_roles";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
 
@@ -73,8 +73,8 @@ class UserRoleRepository
 
         foreach ($roleId as $row) {
             $role = new UserRole();
-            $role->setRoleId($row['id']);
-            $role->setName($row['name']);
+            $role->setUserRoleId($row['user_role_id']);
+            $role->setUserRoleName($row['user_role_name']);
             $role->setCreatedAt($row['created_at']);
             $role->setUpdatedAt($row['updated_at']);
 

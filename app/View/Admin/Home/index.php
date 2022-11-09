@@ -11,7 +11,7 @@
     </ul>
     <br>
     <ul>
-        <?php if ($model['role'] == 1) : ?>
+        <?php if ($model['roleId'] == 1) : ?>
             <li><a href="/admin/user">User</a></li>
         <?php endif; ?>
         <li><a href="/admin/user/logout">Logout</a></li>

@@ -16,14 +16,13 @@ class K2FServiceTest extends TestCase
 
     public function testCreateK2F()
     {
-        $type = "K2F";
         $request = new K2FCreateRequest();
-        $request->code = $type . "SPDMTA";
+        $request->id = $type . "SPDMTA";
         $request->name = "Speedometer A";
         $request->qty = 4;
         $response = $this->k2FService->requestCreate($request);
         $request = new K2FCreateRequest();
-        $request->code = $type . "SPDMTB";
+        $request->id = $type . "SPDMTB";
         $request->name = "Speedometer A";
         $request->qty = 4;
         $response = $this->k2FService->requestCreate($request);

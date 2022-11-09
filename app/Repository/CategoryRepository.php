@@ -15,31 +15,31 @@ class CategoryRepository
 
     public function save(Category $category): Category
     {
-        $statement = $this->connection->prepare("INSERT INTO category(kode, name, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$category->kode, $category->name]);
+        $statement = $this->connection->prepare("INSERT INTO category(category_id, category_name, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
+        $statement->execute([$category->category_id, $category->category_name]);
         return $category;
     }
 
     public function update(Category $category): Category
     {
         $statement = $this->connection
-            ->prepare("UPDATE category SET name = ?, updated_at = CURRENT_TIMESTAMP WHERE  kode = ?");
-        $statement->execute([$category->name, $category->kode]);
+            ->prepare("UPDATE category SET category_name = ?, updated_at = CURRENT_TIMESTAMP WHERE  category_id = ?");
+        $statement->execute([$category->category_name, $category->category_id]);
         return $category;
     }
 
-    public function findByKode(string $kode): ?Category
+    public function findById(string $id): ?Category
     {
-        $statement = $this->connection->prepare("SELECT kode, name, created_at, updated_at FROM category WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("SELECT category_id, category_name, created_at, updated_at FROM category WHERE category_id = ?");
+        $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $category = new Category();
-                $category->kode = $row['kode'];
-                $category->name = $row['name'];
-                $category->createdAt = $row['created_at'];
-                $category->updatedAt = $row['updated_at'];
+                $category->category_id = $row['category_id'];
+                $category->category_name = $row['category_name'];
+                $category->created_at = $row['created_at'];
+                $category->updated_at = $row['updated_at'];
                 return $category;
             } else {
                 return null;
@@ -49,10 +49,10 @@ class CategoryRepository
         }
     }
 
-    public function deleteByKode(string $kode): void
+    public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM category WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("DELETE FROM category WHERE category_id = ?");
+        $statement->execute([$id]);
     }
 
     public function deleteAll(): void
@@ -62,7 +62,7 @@ class CategoryRepository
 
     public function findAll(): array
     {
-        $sql = "SELECT kode, name, created_at, updated_at FROM category";
+        $sql = "SELECT category_id, category_name, created_at, updated_at FROM category";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
 
@@ -72,8 +72,8 @@ class CategoryRepository
 
         foreach ($category as $row) {
             $category = new Category();
-            $category->setKode($row['kode']);
-            $category->setName($row['name']);
+            $category->setCategoryId($row['category_id']);
+            $category->setCategoryName($row['category_name']);
             $category->setCreatedAt($row['created_at']);
             $category->setUpdatedAt($row['updated_at']);
 

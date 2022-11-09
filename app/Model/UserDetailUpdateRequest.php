@@ -4,7 +4,7 @@ namespace Subjig\Report\Model;
 
 class UserDetailUpdateRequest
 {
-    public string $credential;
+    public string $username;
     public string $fullName;
-    public int $role;
+    public int $roleId;
 }

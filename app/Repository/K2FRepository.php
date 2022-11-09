@@ -17,30 +17,30 @@ class K2FRepository
 
     public function save(K2F $k2f): K2F
     {
-        $statement = $this->connection->prepare("INSERT INTO k2f(code, name, qty, created_at) VALUES (?,?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$k2f->code, $k2f->name, $k2f->qty]);
+        $statement = $this->connection->prepare("INSERT INTO k2f(k2f_id, k2f_name, k2f_qty) VALUES (?,?,?)");
+        $statement->execute([$k2f->k2f_id, $k2f->k2f_name, $k2f->k2f_qty]);
         return $k2f;
     }
 
     public function update(K2F $k2f): K2F
     {
         $statement = $this->connection
-            ->prepare("UPDATE k2f SET name = ?, qty = ?, updated_at = CURRENT_TIMESTAMP WHERE  code = ?");
-        $statement->execute([$k2f->name, $k2f->qty, $k2f->code]);
+            ->prepare("UPDATE k2f SET k2f_name = ?, k2f_qty = ? WHERE  k2f_id = ?");
+        $statement->execute([$k2f->k2f_name, $k2f->k2f_qty, $k2f->k2f_id]);
         return $k2f;
     }
 
-    public function findByCode(string $code): ?K2F
+    public function findById(string $id): ?K2F
     {
-        $statement = $this->connection->prepare("SELECT code, name, qty, created_at, updated_at FROM k2f WHERE code = ?");
-        $statement->execute([$code]);
+        $statement = $this->connection->prepare("SELECT k2f_id, k2f_name, k2f_qty FROM k2f WHERE k2f_id = ?");
+        $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $category = new K2F();
-                $category->code = $row['code'];
-                $category->name = $row['name'];
-                $category->qty = $row['qty'];
+                $category->k2f_id = $row['k2f_id'];
+                $category->k2f_name = $row['k2f_name'];
+                $category->k2f_qty = $row['k2f_qty'];
                 return $category;
             } else {
                 return null;
@@ -52,15 +52,15 @@ class K2FRepository
 
     public function findByName(string $name): ?K2F
     {
-        $statement = $this->connection->prepare("SELECT code, name, qty, created_at, updated_at FROM k2f WHERE name = ?");
+        $statement = $this->connection->prepare("SELECT k2f_id, k2f_name, k2f_qty FROM k2f WHERE k2f_name = ?");
         $statement->execute([$name]);
 
         try {
             if ($row = $statement->fetch()) {
                 $category = new K2F();
-                $category->code = $row['code'];
-                $category->name = $row['name'];
-                $category->qty = $row['qty'];
+                $category->k2f_id = $row['k2f_id'];
+                $category->k2f_name = $row['k2f_name'];
+                $category->k2f_qty = $row['k2f_qty'];
                 return $category;
             } else {
                 return null;
@@ -70,10 +70,10 @@ class K2FRepository
         }
     }
 
-    public function deleteByCode(string $code): void
+    public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM k2f WHERE code = ?");
-        $statement->execute([$code]);
+        $statement = $this->connection->prepare("DELETE FROM k2f WHERE k2f_id = ?");
+        $statement->execute([$id]);
     }
 
     public function deleteAll(): void
@@ -83,7 +83,7 @@ class K2FRepository
 
     public function findAll(): array
     {
-        $sql = "SELECT code, name, qty FROM k2f";
+        $sql = "SELECT k2f_id, k2f_name, k2f_qty FROM k2f";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
 
@@ -93,9 +93,9 @@ class K2FRepository
 
         foreach ($k2f as $row) {
             $data = new K2F();
-            $data->setCode($row['code']);
-            $data->setName($row['name']);
-            $data->setQty($row['qty']);
+            $data->setK2fId($row['k2f_id']);
+            $data->setK2fName($row['k2f_name']);
+            $data->setK2fQty($row['k2f_qty']);
 
             $result[] = $data;
         }

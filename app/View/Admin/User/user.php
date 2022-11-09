@@ -22,10 +22,10 @@
             <th scope="row"><?= $data1 + 1 ?></th>
             <td><?= $value->getUsername() ?></td>
             <td><?= $value->getFullName() ?></td>
-            <td><?= $value->getNameRole() ?></td>
+            <td><?= $value->getRoleName() ?></td>
             <td><?= $value->getCreatedAt() ?></td>
-            <td><?= $value->getUsrDetailUpdatedAt() ?></td>
-            <td><?= $value->getUsrUpdatePasswordAt() ?></td>
+            <td><?= $value->getUserDetailUpdatedAt() ?></td>
+            <td><?= $value->getUserUpdatePasswordAt() ?></td>
             <td><a href="/admin/user-update?username=<?= $value->getUsername() ?>">Edit</a>
                 <a href="/admin/user-delete?username=<?= $value->getUsername() ?>"
                    onclick="return confirm('Ingin menghapus?');">Delete</a>
@@ -55,10 +55,10 @@
             <th scope="row"><?= $data1 + 1 ?></th>
             <td><?= $value->getUsername() ?></td>
             <td><?= $value->getFullName() ?></td>
-            <td><?= $value->getNameRole() ?></td>
+            <td><?= $value->getRoleName() ?></td>
             <td><?= $value->getCreatedAt() ?></td>
-            <td><?= $value->getUsrDetailUpdatedAt() ?></td>
-            <td><?= $value->getUsrUpdatePasswordAt() ?></td>
+            <td><?= $value->getUserDetailUpdatedAt() ?></td>
+            <td><?= $value->getUserUpdatePasswordAt() ?></td>
             <td><a href="/admin/user-update?username=<?= $value->getUsername() ?>">Edit</a>
                 <a href="/admin/user-delete?username=<?= $value->getUsername() ?>"
                    onclick="return confirm('Ingin menghapus?');">Delete</a>

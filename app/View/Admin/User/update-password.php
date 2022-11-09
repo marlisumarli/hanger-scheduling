@@ -1,7 +1,7 @@
 <?php if (isset($model['error'])) : ?>
     <?= $model["error"] ?>
 <?php endif; ?>
-<h1>Update pasword <?= $model['username'] ?></h1>
+<h1>Update password <?= $model['username'] ?></h1>
 <form method="post">
     <label>Password
         <input type="password" required name="password">

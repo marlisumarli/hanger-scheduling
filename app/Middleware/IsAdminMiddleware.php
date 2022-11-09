@@ -28,7 +28,7 @@ class IsAdminMiddleware implements Middleware
         $userSession = $this->sessionService->current()->username;
         $userDetail = $this->userDetailRepository->findByUsername($userSession);
 
-        if ($userDetail->roleId != 1) {
+        if ($userDetail->role_id != 1) {
             View::redirect('/admin');
         }
     }

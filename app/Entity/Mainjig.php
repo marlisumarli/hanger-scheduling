@@ -4,9 +4,9 @@ namespace Subjig\Report\Entity;
 
 class Mainjig
 {
-    public string $kode;
-    public string $name;
-    public int $qty;
-    public string $createdAt;
-    public ?string $updatedAt = null;
+    public string $mainjig_id;
+    public string $mainjig_name;
+    public int $mainjig_qty;
+    public string $created_at;
+    public ?string $updated_at = null;
 }

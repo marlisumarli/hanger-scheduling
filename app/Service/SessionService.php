@@ -23,12 +23,12 @@ class SessionService
     public function create(string $username): Session
     {
         $session = new Session();
-        $session->id = uniqid();
+        $session->session_id = uniqid();
         $session->username = $username;
 
         $this->sessionRepository->save($session);
 
-        setcookie(self::COOKIE_NAME, $session->id, time() + (60 * 60 * 24 * 30), '/');
+        setcookie(self::COOKIE_NAME, $session->session_id, time() + (60 * 60 * 24 * 30), '/');
         return $session;
     }
 

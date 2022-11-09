@@ -5,13 +5,11 @@ namespace Subjig\Report\Entity;
 class Join
 {
     public ?string $username = null;
-    public ?string $fullName = null;
-    public ?string $nameRole = null;
-    public ?string $createdAt = null;
-    public ?string $lastLogin = null;
-    public ?string $UsrDetailUpdatedAt = null;
-    public ?string $usrUpdatePasswordAt = null;
-    public ?string $password = null;
+    public ?string $full_name = null;
+    public ?string $role_name = null;
+    public ?string $created_at = null;
+    public ?string $user_detail_updated_at = null;
+    public ?string $user_update_password_at = null;
 
     /**
      * @return string|null
@@ -34,31 +32,31 @@ class Join
      */
     public function getFullName(): ?string
     {
-        return $this->fullName;
+        return $this->full_name;
     }
 
     /**
-     * @param string|null $fullName
+     * @param string|null $full_name
      */
-    public function setFullName(?string $fullName): void
+    public function setFullName(?string $full_name): void
     {
-        $this->fullName = $fullName;
+        $this->full_name = $full_name;
     }
 
     /**
      * @return string|null
      */
-    public function getNameRole(): ?string
+    public function getRoleName(): ?string
     {
-        return $this->nameRole;
+        return $this->role_name;
     }
 
     /**
-     * @param string|null $nameRole
+     * @param string|null $role_name
      */
-    public function setNameRole(?string $nameRole): void
+    public function setRoleName(?string $role_name): void
     {
-        $this->nameRole = $nameRole;
+        $this->role_name = $role_name;
     }
 
     /**
@@ -66,80 +64,46 @@ class Join
      */
     public function getCreatedAt(): ?string
     {
-        return $this->createdAt;
+        return $this->created_at;
     }
 
     /**
-     * @param string|null $createdAt
+     * @param string|null $created_at
      */
-    public function setCreatedAt(?string $createdAt): void
+    public function setCreatedAt(?string $created_at): void
     {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastLogin(): ?string
-    {
-        return $this->lastLogin;
-    }
-
-    /**
-     * @param string|null $lastLogin
-     */
-    public function setLastLogin(?string $lastLogin): void
-    {
-        $this->lastLogin = $lastLogin;
+        $this->created_at = $created_at;
     }
 
     /**
      * @return string|null
      */
-    public function getUsrDetailUpdatedAt(): ?string
+    public function getUserDetailUpdatedAt(): ?string
     {
-        return $this->UsrDetailUpdatedAt;
+        return $this->user_detail_updated_at;
     }
 
     /**
-     * @param string|null $UsrDetailUpdatedAt
+     * @param string|null $user_detail_updated_at
      */
-    public function setUsrDetailUpdatedAt(?string $UsrDetailUpdatedAt): void
+    public function setUserDetailUpdatedAt(?string $user_detail_updated_at): void
     {
-        $this->UsrDetailUpdatedAt = $UsrDetailUpdatedAt;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUsrUpdatePasswordAt(): ?string
-    {
-        return $this->usrUpdatePasswordAt;
-    }
-
-    /**
-     * @param string|null $usrUpdatePasswordAt
-     */
-    public function setUsrUpdatePasswordAt(?string $usrUpdatePasswordAt): void
-    {
-        $this->usrUpdatePasswordAt = $usrUpdatePasswordAt;
+        $this->user_detail_updated_at = $user_detail_updated_at;
     }
 
     /**
      * @return string|null
      */
-    public function getPassword(): ?string
+    public function getUserUpdatePasswordAt(): ?string
     {
-        return $this->password;
+        return $this->user_update_password_at;
     }
 
     /**
-     * @param string|null $password
+     * @param string|null $user_update_password_at
      */
-    public function setPassword(?string $password): void
+    public function setUserUpdatePasswordAt(?string $user_update_password_at): void
     {
-        $this->password = $password;
+        $this->user_update_password_at = $user_update_password_at;
     }
-
-
 }

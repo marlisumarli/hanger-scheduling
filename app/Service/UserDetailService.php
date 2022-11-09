@@ -26,15 +26,15 @@ class UserDetailService
         try {
             Database::beginTransaction();
 
-            $user = $this->userDetailRepository->findByUsername($request->credential);
+            $user = $this->userDetailRepository->findByUsername($request->username);
             if ($user != null) {
                 throw new ValidationException('User ada');
             } else {
                 $userDetail = new  UserDetail();
-                $userDetail->id = uniqid();
-                $userDetail->credential = $request->credential;
-                $userDetail->fullName = ucwords(strtolower(trim($request->fullName)));
-                $userDetail->roleId = $request->role;
+                $userDetail->user_detail_id = uniqid();
+                $userDetail->username = $request->username;
+                $userDetail->full_name = ucwords(strtolower(trim($request->fullName)));
+                $userDetail->role_id = $request->roleId;
                 $this->userDetailRepository->save($userDetail);
             }
 
@@ -64,14 +64,14 @@ class UserDetailService
         try {
             Database::beginTransaction();
 
-            $user = $this->userDetailRepository->findByUsername($request->credential);
+            $user = $this->userDetailRepository->findByUsername($request->username);
             if ($user == null) {
                 throw new ValidationException('Update failed');
             } else {
                 $userDetail = new  UserDetail();
-                $userDetail->credential = $request->credential;
-                $userDetail->fullName = ucwords(strtolower(trim($request->fullName)));
-                $userDetail->roleId = $request->role;
+                $userDetail->username = $request->username;
+                $userDetail->full_name = ucwords(strtolower(trim($request->fullName)));
+                $userDetail->role_id = $request->roleId;
                 $this->userDetailRepository->update($userDetail);
             }
             $response = new UserDetailResponse();

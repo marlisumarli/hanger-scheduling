@@ -15,33 +15,33 @@ class MainjigRepository
 
     public function save(Mainjig $mainjig): Mainjig
     {
-        $statement = $this->connection->prepare("INSERT INTO mainjig(kode, name, qty, created_at) VALUES (?,?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$mainjig->kode, $mainjig->name, $mainjig->qty]);
+        $statement = $this->connection->prepare("INSERT INTO mainjig(mainjig_id, mainjig_name, mainjig_qty) VALUES (?,?,?)");
+        $statement->execute([$mainjig->mainjig_id, $mainjig->mainjig_name, $mainjig->mainjig_qty]);
         return $mainjig;
     }
 
     public function update(Mainjig $mainjig): Mainjig
     {
         $statement = $this->connection
-            ->prepare("UPDATE mainjig SET name = ?, updated_at = CURRENT_TIMESTAMP WHERE  kode = ?");
-        $statement->execute([$mainjig->name, $mainjig->kode]);
+            ->prepare("UPDATE mainjig SET mainjig_name = ?, mainjig_qty = ? WHERE  mainjig_id = ?");
+        $statement->execute([$mainjig->mainjig_name, $mainjig->mainjig_qty, $mainjig->mainjig_id]);
         return $mainjig;
     }
 
-    public function findByKode(string $kode): ?Mainjig
+    public function findById(string $id): ?Mainjig
     {
-        $statement = $this->connection->prepare("SELECT kode, name, qty, created_at, updated_at FROM mainjig WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("SELECT mainjig_id, mainjig_name, mainjig_qty FROM mainjig WHERE mainjig_id = ?");
+        $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
-                $category = new Mainjig();
-                $category->kode = $row['kode'];
-                $category->name = $row['name'];
-                $category->qty = $row['qty'];
-                $category->createdAt = $row['created_at'];
-                $category->updatedAt = $row['updated_at'];
-                return $category;
+
+                $mainjig = new Mainjig();
+                $mainjig->mainjig_id = $row['mainjig_id'];
+                $mainjig->mainjig_name = $row['mainjig_name'];
+                $mainjig->mainjig_qty = $row['mainjig_qty'];
+
+                return $mainjig;
             } else {
                 return null;
             }
@@ -50,10 +50,10 @@ class MainjigRepository
         }
     }
 
-    public function deleteByKode(string $kode): void
+    public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM mainjig WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("DELETE FROM mainjig WHERE mainjig_id = ?");
+        $statement->execute([$id]);
     }
 
     public function deleteAll(): void

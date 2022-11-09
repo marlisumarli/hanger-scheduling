@@ -28,15 +28,15 @@ class AdminHomeController
     }
 
 
-    public function index(): void
+    public function index()
     {
         $user = $this->sessionService->current()->username;
         $userDetail = $this->userDetailRepository->findByUsername($user);
 
         View::render('Admin/Home/index', [
-            'title' => 'Dashboard',
+            'title' => 'Admin | Dashboard',
             'user' => $userDetail->getFullName(),
-            'role' => $userDetail->getRoleId(),
+            'roleId' => $userDetail->getRoleId(),
             'userData2' => $this->joinRepository->userData(2),
         ]);
     }

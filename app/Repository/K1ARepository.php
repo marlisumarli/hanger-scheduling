@@ -6,6 +6,7 @@ use Subjig\Report\Entity\K1A;
 
 class K1ARepository
 {
+    const TYPE = 'k1a';
     private \PDO $connection;
 
     public function __construct(\PDO $connection)
@@ -15,32 +16,30 @@ class K1ARepository
 
     public function save(K1A $k1a): K1A
     {
-        $statement = $this->connection->prepare("INSERT INTO k1a(kode, name, qty, created_at) VALUES (?,?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$k1a->kode, $k1a->name, $k1a->qty]);
+        $statement = $this->connection->prepare("INSERT INTO k1a(k1a_id, k1a_name, k1a_qty) VALUES (?,?,?)");
+        $statement->execute([$k1a->k1a_id, $k1a->k1a_name, $k1a->k1a_qty]);
         return $k1a;
     }
 
     public function update(K1A $k1a): K1A
     {
         $statement = $this->connection
-            ->prepare("UPDATE k1a SET name = ?, updated_at = CURRENT_TIMESTAMP WHERE  kode = ?");
-        $statement->execute([$k1a->name, $k1a->kode]);
+            ->prepare("UPDATE k1a SET k1a_name = ?, k1a_qty = ? WHERE  k1a_id = ?");
+        $statement->execute([$k1a->k1a_name, $k1a->k1a_qty, $k1a->k1a_id]);
         return $k1a;
     }
 
-    public function findByKode(string $kode): ?K1A
+    public function findByKode(string $id): ?K1A
     {
-        $statement = $this->connection->prepare("SELECT kode, name, qty, created_at, updated_at FROM k1a WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("SELECT k1a_id, k1a_name, k1a_qty FROM k1a WHERE k1a_id = ?");
+        $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $category = new K1A();
-                $category->kode = $row['kode'];
-                $category->name = $row['name'];
-                $category->qty = $row['qty'];
-                $category->createdAt = $row['created_at'];
-                $category->updatedAt = $row['updated_at'];
+                $category->k1a_id = $row['k1a_id'];
+                $category->k1a_name = $row['k1a_name'];
+                $category->k1a_qty = $row['k1a_qty'];
                 return $category;
             } else {
                 return null;
@@ -50,10 +49,10 @@ class K1ARepository
         }
     }
 
-    public function deleteByKode(string $kode): void
+    public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM k1a WHERE kode = ?");
-        $statement->execute([$kode]);
+        $statement = $this->connection->prepare("DELETE FROM k1a WHERE k1a_id = ?");
+        $statement->execute([$id]);
     }
 
     public function deleteAll(): void
