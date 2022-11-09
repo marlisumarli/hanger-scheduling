@@ -59,4 +59,26 @@ class CategoryRepository
     {
         $this->connection->exec("DELETE FROM category");
     }
+
+    public function findAll(): array
+    {
+        $sql = "SELECT kode, name, created_at, updated_at FROM category";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+
+        $result = [];
+
+        $category = $statement->fetchAll();
+
+        foreach ($category as $row) {
+            $category = new Category();
+            $category->setKode($row['kode']);
+            $category->setName($row['name']);
+            $category->setCreatedAt($row['created_at']);
+            $category->setUpdatedAt($row['updated_at']);
+
+            $result[] = $category;
+        }
+        return $result;
+    }
 }

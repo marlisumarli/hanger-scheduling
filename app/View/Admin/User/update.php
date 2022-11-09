@@ -22,7 +22,7 @@
         <label for="role">Subjig</label>
     </div>
     <label>Password
-        <a href="/admin/user/update/password?username=<?= $model['username'] ?>">Password Update</a>
+        <a href="/admin/user-update-password?username=<?= $model['username'] ?>">Password Update</a>
     </label>
     <br>
     <button type="submit">submit</button>
@@ -31,6 +31,6 @@
 <?php if (isset($model['success'])) : ?>
     <script>
         alert('<?= $model["success"] ?>');
-        document.location.href = '/admin/user/update?username=<?= $model['username'] ?>';
+        document.location.href = '/admin/user-update?username=<?= $model['username'] ?>';
     </script>
 <?php endif; ?>

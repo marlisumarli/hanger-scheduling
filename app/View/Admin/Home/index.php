@@ -3,10 +3,11 @@
     <hr>
     <h1>Dashboard</h1>
     <ul>
-        <li><a href="">Supply</a></li>
+        <li><a href="/admin/supply">Supply</a></li>
         <li><a href="">Perbaikan</a></li>
         <li><a href="">Subjig Baru</a></li>
         <li><a href="">Laporan</a></li>
+        <li><a href="/admin/list-item">Daftar Subjig / Mainjig / Messboat</a></li>
     </ul>
     <br>
     <ul>

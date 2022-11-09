@@ -2,7 +2,7 @@
     <?= $model["error"] ?>
 <?php endif; ?>
 <h1>Update pasword <?= $model['username'] ?></h1>
-<form action="" method="post">
+<form method="post">
     <label>Password
         <input type="password" required name="password">
     </label>
@@ -18,6 +18,6 @@
 <?php if (isset($model['success'])) : ?>
     <script>
         alert('<?= $model["success"] ?>');
-        document.location.href = '/admin/user/update?username=<?= $model['username'] ?>';
+        document.location.href = '/admin/user-update?username=<?= $model['username'] ?>';
     </script>
 <?php endif; ?>

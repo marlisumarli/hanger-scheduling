@@ -17,8 +17,6 @@ class UserServiceTest extends TestCase
 
     public function testCreateUser()
     {
-        $this->userRepository = new UserRepository(Database::getConnection());
-
         $request = new UserFactory();
         $request->username = "marleess";
         $request->password = "123";
@@ -53,7 +51,7 @@ class UserServiceTest extends TestCase
 
         $request = new UserDeleteRequest();
         $request->username = "marleess";
-        $response = $this->userService->requestDeleteUser($request);
+        $this->userService->requestDeleteUser($request);
 
         $request = $this->userRepository->findByUsername($request->username);
 
@@ -67,7 +65,6 @@ class UserServiceTest extends TestCase
         $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
         $this->userDetailService = new UserDetailService($this->userDetailRepository);
 
-        $this->userDetailRepository->deleteAll();
         $this->userRepository->deleteAll();
     }
 }

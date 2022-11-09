@@ -50,6 +50,17 @@ class UserRoleRepository
         }
     }
 
+    public function deleteById(int $id): void
+    {
+        $statement = $this->connection->prepare("DELETE FROM user_roles WHERE id = ?");
+        $statement->execute([$id]);
+    }
+
+    public function deleteAll(): void
+    {
+        $this->connection->exec("DELETE FROM user_roles");
+    }
+
     public function findAll(): array
     {
         $sql = "SELECT id, name, created_at, updated_at FROM user_roles";
@@ -70,16 +81,5 @@ class UserRoleRepository
             $result[] = $role;
         }
         return $result;
-    }
-
-    public function deleteById(int $id): void
-    {
-        $statement = $this->connection->prepare("DELETE FROM user_roles WHERE id = ?");
-        $statement->execute([$id]);
-    }
-
-    public function deleteAll(): void
-    {
-        $this->connection->exec("DELETE FROM user_roles");
     }
 }

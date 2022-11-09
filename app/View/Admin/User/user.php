@@ -1,5 +1,5 @@
 <ul>
-    <li><a href="/admin/user/create">Create</a></li>
+    <li><a href="/admin/user-create">Create</a></li>
 </ul>
 <br>
 <legend>Admin</legend>
@@ -26,8 +26,8 @@
             <td><?= $value->getCreatedAt() ?></td>
             <td><?= $value->getUsrDetailUpdatedAt() ?></td>
             <td><?= $value->getUsrUpdatePasswordAt() ?></td>
-            <td><a href="/admin/user/update?username=<?= $value->getUsername() ?>">Edit</a>
-                <a href="/admin/user/delete?username=<?= $value->getUsername() ?>"
+            <td><a href="/admin/user-update?username=<?= $value->getUsername() ?>">Edit</a>
+                <a href="/admin/user-delete?username=<?= $value->getUsername() ?>"
                    onclick="return confirm('Ingin menghapus?');">Delete</a>
             </td>
         </tr>
@@ -59,8 +59,8 @@
             <td><?= $value->getCreatedAt() ?></td>
             <td><?= $value->getUsrDetailUpdatedAt() ?></td>
             <td><?= $value->getUsrUpdatePasswordAt() ?></td>
-            <td><a href="/admin/user/update?username=<?= $value->getUsername() ?>">Edit</a>
-                <a href="/admin/user/delete?username=<?= $value->getUsername() ?>"
+            <td><a href="/admin/user-update?username=<?= $value->getUsername() ?>">Edit</a>
+                <a href="/admin/user-delete?username=<?= $value->getUsername() ?>"
                    onclick="return confirm('Ingin menghapus?');">Delete</a>
             </td>
         </tr>

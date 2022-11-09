@@ -45,11 +45,6 @@ class AdminUserController
         $this->userRoleRepository = new UserRoleRepository(Database::getConnection());
     }
 
-    public function index()
-    {
-        View::redirect('/admin/dashboard');
-    }
-
     public function postCreate(): void
     {
         $request = new UserFactory();
@@ -210,14 +205,16 @@ class AdminUserController
 
     public function delete()
     {
-        $username = $_GET['username'];
+        if (isset($_GET['username'])) {
 
-        $request = new UserDeleteRequest();
-        $request->username = $username;
-        $this->userService->requestDeleteUser($request);
+            $username = $_GET['username'];
+            $request = new UserDeleteRequest();
+            $request->username = $username;
+            $this->userService->requestDeleteUser($request);
 
-        View::render('Admin/User/delete', [
-            'success' => '/admin/user'
-        ]);
+            View::render('Admin/User/delete', [
+                'success' => '/admin/user'
+            ]);
+        }
     }
 }

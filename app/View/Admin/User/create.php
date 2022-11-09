@@ -1,7 +1,7 @@
 <?php if (isset($model['error'])) : ?>
     <?= $model["error"] ?>
 <?php endif; ?>
-<form action="/admin/user/create" method="post">
+<form action="/admin/user-create" method="post">
     <label>Nama
         <input type="text" required name="name" value="">
     </label>
@@ -30,6 +30,6 @@
 <?php if (isset($model['success'])) : ?>
     <script>
         alert('<?= $model["success"] ?>');
-        document.location.href = '/admin/user/create';
+        document.location.href = '/admin/user-create';
     </script>
 <?php endif; ?>
