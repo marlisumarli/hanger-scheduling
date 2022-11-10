@@ -29,14 +29,14 @@
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($model['k2f'] as $key => $value) : ?>
+    <?php foreach ($model['k1a'] as $key => $value) : ?>
         <tr>
             <th scope="row"><?= $key + 1 ?></th>
             <td><?= $value->getK2fId() ?></td>
             <td><?= $value->getK2fName() ?></td>
             <td><?= $value->getK2fQty() ?></td>
-            <td><a href="/admin/list-item/subjig/k2f-update?id=<?= $value->getK2fId() ?>">Edit</a>
-                <a href="/admin/list-item/subjig/k2f-delete?id=<?= $value->getK2fId() ?>"
+            <td><a href="/admin/list-item/subjig/k1a-update?id=<?= $value->getK2fId() ?>">Edit</a>
+                <a href="/admin/list-item/subjig/k1a-delete?id=<?= $value->getK2fId() ?>"
                    onclick="return confirm('Ingin menghapus?');">Delete</a>
             </td>
         </tr>

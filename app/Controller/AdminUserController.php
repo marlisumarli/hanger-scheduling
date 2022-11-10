@@ -80,8 +80,8 @@ class AdminUserController
         View::render('Admin/User/update', [
             'title' => 'Admin | User Update',
             'role' => $this->userRoleRepository->findAll(),
-            'username' => $username,
-            'name' => $result->full_name,
+            'username' => $username ?? View::redirect('/'),
+            'name' => $result->full_name ?? View::redirect('/'),
             'roleId' => $result->role_id
         ]);
     }
@@ -94,36 +94,36 @@ class AdminUserController
         $requestUserDetail = new UserDetailUpdateRequest();
         $requestUserDetail->username = $username;
         $requestUserDetail->fullName = $_POST['name'];
-        $requestUserDetail->roleId = $_POST['roleId'];
+        $requestUserDetail->roleId = $_POST['roleId'] ?? View::redirect('/');
 
         try {
             $this->userDetailService->requestUpdateUserDetail($requestUserDetail);
             View::render('Admin/User/update', [
                 'title' => 'Admin | User Update',
                 'success' => 'Berhasil diubah',
-                'username' => $username,
-                'name' => $result->full_name,
-                'roleId' => $result->role_id
+                'username' => $username ?? '',
+                'name' => $result->full_name ?? '',
+                'roleId' => $result->role_id ?? ''
             ]);
 
         } catch (ValidationException $exception) {
             View::render('Admin/User/update', [
                 'title' => 'Admin | User Update',
                 'error' => $exception->getMessage(),
-                'username' => $username,
-                'name' => $result->full_name,
-                'roleId' => $result->role_id
+                'username' => $username ?? '',
+                'name' => $result->full_name ?? '',
+                'roleId' => $result->role_id ?? ''
             ]);
         }
     }
 
     public function updatePassword()
     {
-        $username = $_GET['username'];
+        $username = $_GET['username'] ?? View::redirect('/');
 
         View::render('Admin/User/update-password', [
             'title' => 'Admin | User Password',
-            'username' => $username,
+            'username' => $username ?? View::redirect('/'),
         ]);
     }
 
@@ -133,7 +133,7 @@ class AdminUserController
 
         $request = new UserUpdateRequest();
         $request->username = $username;
-        $request->password = $_POST['password'];
+        $request->password = $_POST['password'] ?? View::redirect('/');
         $request->repeatPassword = $_POST['repeatPassword'];
 
         try {
@@ -147,7 +147,7 @@ class AdminUserController
             View::render('Admin/User/update-password', [
                 'title' => 'Admin | User Password',
                 'error' => $exception->getMessage(),
-                'username' => $username,
+                'username' => $username ?? View::redirect('/'),
             ]);
         }
     }

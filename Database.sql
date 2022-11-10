@@ -920,4 +920,3 @@ create table user_details
             on update cascade on delete cascade
 );
 
-

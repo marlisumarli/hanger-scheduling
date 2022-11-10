@@ -6,6 +6,7 @@ use Subjig\Report\App\Router;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Controller\AdminHomeController;
 use Subjig\Report\Controller\AdminUserController;
+use Subjig\Report\Controller\CategoryController;
 use Subjig\Report\Controller\HomeController;
 use Subjig\Report\Controller\ListItemController;
 use Subjig\Report\Controller\SupplyController;
@@ -36,18 +37,37 @@ Router::get('GET', '/admin/user-update-password', AdminUserController::class, 'U
 Router::get('POST', '/admin/user-update-password', AdminUserController::class, 'postUpdatePassword', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
 Router::get('GET', '/admin/user-delete', AdminUserController::class, 'delete', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
 
+// Category
+Router::get('GET', '/admin/categories', CategoryController::class, 'index', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('POST', '/admin/categories', CategoryController::class, 'postCreate', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('GET', '/admin/categories-delete', CategoryController::class, 'delete', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('GET', '/admin/categories-update', CategoryController::class, 'update', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('GET', '/admin/categories-update-name-category', CategoryController::class, 'updateName', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('POST', '/admin/categories-update-name-category', CategoryController::class, 'postUpdateName', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('GET', '/admin/categories-update-id-category', CategoryController::class, 'updateId', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+Router::get('POST', '/admin/categories-update-id-category', CategoryController::class, 'postUpdateId', [MandatoryLoginMiddleware::class, IsAdminMiddleware::class]);
+
 // List Item
 Router::get('GET', '/admin/list-item', ListItemController::class, 'index', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/list-item/subjig', ListItemController::class, 'subjig', [MandatoryLoginMiddleware::class]);
+
+// K2F
 Router::get('GET', '/admin/list-item/subjig/k2f', ListItemController::class, 'k2f', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/list-item/subjig/k2f', ListItemController::class, 'postK2f', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'updateK2f', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'postUpdateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-delete', ListItemController::class, 'delete', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig/k2f-delete', ListItemController::class, 'deleteK2f', [MandatoryLoginMiddleware::class]);
+
+// K1A
+Router::get('GET', '/admin/list-item/subjig/k1a', ListItemController::class, 'k1a', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/list-item/subjig/k1a', ListItemController::class, 'postK1A', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig/k1a-update', ListItemController::class, 'updateK1a', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/list-item/subjig/k1a-update', ListItemController::class, 'postUpdateK1a', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig/k1a-delete', ListItemController::class, 'deleteK1a', [MandatoryLoginMiddleware::class]);
 
 // Supply
 Router::get('GET', '/admin/supply', SupplyController::class, 'index', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/k2f/2022/([0-9a-zA-Z|-]*)', SupplyController::class, 'supply', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/k2f', SupplyController::class, 'supply', [MandatoryLoginMiddleware::class]);
 
 // Guest
 Router::get('GET', '/', HomeController::class, 'index', []);

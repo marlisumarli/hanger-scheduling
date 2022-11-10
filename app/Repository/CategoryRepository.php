@@ -20,7 +20,7 @@ class CategoryRepository
         return $category;
     }
 
-    public function update(Category $category): Category
+    public function updateName(Category $category): Category
     {
         $statement = $this->connection
             ->prepare("UPDATE category SET category_name = ?, updated_at = CURRENT_TIMESTAMP WHERE  category_id = ?");
@@ -28,11 +28,23 @@ class CategoryRepository
         return $category;
     }
 
+    public function updateId(Category $category): Category
+    {
+        $statement = $this->connection
+            ->prepare("UPDATE category SET category_id = ?, updated_at = CURRENT_TIMESTAMP WHERE  category_id = ?");
+        $statement->execute([$category->new_category_id, $category->category_id]);
+        return $category;
+    }
+
     public function findById(string $id): ?Category
     {
         $statement = $this->connection->prepare("SELECT category_id, category_name, created_at, updated_at FROM category WHERE category_id = ?");
-        $statement->execute([$id]);
+        return $this->extracted($statement, $id);
+    }
 
+    public function extracted(bool|\PDOStatement $statement, string $name): ?Category
+    {
+        $statement->execute([$name]);
         try {
             if ($row = $statement->fetch()) {
                 $category = new Category();
@@ -47,6 +59,12 @@ class CategoryRepository
         } finally {
             $statement->closeCursor();
         }
+    }
+
+    public function findByName(string $name): ?Category
+    {
+        $statement = $this->connection->prepare("SELECT category_id, category_name, created_at, updated_at FROM category WHERE category_name = ?");
+        return $this->extracted($statement, $name);
     }
 
     public function deleteById(string $id): void
@@ -78,6 +96,7 @@ class CategoryRepository
             $category->setUpdatedAt($row['updated_at']);
 
             $result[] = $category;
+            asort($result);
         }
         return $result;
     }

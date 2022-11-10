@@ -5,6 +5,7 @@ namespace Subjig\Report\Entity;
 class Category
 {
     public string $category_id;
+    public string $new_category_id;
     public string $category_name;
     public string $created_at;
     public ?string $updated_at = null;

@@ -9,13 +9,13 @@
     <br>
     <legend>Bagian:</legend>
     <div>
-        <input type="radio" id="rolId" name="roleId" value="1"
+        <input type="radio" id="roleId" name="roleId" value="1"
             <?php
             if ($model['roleId'] == 1) {
                 echo "checked";
             } ?>>
         <label for="role">Admin</label>
-        <input type="radio" id="role" name="role" value="2"
+        <input type="radio" id="roleId" name="roleId" value="2"
             <?php if ($model['roleId'] == 2) {
                 echo "checked";
             } ?>>

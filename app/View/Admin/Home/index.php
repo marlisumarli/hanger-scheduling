@@ -13,6 +13,7 @@
     <ul>
         <?php if ($model['roleId'] == 1) : ?>
             <li><a href="/admin/user">User</a></li>
+            <li><a href="/admin/categories">Category</a></li>
         <?php endif; ?>
         <li><a href="/admin/user/logout">Logout</a></li>
     </ul>
