@@ -67,7 +67,10 @@ Router::get('GET', '/admin/list-item/subjig/k1a-delete', ListItemController::cla
 
 // Supply
 Router::get('GET', '/admin/supply', SupplyController::class, 'index', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/k2f', SupplyController::class, 'supply', [MandatoryLoginMiddleware::class]);
+
+// K2F Supply
+Router::get('GET', '/admin/supply/k2f', SupplyController::class, 'supplyK2f', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/supply/k2f', SupplyController::class, 'supplyK2f', [MandatoryLoginMiddleware::class]);
 
 // Guest
 Router::get('GET', '/', HomeController::class, 'index', []);

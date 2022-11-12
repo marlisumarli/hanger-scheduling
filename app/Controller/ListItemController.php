@@ -24,29 +24,33 @@ class ListItemController
 
     public function index()
     {
-        View::render('Admin/ListItem/index', [
+        $listItem = [
             'title' => 'Admin | Daftar Subjig'
-        ]);
+        ];
+        View::render('Admin/ListItem/index', compact('listItem'));
     }
 
     public function subjig()
     {
-        View::render('Admin/ListItem/Subjig/index', [
+        $listItem = [
             'title' => 'Admin | Daftar Subjig'
-        ]);
+        ];
+        View::render('Admin/ListItem/Subjig/index', compact('listItem'));
     }
 
 //    TODO K2F
     public function k2f()
     {
-        View::render('Admin/ListItem/Subjig/k2f', [
+        $listItem = [
             'title' => 'Admin | Subjig K2F',
-            'k2f' => $this->k2FRepository->findAll()
-        ]);
+            'allK2f' => $this->k2FRepository->findAll()
+        ];
+        View::render('Admin/ListItem/Subjig/k2f', compact('listItem'));
     }
 
     public function postK2f()
     {
+
         $id = $_POST['id'];
         $name = $_POST['name'];
         $qty = $_POST['qty'];
@@ -55,28 +59,32 @@ class ListItemController
         $k2f->id = $this->k2FRepository::TYPE . $id;
         $k2f->name = $name;
         $k2f->qty = $qty;
+
         try {
             $this->k2FService->requestCreate($k2f);
             View::redirect('/admin/list-item/subjig/k2f');
+
         } catch (ValidationException $exception) {
-            View::render('Admin/ListItem/Subjig/k2f', [
+            $listItem = [
                 'title' => 'Admin | K2F',
                 'error' => $exception->getMessage(),
-                'k2f' => $this->k2FRepository->findAll()
-            ]);
+                'allK2f' => $this->k2FRepository->findAll()
+            ];
+            View::render('Admin/ListItem/Subjig/k2f', compact('listItem'));
         }
     }
 
     public function updateK2f()
     {
         $result = $this->k2FRepository->findById($_GET['id']);
-        View::render('Admin/ListItem/Subjig/update', [
+        $listItem = [
             'title' => 'Admin | Update Subjig K2F',
             'type' => $this->k2FRepository::TYPE,
             'id' => $_GET['id'],
             'name' => $result->k2f_name,
             'qty' => $result->k2f_qty,
-        ]);
+        ];
+        View::render('Admin/ListItem/Subjig/update', compact('listItem'));
     }
 
     public function postUpdateK2f()
@@ -88,21 +96,25 @@ class ListItemController
         $k2f->id = $_GET['id'];
         $k2f->name = $name;
         $k2f->qty = $qty;
+
         try {
             $this->k2FService->requestUpdate($k2f);
-            View::render('Admin/ListItem/Subjig/update', [
+            $listItem = [
                 'title' => 'Admin | Update K2F',
                 'success' => "$k2f->id : Berhasil diubah",
                 'type' => $this->k2FRepository::TYPE,
                 'id' => $_GET['id'],
                 'name' => $k2f->name,
                 'qty' => $k2f->qty,
-            ]);
+            ];
+            View::render('Admin/ListItem/Subjig/update', compact('listItem'));
+
         } catch (ValidationException $exception) {
-            View::render('Admin/ListItem/Subjig/update', [
+            $listItem = [
                 'title' => 'Admin | Update K2F',
                 'error' => $exception->getMessage(),
-            ]);
+            ];
+            View::render('Admin/ListItem/Subjig/update', compact('listItem'));
         }
     }
 
@@ -115,9 +127,10 @@ class ListItemController
             $request->id = $id;
             $this->k2FService->requestDelete($request);
 
-            View::render('Admin/ListItem/Subjig/delete', [
+            $listItem = [
                 'success' => '/admin/list-item/subjig/k2f'
-            ]);
+            ];
+            View::render('Admin/ListItem/Subjig/delete', compact('listItem'));
         }
     }
 
