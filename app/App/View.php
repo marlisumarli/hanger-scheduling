@@ -2,16 +2,10 @@
 
 namespace Subjig\Report\App;
 
+use Jenssegers\Blade\Blade;
+
 class View
 {
-
-    public static function render(string $view, array $model = []): void
-    {
-        extract($model);
-        require __DIR__ . "/../View/Template/header.php";
-        require __DIR__ . "/../View/$view.php";
-        require __DIR__ . "/../View/Template/footer.php";
-    }
 
     public static function redirect(string $url): void
     {
@@ -21,4 +15,19 @@ class View
         }
     }
 
+    private static function returnView(string $view, array $model = [])
+    {
+        $blade = new Blade(__DIR__ . '/../View/', __DIR__ . '/../../storage/cache');
+        $file = __DIR__ . '/../View/' . $view . '.blade.php';
+
+        if (!file_exists($file)) {
+            throw new \Exception('View doesnt exist');
+        }
+        return $blade->render($view, $model);
+    }
+
+    public static function render(string $view, array $model = [])
+    {
+        echo self::returnView($view, $model);
+    }
 }
