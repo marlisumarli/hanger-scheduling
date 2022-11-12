@@ -59,16 +59,19 @@ class AdminUserController
         try {
             $this->userService->requestCreateUser($request);
             $this->userDetailService->requestCreateUserDetail($reqUserDetail);
-            View::render('Admin/User/create', [
+            $user = [
                 'title' => 'Admin | User Baru',
                 'success' => 'Berhasil dibuat',
-            ]);
+            ];
+            View::render('Admin/User/create', compact('user'));
+
         } catch (ValidationException $exception) {
-            View::render('Admin/User/create', [
+            $user = [
                 'title' => 'Admin | User Baru',
                 'error' => $exception->getMessage(),
-                'roleId' => $this->userRoleRepository->findAll()
-            ]);
+                'allRole' => $this->userRoleRepository->findAll()
+            ];
+            View::render('Admin/User/create', compact('user'));
         }
     }
 
@@ -77,13 +80,14 @@ class AdminUserController
         $username = $_GET['username'];
         $result = $this->userDetailRepository->findByUsername($username);
 
-        View::render('Admin/User/update', [
+        $user = [
             'title' => 'Admin | User Update',
-            'role' => $this->userRoleRepository->findAll(),
+            'allRole' => $this->userRoleRepository->findAll(),
             'username' => $username ?? View::redirect('/'),
-            'name' => $result->full_name ?? View::redirect('/'),
-            'roleId' => $result->role_id
-        ]);
+            'fullName' => $result->full_name ?? View::redirect('/'),
+            'userRole' => $result->role_id
+        ];
+        View::render('Admin/User/update', compact('user'));
     }
 
     public function postUpdateUserDetail()
@@ -98,33 +102,35 @@ class AdminUserController
 
         try {
             $this->userDetailService->requestUpdateUserDetail($requestUserDetail);
-            View::render('Admin/User/update', [
+            $user = [
                 'title' => 'Admin | User Update',
                 'success' => 'Berhasil diubah',
                 'username' => $username ?? '',
-                'name' => $result->full_name ?? '',
-                'roleId' => $result->role_id ?? ''
-            ]);
+                'fullName' => $result->full_name ?? '',
+                'userRole' => $result->role_id ?? ''
+            ];
+            View::render('Admin/User/update', compact('user'));
 
         } catch (ValidationException $exception) {
-            View::render('Admin/User/update', [
+            $user = [
                 'title' => 'Admin | User Update',
                 'error' => $exception->getMessage(),
                 'username' => $username ?? '',
-                'name' => $result->full_name ?? '',
-                'roleId' => $result->role_id ?? ''
-            ]);
+                'fullName' => $result->full_name ?? '',
+                'userRole' => $result->role_id ?? ''
+            ];
+            View::render('Admin/User/update', compact('user'));
         }
     }
 
     public function updatePassword()
     {
         $username = $_GET['username'] ?? View::redirect('/');
-
-        View::render('Admin/User/update-password', [
+        $user = [
             'title' => 'Admin | User Password',
             'username' => $username ?? View::redirect('/'),
-        ]);
+        ];
+        View::render('Admin/User/update-password', compact('user'));
     }
 
     public function postUpdatePassword()
@@ -138,20 +144,22 @@ class AdminUserController
 
         try {
             $this->userService->requestUpdateUser($request);
-            View::render('Admin/User/update-password', [
+            $user = [
                 'title' => 'Admin | User Password',
                 'success' => 'Password berhasil diubah',
                 'username' => $username,
-            ]);
+            ];
+            View::render('Admin/User/update-password', compact('user'));
+
         } catch (ValidationException $exception) {
-            View::render('Admin/User/update-password', [
+            $user = [
                 'title' => 'Admin | User Password',
                 'error' => $exception->getMessage(),
                 'username' => $username ?? View::redirect('/'),
-            ]);
+            ];
+            View::render('Admin/User/update-password', compact('user'));
         }
     }
-
 
     public function login()
     {
@@ -169,54 +177,55 @@ class AdminUserController
         try {
             $response = $this->userService->requestLogin($request);
             $this->sessionService->create($response->user->username);
-
             View::redirect('/admin/dashboard');
+
         } catch (ValidationException $exception) {
-            View::render('Admin/User/login', [
+            $user = [
                 'title' => 'Admin | Masuk',
                 'error' => $exception->getMessage()
-            ]);
+            ];
+            View::render('Admin/User/login', compact('user'));
         }
     }
 
     public function create(): void
     {
-        View::render('Admin/User/create', [
+        $user = [
             'title' => 'Admin | User Baru',
-            'roleId' => $this->userRoleRepository->findAll(),
-        ]);
+            'allRole' => $this->userRoleRepository->findAll(),
+        ];
+        View::render('Admin/User/create', compact('user'));
     }
 
     public function logout()
     {
         $this->sessionService->destroy();
-        View::redirect('/');
+        View::redirect('/admin');
     }
 
     public function userManagement()
     {
-        View::render('Admin/User/user', [
+        $user = [
             'title' => 'Admin | User',
-            'user' => [
-                'userData1' => $this->joinRepository->userData(1),
-                'userData2' => $this->joinRepository->userData(2),
-                'userRole' => $this->userRoleRepository->findAll(),
-            ],
-        ]);
+            'admin' => $this->joinRepository->userData(1),
+            'subjig' => $this->joinRepository->userData(2),
+            'userRole' => $this->userRoleRepository->findAll(),
+        ];
+        View::render('Admin/User/user', compact('user'));
     }
 
     public function delete()
     {
         if (isset($_GET['username'])) {
-
             $username = $_GET['username'];
             $request = new UserDeleteRequest();
             $request->username = $username;
             $this->userService->requestDeleteUser($request);
 
-            View::render('Admin/User/delete', [
+            $user = [
                 'success' => '/admin/user'
-            ]);
+            ];
+            View::render('Admin/User/delete', compact('user'));
         }
     }
 }

@@ -4,7 +4,6 @@ namespace Subjig\Report\Controller;
 
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Repository\JoinRepository;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
@@ -13,7 +12,6 @@ use Subjig\Report\Service\SessionService;
 class AdminHomeController
 {
     private SessionService $sessionService;
-    private JoinRepository $joinRepository;
     private UserDetailRepository $userDetailRepository;
 
     public function __construct()
@@ -24,25 +22,24 @@ class AdminHomeController
 
         $this->userDetailRepository = new UserDetailRepository($connection);
         $this->sessionService = new SessionService($sessionRepository, $userRepository);
-        $this->joinRepository = new JoinRepository(Database::getConnection());
     }
-
 
     public function index()
     {
-        $user = $this->sessionService->current()->username;
-        $userDetail = $this->userDetailRepository->findByUsername($user);
+        $username = $this->sessionService->current()->username;
+        $userDetail = $this->userDetailRepository->findByUsername($username);
 
-        View::render('Admin/Home/index', [
+        $user = [
             'title' => 'Admin | Dashboard',
-            'user' => $userDetail->getFullName(),
+            'fullName' => $userDetail->getFullName(),
             'roleId' => $userDetail->getRoleId(),
-            'userData2' => $this->joinRepository->userData(2),
-        ]);
+        ];
+        View::render('Admin/Home/index', compact('user'));
     }
 
     public function direct()
     {
         View::redirect('/admin/dashboard');
     }
+
 }

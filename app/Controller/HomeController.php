@@ -8,8 +8,9 @@ class HomeController
 {
     public function index(): void
     {
-        View::render('Home/index', [
+        $home = [
             'title' => 'Home'
-        ]);
+        ];
+        View::render('Home/index', compact('home'));
     }
 }
