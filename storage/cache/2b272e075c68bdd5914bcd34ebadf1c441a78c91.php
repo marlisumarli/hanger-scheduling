@@ -5,21 +5,18 @@
 
     <?php endif; ?>
 
-    <form method="post">
-        <div><span>Subjig K2F</span>
-            <label for="id">Id</label>
-            <input type="text" name="id" id="id" required>
-            <br>
-            <label for="name">Nama Subjig</label>
-            <input type="text" name="name" id="name" required>
-            <br>
-            <label for="qty">Qty</label>
-            <input type="number" name="qty" id="qty" min="1" required>
-            <br>
-            <hr>
-            <button type="submit">submit</button>
+    <span>Subjig K2F</span>
+    <br>
+    <button id="add">Tambah</button>
+    <button id="rm">Hapus</button>
+
+    <form action="" method="post">
+        <div id="data">
+
         </div>
+        <button type="submit">submit</button>
     </form>
+
 
     <table border="1">
         <thead>
@@ -47,4 +44,7 @@
         </tbody>
     </table>
 <?php $__env->stopSection(); ?>
+
+
+
 <?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/ListItem/Subjig/k2f.blade.php ENDPATH**/ ?>
