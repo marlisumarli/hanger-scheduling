@@ -38,7 +38,7 @@ class CategoryService
 
             $category = new Category();
             $category->category_id = strtoupper(trim($request->categoryId));
-            $category->category_name = ucwords(strtolower(trim($request->categoryName)));
+            $category->category_name = trim($request->categoryName);
             $this->categoryRepository->save($category);
 
             $response = new CategoryResponse();
@@ -75,7 +75,7 @@ class CategoryService
 
             $category = new Category();
             $category->category_id = $request->categoryId;
-            $category->category_name = ucwords(strtolower(trim($request->categoryName)));
+            $category->category_name = ucwords(trim($request->categoryName));
             $this->categoryRepository->updateName($category);
 
             $response = new CategoryResponse();
