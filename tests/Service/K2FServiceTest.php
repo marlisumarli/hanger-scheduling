@@ -5,7 +5,6 @@ namespace Subjig\Report\Service;
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Model\K2FCreateRequest;
-use Subjig\Report\Model\K2FDeleteRequest;
 use Subjig\Report\Model\K2FUpdateRequest;
 use Subjig\Report\Repository\K2FRepository;
 
@@ -49,15 +48,44 @@ class K2FServiceTest extends TestCase
     {
         $type = "K2F";
         $add = new K2FCreateRequest();
-        $add->code = $type . "SPDMTA";
+        $add->oId = 1;
+        $add->id = $type . "SPDMTA";
         $add->name = "Speedometer A";
         $add->qty = 4;
         $this->k2FService->requestCreate($add);
 
-        $request = new K2FDeleteRequest();
-        $request->code = "K2FSPDMTA";
-        $this->k2FService->requestDelete($request);
-        $result = $this->k2FRepository->findByCode($request->code);
+        $add = new K2FCreateRequest();
+        $add->oId = 2;
+        $add->id = $type . "SPDMTB";
+        $add->name = "Speedometer B";
+        $add->qty = 4;
+        $this->k2FService->requestCreate($add);
+
+        $add = new K2FCreateRequest();
+        $add->oId = 3;
+        $add->id = $type . "SPDMTC";
+        $add->name = "Speedometer C";
+        $add->qty = 4;
+        $this->k2FService->requestCreate($add);
+
+        $add = new K2FCreateRequest();
+        $add->oId = 4;
+        $add->id = $type . "SPDMTD";
+        $add->name = "Speedometer D";
+        $add->qty = 4;
+        $this->k2FService->requestCreate($add);
+
+        $request = new K2FUpdateRequest();
+        $request->id = "K2FSPDMTB";
+        $request->oId = 2;
+        $this->k2FService->requestUpdateOrder($request);
+        $request = new K2FUpdateRequest();
+        $request->id = "K2FSPDMTA";
+        $request->oId = 1;
+        $this->k2FService->requestUpdateOrder($request);
+
+        $result = $this->k2FRepository->findById($request->id);
+
 
         self::assertNull($result);
     }

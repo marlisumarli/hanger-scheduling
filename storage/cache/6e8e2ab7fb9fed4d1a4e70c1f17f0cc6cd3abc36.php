@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php $__currentLoopData = $user['admin']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $model['admin']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <th scope="row"><?= $key + 1 ?></th>
                 <td><?= $value->getUsername() ?></td>
@@ -53,7 +53,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php $__currentLoopData = $user['subjig']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $model['subjig']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <th scope="row"><?= $key + 1 ?></th>
                 <td><?= $value->getUsername() ?></td>

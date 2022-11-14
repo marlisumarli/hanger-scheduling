@@ -6,10 +6,8 @@ use Exception;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Entity\K2F;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\K2FCreateRequest;
-use Subjig\Report\Model\K2FDeleteRequest;
-use Subjig\Report\Model\K2FResponse;
-use Subjig\Report\Model\K2FUpdateRequest;
+use Subjig\Report\Model\K2FRequest;
+use Subjig\Report\Model\SubjigResponse;
 use Subjig\Report\Repository\K2FRepository;
 
 class K2FService
@@ -21,7 +19,7 @@ class K2FService
         $this->k2FRepository = $k2FRepository;
     }
 
-    public function requestCreate(K2FCreateRequest $request): K2FResponse
+    public function requestCreate(K2FRequest $request): SubjigResponse
     {
         $this->validateColumnCreateRequest($request);
         try {
@@ -36,12 +34,13 @@ class K2FService
             }
 
             $k2f = new K2F();
+            $k2f->id = count($this->k2FRepository->findAll()) + 1;
             $k2f->k2f_id = strtoupper(trim($request->id));
-            $k2f->k2f_name = ucwords(strtolower(trim($request->name)));
+            $k2f->k2f_name = ucwords(trim($request->name));
             $k2f->k2f_qty = $request->qty;
             $this->k2FRepository->save($k2f);
 
-            $response = new K2FResponse();
+            $response = new SubjigResponse();
             $response->k2F = $k2f;
 
             Database::commitTransaction();
@@ -53,7 +52,7 @@ class K2FService
         }
     }
 
-    private function validateColumnCreateRequest(K2FCreateRequest $request): void
+    private function validateColumnCreateRequest(K2FRequest $request): void
     {
         if ($request->id == null || $request->name == null || $request->qty == null ||
             trim($request->id) == '' || trim($request->name) == '' || trim($request->qty) == '') {
@@ -64,7 +63,7 @@ class K2FService
         }
     }
 
-    public function requestUpdate(K2FUpdateRequest $request): K2FResponse
+    public function requestUpdate(K2FRequest $request): SubjigResponse
     {
         $this->validateColumnUpdateRequest($request);
         try {
@@ -77,11 +76,11 @@ class K2FService
 
             $k2f = new K2F();
             $k2f->k2f_id = strtoupper(trim($request->id));
-            $k2f->k2f_name = ucwords(strtolower(trim($request->name)));
+            $k2f->k2f_name = ucwords(trim($request->name));
             $k2f->k2f_qty = $request->qty;
             $this->k2FRepository->update($k2f);
 
-            $response = new K2FResponse();
+            $response = new SubjigResponse();
             $response->k2F = $k2f;
 
             Database::commitTransaction();
@@ -93,7 +92,7 @@ class K2FService
         }
     }
 
-    private function validateColumnUpdateRequest(K2FUpdateRequest $request): void
+    private function validateColumnUpdateRequest(K2FRequest $request): void
     {
         if ($request->name == null || $request->qty == null || trim($request->name) == '' || trim($request->qty) == '') {
             throw new ValidationException('Kolom tidak boleh kosong');
@@ -102,18 +101,55 @@ class K2FService
         }
     }
 
-    public function requestDelete(K2FDeleteRequest $request): K2FResponse
+    public function requestUpdateOrder(K2FRequest $request): SubjigResponse
     {
-        $k2f = $this->k2FRepository->findById($request->id);
-        if ($k2f == null) {
-            throw new ValidationException('Hapus gagal');
-        } else {
-            $k2f = new  K2F();
-            $k2f->id = $request->id;
-            $this->k2FRepository->deleteById($k2f->id);
+        try {
+            Database::beginTransaction();
+
+            $k2f = new K2F();
+            $k2f->k2f_id = $request->id;
+            $k2f->id = $request->ordered;
+            $this->k2FRepository->updateOrder($k2f);
+
+            $response = new SubjigResponse();
+            $response->k2F = $k2f;
+
+            Database::commitTransaction();
+            return $response;
+
+        } catch (Exception $exception) {
+            Database::rollBackTransaction();
+            throw $exception;
         }
-        $response = new K2FResponse();
-        $response->k2F = $k2f;
-        return $response;
+    }
+
+    public function requestDelete(K2FRequest $request): SubjigResponse
+    {
+        try {
+            Database::beginTransaction();
+
+            $k2f = new  K2F();
+            $k2f->k2f_id = $request->id;
+            $this->k2FRepository->deleteById($k2f->k2f_id);
+
+            foreach ($this->k2FRepository->findAll() as $key => $value) {
+                $k2f = new K2F();
+                $k2f->k2f_id = $value->getK2fId();
+                $k2f->id = $key + 1;
+                $k2f->k2f_name = $value->getK2fName();
+                $k2f->k2f_qty = $value->getK2fQty();
+                $this->k2FRepository->update($k2f);
+            }
+
+            $response = new SubjigResponse();
+            $response->k2F = $k2f;
+
+            Database::commitTransaction();
+            return $response;
+
+        } catch (Exception $exception) {
+            Database::rollBackTransaction();
+            throw $exception;
+        }
     }
 }

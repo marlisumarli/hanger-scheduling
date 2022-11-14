@@ -1,8 +1,8 @@
 
 <?php $__env->startSection('content'); ?>
 
-    <?php if(isset($user['error'])): ?>
-        <?php echo e($user['error']); ?>
+    <?php if(isset($model['error'])): ?>
+        <?php echo e($model['error']); ?>
 
     <?php endif; ?>
 
@@ -32,10 +32,10 @@
         <button type="submit">submit</button>
         <a href="/admin/user">kembali</a>
     </form>
-  
-    <?php if(isset($user['success'])): ?>
+
+    <?php if(isset($model['success'])): ?>
         <script>
-            alert('<?php echo e($user['success']); ?>');
+            alert('<?php echo e($model['success']); ?>');
             document.location.href = '/admin/user-create';
         </script>
     <?php endif; ?>

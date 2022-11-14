@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content-login'); ?>
-    <?php if(isset($user['error'])): ?>
-        <?php echo e($user['error']); ?>
+    <?php if(isset($model['error'])): ?>
+        <?php echo e($model['error']); ?>
 
     <?php endif; ?>
     <form action="" method="post">

@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content'); ?>
-    <?php if(isset($category['error'])): ?>
-        <?php echo e($category['error']); ?>
+    <?php if(isset($model['error'])): ?>
+        <?php echo e($model['error']); ?>
 
     <?php endif; ?>
 
@@ -19,7 +19,7 @@
         </div>
     </form>
 
-    <?php $__currentLoopData = $category['allCategory']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php $__currentLoopData = $model['allCategory']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <div>
         <span>
         <?php echo e($key + 1); ?>

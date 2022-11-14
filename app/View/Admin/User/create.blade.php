@@ -1,8 +1,8 @@
 @extends('Admin/Layout.main')
 @section('content')
 
-    @if(isset($user['error']))
-        {{$user['error']}}
+    @if(isset($model['error']))
+        {{$model['error']}}
     @endif
 
     <form action="/admin/user-create" method="post">
@@ -31,10 +31,10 @@
         <button type="submit">submit</button>
         <a href="/admin/user">kembali</a>
     </form>
-  
-    @if(isset($user['success']))
+
+    @if(isset($model['success']))
         <script>
-            alert('{{$user['success']}}');
+            alert('{{$model['success']}}');
             document.location.href = '/admin/user-create';
         </script>
     @endif

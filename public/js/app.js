@@ -1,39 +1,3 @@
-let dataRow = 0
-$('#add').click(() => {
-    dataRow++
-    inputRow(dataRow)
-})
-inputRow = (i) => {
-    i += 1;
-    var tr = [`
-<div id="divId">
-<span>${i}.</span>
-<label for="id${i}">Id</label>
-<input type="text" name="id[]" id="id${i}" title="Tidak boleh mengandung angka" pattern="[A-Za-z]{1,}" required="required">
-<br>
-<label for="name${i}">Nama</label>
-<input type="text" name="name[]" id="name${i}" title="Tidak boleh mengandung angka" pattern="[A-Za-z]{1,}" required="required">
-<br>
-<label for="qty${i}">Quantity</label>
-<input type="number" name="qty[]" id="qty${i}" required="required">
-<hr>
-</div>`];
-
-    $('#data').append(tr)
-}
-
-$('#rm').click(() => {
-    let data = $('#data');
-    if (dataRow > 0) {
-        dataRow--
-    }
-    let lists = data.find('#divId');
-
-    if (lists.length) {
-        lists.last().remove();
-    }
-})
-
 // Validation form
 // $(function () {
 //     let fIdErr = $(".idErr");

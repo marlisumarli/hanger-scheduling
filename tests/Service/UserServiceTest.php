@@ -4,9 +4,9 @@ namespace Subjig\Report\Service;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Model\UserDeleteRequest;
-use Subjig\Report\Model\UserFactory;
-use Subjig\Report\Model\UserLoginRequest;
+use Subjig\Report\Model\User;
+use Subjig\Report\Model\UserDelete;
+use Subjig\Report\Model\UserLogin;
 use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 
@@ -17,7 +17,7 @@ class UserServiceTest extends TestCase
 
     public function testCreateUser()
     {
-        $request = new UserFactory();
+        $request = new User();
         $request->username = "marleess";
         $request->password = "123";
         $response = $this->userService->requestCreateUser($request);
@@ -28,12 +28,12 @@ class UserServiceTest extends TestCase
 
     public function testLogin()
     {
-        $request = new UserFactory();
+        $request = new User();
         $request->username = "marleess";
         $request->password = "123";
         $this->userService->requestCreateUser($request);
 
-        $request = new UserLoginRequest();
+        $request = new UserLogin();
         $request->username = "marleess";
         $request->password = "123";
         $response = $this->userService->requestLogin($request);
@@ -44,12 +44,12 @@ class UserServiceTest extends TestCase
 
     public function testDelete()
     {
-        $request = new UserFactory();
+        $request = new User();
         $request->username = "marleess";
         $request->password = "123";
         $this->userService->requestCreateUser($request);
 
-        $request = new UserDeleteRequest();
+        $request = new UserDelete();
         $request->username = "marleess";
         $this->userService->requestDeleteUser($request);
 

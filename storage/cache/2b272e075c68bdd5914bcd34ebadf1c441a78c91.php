@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content'); ?>
-    <?php if(isset($listItem['error'])): ?>
-        <?php echo e($listItem['error']); ?>
+    <?php if(isset($model['error'])): ?>
+        <?php echo e($model['error']); ?>
 
     <?php endif; ?>
 
@@ -15,12 +15,13 @@
             <div id="">
                 <span>1.</span>
                 <label for="id1">Id</label>
-                <input type="text" name="id[]" id="id1" title="Tidak boleh mengandung angka" pattern="[A-Za-z]{1,}"
+                <input type="text" name="id[]" id="id1" title="Tidak boleh mengandung angka atau spasi"
+                       pattern="[a-zA-Z]{1,}"
                        required="required">
                 <br>
                 <label for="name1">Nama</label>
                 <input type="text" name="name[]" id="name1" title="Tidak boleh mengandung angka"
-                       pattern="[A-Za-z]{1,}" required="required">
+                       pattern="[A-Za-z ]{1,}" required="required">
                 <br>
                 <label for="qty1">Quantity</label>
                 <input type="number" name="qty[]" id="qty1" required="required">
@@ -34,7 +35,7 @@
     <table border="1">
         <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col"><a href="/admin/list-item/subjig/k2f-update-order">#</a></th>
             <th scope="col">Id</th>
             <th scope="col">Nama</th>
             <th scope="col">Quantity</th>
@@ -42,9 +43,9 @@
         </tr>
         </thead>
         <tbody>
-        <?php $__currentLoopData = $listItem['allK2f']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $model['allK2f']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <th scope="row"><?php echo e($key + 1); ?></th>
+                <th scope="row"><?php echo e($value->getId()); ?></th>
                 <td><?php echo e($value->getK2fId()); ?></td>
                 <td><?php echo e($value->getK2fName()); ?></td>
                 <td><?php echo e($value->getK2fQty()); ?></td>

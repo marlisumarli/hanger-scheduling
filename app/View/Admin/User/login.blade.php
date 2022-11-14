@@ -1,7 +1,7 @@
 @extends('Admin/Layout/login')
 @section('content-login')
-    @if (isset($user['error']))
-        {{$user['error']}}
+    @if (isset($model['error']))
+        {{$model['error']}}
     @endif
     <form action="" method="post">
         <label for="username">Username</label>

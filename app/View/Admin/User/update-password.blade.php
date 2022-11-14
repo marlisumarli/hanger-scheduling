@@ -1,11 +1,11 @@
 @extends('Admin/Layout.main')
 @section('content')
 
-    @if(isset($user['error']))
-        {{$user['error']}}
+    @if(isset($model['error']))
+        {{$model['error']}}
     @endif
-    
-    <h1>Update password {{$user['username']}}</h1>
+
+    <h1>Update password {{$model['username']}}</h1>
     <form method="post">
         <label>Password
             <input type="password" required name="password">
@@ -20,10 +20,10 @@
         <a href="/admin/user">Kembali</a>
     </form>
 
-    @if(isset($user['success']))
+    @if(isset($model['success']))
         <script>
-            alert('{{$user['success']}}');
-            document.location.href = '/admin/user-update?username={{$user['username']}}';
+            alert('{{$model['success']}}');
+            document.location.href = '/admin/user-update?username={{$model['username']}}';
         </script>
     @endif
 @endsection

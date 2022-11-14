@@ -1,12 +1,12 @@
 
 <?php $__env->startSection('content'); ?>
 
-    <?php if(isset($user['error'])): ?>
-        <?php echo e($user['error']); ?>
+    <?php if(isset($model['error'])): ?>
+        <?php echo e($model['error']); ?>
 
     <?php endif; ?>
-    
-    <h1>Update password <?php echo e($user['username']); ?></h1>
+
+    <h1>Update password <?php echo e($model['username']); ?></h1>
     <form method="post">
         <label>Password
             <input type="password" required name="password">
@@ -21,10 +21,10 @@
         <a href="/admin/user">Kembali</a>
     </form>
 
-    <?php if(isset($user['success'])): ?>
+    <?php if(isset($model['success'])): ?>
         <script>
-            alert('<?php echo e($user['success']); ?>');
-            document.location.href = '/admin/user-update?username=<?php echo e($user['username']); ?>';
+            alert('<?php echo e($model['success']); ?>');
+            document.location.href = '/admin/user-update?username=<?php echo e($model['username']); ?>';
         </script>
     <?php endif; ?>
 <?php $__env->stopSection(); ?>

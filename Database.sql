@@ -193,7 +193,7 @@ alter table k1a
     add created_at datetime not null,
     add updated_at datetime null;
 
-alter table k2f
+alter table k2fs
     add created_at datetime not null,
     add updated_at datetime null;
 
@@ -920,3 +920,99 @@ create table user_details
             on update cascade on delete cascade
 );
 
+
+CREATE TABLE `ref_k2f`
+(
+    `ref_k2f_id`               varchar(55) NOT NULL,
+    `ref_name`                 varchar(11) NOT NULL,
+    `ref_k2f_speedometer_a`    int              DEFAULT NULL,
+    `ref_k2f_speedometer_b`    int              DEFAULT NULL,
+    `ref_k2f_ring_speedometer` int              DEFAULT NULL,
+    `ref_k2f_front_r`          int              DEFAULT NULL,
+    `ref_k2f_front_l`          int              DEFAULT NULL,
+    `ref_k2f_front_top`        int              DEFAULT NULL,
+    `ref_k2f_fender`           int              DEFAULT NULL,
+    `ref_k2f_under_rl`         int              DEFAULT NULL,
+    `ref_k2f_lid_pocket`       int              DEFAULT NULL,
+    `ref_k2f_body_rl`          int              DEFAULT NULL,
+    `ref_k2f_center_upper`     int              DEFAULT NULL,
+    `ref_k2f_rr_center`        int              DEFAULT NULL,
+    `ref_k2f_center`           int              DEFAULT NULL,
+    `ref_k2f_inner_upper`      int              DEFAULT NULL,
+    `ref_k2f_inner`            int              DEFAULT NULL,
+    `date_come`                date             DEFAULT NULL,
+    `updated_at`               timestamp   NULL DEFAULT NULL,
+    PRIMARY KEY (`ref_k2f_id`),
+    KEY `ref_k2f_txK2f_null_fk` (`ref_k2f_id`),
+    CONSTRAINT `ref_k2f_category_null_fk` FOREIGN KEY (`ref_k2f_id`) REFERENCES `tx_k2f` (`tx_k2f_id`) ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+SELECT usr.username,
+       usr_d.full_name,
+       usr_r.name,
+       usr.created_at,
+       usr_d.updated_at,
+       usr.update_password_at,
+       usr.password
+FROM user_details as usr_d
+         INNER JOIN users as usr ON usr.username = usr_d.credential
+         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
+WHERE usr_r.id = 2;
+
+
+CREATE TABLE supply
+(
+    supply_id   varchar(11) NOT NULL,
+    supply_date date        NOT NULL,
+    PRIMARY KEY (supply_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE line
+(
+    id            INT PRIMARY KEY AUTO_INCREMENT,
+    supply_id     varchar(11) NOT NULL,
+    subjig_id     varchar(11) NULL,
+    jumlah_line_a integer     NULL,
+    jumlah_line_b integer     NULL,
+    jumlah_line_c integer     NULL,
+    total         integer     NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+SELECT usr.username,
+       usr_d.full_name,
+       usr_r.name,
+       usr.created_at,
+       usr_d.updated_at,
+       usr.update_password_at,
+       usr.password
+FROM user_details as usr_d
+         INNER JOIN users as usr ON usr.username = usr_d.credential
+         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
+WHERE usr_r.id = 2;
+
+SELECT supply.supply_date,
+       k2f.id,
+       k2f.k2f_name,
+       line.jumlah_line_a,
+       line.jumlah_line_b,
+       line.jumlah_line_c,
+       line.total
+FROM supplies supply
+         INNER JOIN supply_lines line ON line.supply_id = supply.supply_id
+         INNER JOIN k2fs k2f on line.subjig_id = k2f.k2f_id
+WHERE supply.supply_id = '20221115K2F';
+
+CREATE TABLE periode
+(
+    supply_id   varchar(11) NOT NULL,
+    supply_date date        NOT NULL,
+    PRIMARY KEY (supply_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;

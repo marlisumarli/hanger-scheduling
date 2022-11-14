@@ -29,12 +29,12 @@ class AdminHomeController
         $username = $this->sessionService->current()->username;
         $userDetail = $this->userDetailRepository->findByUsername($username);
 
-        $user = [
+        $model = [
             'title' => 'Admin | Dashboard',
             'fullName' => $userDetail->getFullName(),
             'roleId' => $userDetail->getRoleId(),
         ];
-        View::render('Admin/Home/index', compact('user'));
+        View::render('Admin/Home/index', compact('model'));
     }
 
     public function direct()

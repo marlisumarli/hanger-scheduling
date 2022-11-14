@@ -4,9 +4,27 @@ namespace Subjig\Report\Entity;
 
 class K2F
 {
+    public int $id;
     public string $k2f_id;
     public string $k2f_name;
     public int $k2f_qty;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
 
     /**
      * @return string

@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($user['admin'] as $key => $value)
+        @foreach($model['admin'] as $key => $value)
             <tr>
                 <th scope="row"><?= $key + 1 ?></th>
                 <td><?= $value->getUsername() ?></td>
@@ -53,7 +53,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($user['subjig'] as $key => $value)
+        @foreach($model['subjig'] as $key => $value)
             <tr>
                 <th scope="row"><?= $key + 1 ?></th>
                 <td><?= $value->getUsername() ?></td>

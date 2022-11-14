@@ -7,8 +7,8 @@ use Subjig\Report\Config\Database;
 use Subjig\Report\Entity\User;
 use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\Model\UserDeleteRequest;
-use Subjig\Report\Model\UserFactory;
 use Subjig\Report\Model\UserLoginRequest;
+use Subjig\Report\Model\UserRequest;
 use Subjig\Report\Model\UserResponse;
 use Subjig\Report\Model\UserUpdateRequest;
 use Subjig\Report\Repository\UserRepository;
@@ -22,7 +22,7 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function requestCreateUser(UserFactory $request): UserResponse
+    public function requestCreateUser(UserRequest $request): UserResponse
     {
         $this->validateColumnCreateRequest($request);
         try {
@@ -52,7 +52,7 @@ class UserService
 
 //    TODO validation timeout login
 
-    private function validateColumnCreateRequest(UserFactory $request): void
+    private function validateColumnCreateRequest(UserRequest $request): void
     {
         if ($request->username == null || $request->password == null ||
             trim($request->username) == '' || trim($request->password) == '') {
@@ -62,7 +62,7 @@ class UserService
         }
     }
 
-    public function requestLogin(UserLoginRequest $userLoginRequest): UserResponse
+    public function requestLogin(UserRequest $userLoginRequest): UserResponse
     {
         $user = $this->userRepository->findByUsername($userLoginRequest->username);
 
@@ -78,7 +78,7 @@ class UserService
         }
     }
 
-    public function requestUpdateUser(UserUpdateRequest $request): UserResponse
+    public function requestUpdateUser(UserRequest $request): UserResponse
     {
         try {
             Database::beginTransaction();
@@ -104,7 +104,7 @@ class UserService
         }
     }
 
-    public function requestDeleteUser(UserDeleteRequest $request): UserResponse
+    public function requestDeleteUser(UserRequest $request): UserResponse
     {
         $user = $this->userRepository->findByUsername($request->username);
         if ($user == null) {
