@@ -920,3 +920,109 @@ create table user_details
             on update cascade on delete cascade
 );
 
+
+CREATE TABLE `ref_k2f`
+(
+    `ref_k2f_id`               varchar(55) NOT NULL,
+    `ref_name`                 varchar(11) NOT NULL,
+    `ref_k2f_speedometer_a`    int              DEFAULT NULL,
+    `ref_k2f_speedometer_b`    int              DEFAULT NULL,
+    `ref_k2f_ring_speedometer` int              DEFAULT NULL,
+    `ref_k2f_front_r`          int              DEFAULT NULL,
+    `ref_k2f_front_l`          int              DEFAULT NULL,
+    `ref_k2f_front_top`        int              DEFAULT NULL,
+    `ref_k2f_fender`           int              DEFAULT NULL,
+    `ref_k2f_under_rl`         int              DEFAULT NULL,
+    `ref_k2f_lid_pocket`       int              DEFAULT NULL,
+    `ref_k2f_body_rl`          int              DEFAULT NULL,
+    `ref_k2f_center_upper`     int              DEFAULT NULL,
+    `ref_k2f_rr_center`        int              DEFAULT NULL,
+    `ref_k2f_center`           int              DEFAULT NULL,
+    `ref_k2f_inner_upper`      int              DEFAULT NULL,
+    `ref_k2f_inner`            int              DEFAULT NULL,
+    `date_come`                date             DEFAULT NULL,
+    `updated_at`               timestamp   NULL DEFAULT NULL,
+    PRIMARY KEY (`ref_k2f_id`),
+    KEY `ref_k2f_txK2f_null_fk` (`ref_k2f_id`),
+    CONSTRAINT `ref_k2f_category_null_fk` FOREIGN KEY (`ref_k2f_id`) REFERENCES `tx_k2f` (`tx_k2f_id`) ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci
+
+
+
+
+
+CREATE DATABASE kkn;
+
+CREATE TABLE kecamatan
+(
+    kecamatan_id   VARCHAR(55) NOT NULL,
+    kecamatan_nama VARCHAR(55) NOT NULL,
+    PRIMARY KEY (kecamatan_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE desa
+(
+    desa_id      VARCHAR(55) NOT NULL,
+    desa_nama    VARCHAR(55) NOT NULL,
+    kecamatan_id VARCHAR(55) NOT NULL,
+    PRIMARY KEY (desa_id),
+    KEY desa_kecamatan_fk (kecamatan_id),
+    CONSTRAINT desa_kecamatan_fk FOREIGN KEY (kecamatan_id)
+        REFERENCES kecamatan (kecamatan_id)
+        ON UPDATE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE prodi(
+                      prodi_id VARCHAR(55) NOT NULL ,
+                      prodi_nama VARCHAR(55) NOT NULL,
+
+                      PRIMARY KEY (prodi_id)
+)ENGINE = InnoDB
+ DEFAULT CHARSET = utf8mb4
+ COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE mahasiswa(
+                          nim VARCHAR(55) NOT NULL ,
+                          mhs_nama VARCHAR(55) NOT NULL,
+                          prodi_id VARCHAR(55) NOT NULL,
+                          tahun_angkatan YEAR NOT NULL,
+                          PRIMARY KEY (nim),
+                          KEY mahasiswa_prodi_fk (prodi_id),
+                          CONSTRAINT mahasiswa_prodi_fk FOREIGN KEY (prodi_id) REFERENCES prodi (prodi_id)
+                              ON UPDATE RESTRICT
+
+)ENGINE = InnoDB
+ DEFAULT CHARSET = utf8mb4
+ COLLATE = utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE nilai(
+                      id VARCHAR(55) NOT NULL ,
+                      nim VARCHAR(55) NOT NULL,
+                      desa_id VARCHAR(55) NOT NULL,
+                      nilai INTEGER(3),
+                      PRIMARY KEY (id),
+                      KEY nilai_mahasiswa_fk (nim),
+                      CONSTRAINT nilai_mahasiswa_fk FOREIGN KEY (nim) REFERENCES mahasiswa (nim)
+                          ON UPDATE RESTRICT ON DELETE NO ACTION
+)ENGINE = InnoDB
+ DEFAULT CHARSET = utf8mb4
+ COLLATE = utf8mb4_0900_ai_ci;
+
+
+INSERT INTO kecamatan(kecamatan_id, kecamatan_nama) VALUE ('KC001', 'Purwasari');
+INSERT INTO desa(desa_id, desa_nama, kecamatan_id) VALUE ('DS001', 'Trully', 'KC001');
+INSERT INTO prodi(prodi_id, prodi_nama) VALUE ('IF', 'Informatika');
+INSERT INTO mahasiswa(nim, mhs_nama, prodi_id, tahun_angkatan) VALUE ('21416255201201', 'Sumarli','IF', '2021');
+INSERT INTO nilai(id, nim, desa_id, nilai) VALUE ('001', '21416255201201','DS001', 85);
+
+
+SELECT mhs.mhs_nama, mhs.nim, n.nilai, d.desa_nama FROM mahasiswa mhs
+                                                            INNER JOIN nilai n on mhs.nim = n.nim
+                                                            INNER JOIN desa d on n.desa_id = d.desa_id
