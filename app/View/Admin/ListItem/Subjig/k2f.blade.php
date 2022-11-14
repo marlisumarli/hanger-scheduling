@@ -1,7 +1,7 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @if (isset($category['error']))
-        {{$category['error']}}
+    @if (isset($listItem['error']))
+        {{$listItem['error']}}
     @endif
 
     <span>Subjig K2F</span>
@@ -9,9 +9,22 @@
     <button id="add">Tambah</button>
     <button id="rm">Hapus</button>
 
-    <form action="" method="post">
+    <form action="/admin/list-item/subjig/k2f" method="post" id="forms">
         <div id="data">
-
+            <div id="">
+                <span>1.</span>
+                <label for="id1">Id</label>
+                <input type="text" name="id[]" id="id1" title="Tidak boleh mengandung angka" pattern="[A-Za-z]{1,}"
+                       required="required">
+                <br>
+                <label for="name1">Nama</label>
+                <input type="text" name="name[]" id="name1" title="Tidak boleh mengandung angka"
+                       pattern="[A-Za-z]{1,}" required="required">
+                <br>
+                <label for="qty1">Quantity</label>
+                <input type="number" name="qty[]" id="qty1" required="required">
+                <hr>
+            </div>
         </div>
         <button type="submit">submit</button>
     </form>

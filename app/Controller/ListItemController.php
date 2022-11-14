@@ -51,17 +51,18 @@ class ListItemController
     public function postK2f()
     {
 
-        $id = $_POST['id'];
-        $name = $_POST['name'];
-        $qty = $_POST['qty'];
-
-        $k2f = new K2FCreateRequest();
-        $k2f->id = $this->k2FRepository::TYPE . $id;
-        $k2f->name = $name;
-        $k2f->qty = $qty;
-
         try {
-            $this->k2FService->requestCreate($k2f);
+            for ($i = 0; $i < count($_POST['id']); $i++) {
+                $id = $_POST['id'][ $i ];
+                $name = $_POST['name'][ $i ];
+                $qty = $_POST['qty'][ $i ];
+
+                $k2f = new K2FCreateRequest();
+                $k2f->id = $this->k2FRepository::TYPE . $id;
+                $k2f->name = $name;
+                $k2f->qty = $qty;
+                $this->k2FService->requestCreate($k2f);
+            }
             View::redirect('/admin/list-item/subjig/k2f');
 
         } catch (ValidationException $exception) {
@@ -89,11 +90,12 @@ class ListItemController
 
     public function postUpdateK2f()
     {
+        $id = $_GET['id'];
         $name = $_POST['name'];
         $qty = $_POST['qty'];
 
         $k2f = new K2FUpdateRequest();
-        $k2f->id = $_GET['id'];
+        $k2f->id = $id;
         $k2f->name = $name;
         $k2f->qty = $qty;
 
@@ -103,7 +105,7 @@ class ListItemController
                 'title' => 'Admin | Update K2F',
                 'success' => "$k2f->id : Berhasil diubah",
                 'type' => $this->k2FRepository::TYPE,
-                'id' => $_GET['id'],
+                'id' => $k2f->id,
                 'name' => $k2f->name,
                 'qty' => $k2f->qty,
             ];
@@ -113,6 +115,10 @@ class ListItemController
             $listItem = [
                 'title' => 'Admin | Update K2F',
                 'error' => $exception->getMessage(),
+                'type' => $this->k2FRepository::TYPE,
+                'id' => $k2f->id,
+                'name' => $k2f->name,
+                'qty' => $k2f->qty,
             ];
             View::render('Admin/ListItem/Subjig/update', compact('listItem'));
         }

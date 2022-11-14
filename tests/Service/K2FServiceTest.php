@@ -17,19 +17,14 @@ class K2FServiceTest extends TestCase
     public function testCreateK2F()
     {
         $request = new K2FCreateRequest();
-        $request->id = $type . "SPDMTA";
+        $request->id = "SPDMTA";
         $request->name = "Speedometer A";
-        $request->qty = 4;
+        $request->qty = 4;;
         $response = $this->k2FService->requestCreate($request);
-        $request = new K2FCreateRequest();
-        $request->id = $type . "SPDMTB";
-        $request->name = "Speedometer A";
-        $request->qty = 4;
-        $response = $this->k2FService->requestCreate($request);
-        $result = $this->k2FRepository->findByCode($request->code);
-        self::assertEquals($request->code, $response->k2F->code);
-        self::assertEquals($request->name, $response->k2F->name);
-        self::assertNotNull($result->code);
+        $result = $this->k2FRepository->findById($request->id);
+        self::assertEquals($request->id, $response->k2F->k2f_id);
+        self::assertEquals($request->name, $response->k2F->k2f_name);
+        self::assertNotNull($result->k2f_id);
     }
 
     public function testLogin()
@@ -66,6 +61,7 @@ class K2FServiceTest extends TestCase
 
         self::assertNull($result);
     }
+
 // TODO belum
     protected function setUp(): void
     {

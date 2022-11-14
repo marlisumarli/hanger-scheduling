@@ -1,17 +1,10 @@
 
 <?php $__env->startSection('content'); ?>
-    <?php if(isset($category['error'])): ?>
-        <?php echo e($category['error']); ?>
+    <?php if(isset($listItem['error'])): ?>
+        <?php echo e($listItem['error']); ?>
 
     <?php endif; ?>
-
-    <?php if(isset($listItem['success'])): ?>
-        <script>
-            document.location.href = '/admin/list-item/subjig/<?php echo e($listItem["type"]); ?>';
-            alert('<?php echo e($listItem["success"]); ?>');
-        </script>
-    <?php endif; ?>
-    <form method="post">
+    <form action="" method="post">
         <div><span>Edit Subjig <?php echo e($listItem["id"]); ?></span>
             <br>
             <label for="name">Nama Subjig</label>
@@ -24,5 +17,11 @@
             <a href="/admin/list-item/subjig/<?php echo e($listItem["type"]); ?>">kembali</a>
         </div>
     </form>
+    <?php if(isset($listItem['success'])): ?>
+        <script>
+            document.location.href = '/admin/list-item/subjig/<?php echo e($listItem["type"]); ?>';
+            alert('<?php echo e($listItem["success"]); ?>');
+        </script>
+    <?php endif; ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/ListItem/Subjig/update.blade.php ENDPATH**/ ?>

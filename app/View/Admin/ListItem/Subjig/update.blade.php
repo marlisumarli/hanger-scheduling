@@ -1,16 +1,9 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @if (isset($category['error']))
-        {{$category['error']}}
+    @if (isset($listItem['error']))
+        {{$listItem['error']}}
     @endif
-
-    @if (isset($listItem['success']))
-        <script>
-            document.location.href = '/admin/list-item/subjig/{{$listItem["type"]}}';
-            alert('{{$listItem["success"]}}');
-        </script>
-    @endif
-    <form method="post">
+    <form action="" method="post">
         <div><span>Edit Subjig {{$listItem["id"]}}</span>
             <br>
             <label for="name">Nama Subjig</label>
@@ -23,4 +16,10 @@
             <a href="/admin/list-item/subjig/{{$listItem["type"]}}">kembali</a>
         </div>
     </form>
+    @if (isset($listItem['success']))
+        <script>
+            document.location.href = '/admin/list-item/subjig/{{$listItem["type"]}}';
+            alert('{{$listItem["success"]}}');
+        </script>
+    @endif
 @endsection
