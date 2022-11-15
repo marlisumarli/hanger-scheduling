@@ -24,8 +24,8 @@ class LineRepository
     public function update(Line $line): Line
     {
         $statement = $this->connection
-            ->prepare("UPDATE supply_lines SET supply_id = ?, subjig_id = ?, jumlah_line_a = ?, jumlah_line_b = ?, jumlah_line_c = ?, total = ?  WHERE  id = ?");
-        $statement->execute([$line->supply_id, $line->subjig_id, $line->jumlah_line_a, $line->jumlah_line_b, $line->jumlah_line_c, $line->total]);
+            ->prepare("UPDATE supply_lines SET jumlah_line_a = ?, jumlah_line_b = ?, jumlah_line_c = ?, total = ?  WHERE  id = ?");
+        $statement->execute([$line->jumlah_line_a, $line->jumlah_line_b, $line->jumlah_line_c, $line->total, $line->id]);
         return $line;
     }
 

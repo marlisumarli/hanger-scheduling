@@ -2,23 +2,23 @@
 
 namespace Subjig\Report\Repository;
 
+use PDO;
 use Subjig\Report\Entity\K2F;
 
 class K2FRepository
 {
     const TYPE = 'K2F';
 
-    private \PDO $connection;
+    private PDO $connection;
 
-    public function __construct(\PDO $connection)
+    public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
 
-// TODO buat tabel nama sujignya
     public function save(K2F $k2f): K2F
     {
-        $statement = $this->connection->prepare("INSERT INTO k2fs(id, k2f_id, k2f_name, k2f_qty) VALUES (?,?,?,?)");
+        $statement = $this->connection->prepare("INSERT INTO k2fs(id, k2f_id, k2f_name, k2f_qty, k2f_target) VALUES (?,?,?,?, 0)");
         $statement->execute([$k2f->id, $k2f->k2f_id, $k2f->k2f_name, $k2f->k2f_qty]);
         return $k2f;
     }
@@ -26,8 +26,8 @@ class K2FRepository
     public function update(K2F $k2f): K2F
     {
         $statement = $this->connection
-            ->prepare("UPDATE k2fs SET id = ?, k2f_name = ?, k2f_qty = ? WHERE  k2f_id = ?");
-        $statement->execute([$k2f->id, $k2f->k2f_name, $k2f->k2f_qty, $k2f->k2f_id]);
+            ->prepare("UPDATE k2fs SET k2f_name = ?, k2f_qty = ?  WHERE  k2f_id = ?");
+        $statement->execute([$k2f->k2f_name, $k2f->k2f_qty, $k2f->k2f_id]);
         return $k2f;
     }
 
@@ -41,7 +41,7 @@ class K2FRepository
 
     public function findById(string $id): ?K2F
     {
-        $statement = $this->connection->prepare("SELECT k2f_id, k2f_name, k2f_qty FROM k2fs WHERE k2f_id = ?");
+        $statement = $this->connection->prepare("SELECT k2f_id, k2f_name, k2f_qty, k2f_target FROM k2fs WHERE k2f_id = ?");
         $statement->execute([$id]);
 
         try {
@@ -50,24 +50,7 @@ class K2FRepository
                 $category->k2f_id = $row['k2f_id'];
                 $category->k2f_name = $row['k2f_name'];
                 $category->k2f_qty = $row['k2f_qty'];
-                return $category;
-            } else {
-                return null;
-            }
-        } finally {
-            $statement->closeCursor();
-        }
-    }
-
-    public function findByOId(string $oId): ?K2F
-    {
-        $statement = $this->connection->prepare("SELECT id FROM k2fs WHERE id = ?");
-        $statement->execute([$oId]);
-
-        try {
-            if ($row = $statement->fetch()) {
-                $category = new K2F();
-                $category->k2f_id = $row['k2f_id'];
+                $category->k2f_target = $row['k2f_target'];
                 return $category;
             } else {
                 return null;
@@ -103,7 +86,7 @@ class K2FRepository
 
     public function findAll(): array
     {
-        $sql = "SELECT id, k2f_id, k2f_name, k2f_qty FROM k2fs ORDER BY id";
+        $sql = "SELECT id, k2f_id, k2f_name, k2f_qty, k2f_target FROM k2fs ORDER BY id";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
 
@@ -117,6 +100,7 @@ class K2FRepository
             $data->setK2fId($row['k2f_id']);
             $data->setK2fName($row['k2f_name']);
             $data->setK2fQty($row['k2f_qty']);
+            $data->setK2fTarget($row['k2f_target']);
 
             $result[] = $data;
         }
@@ -126,5 +110,13 @@ class K2FRepository
     public function deleteAll(): void
     {
         $this->connection->exec("DELETE FROM k2fs");
+    }
+
+    public function updateTarget(K2F $k2f): K2F
+    {
+        $statement = $this->connection
+            ->prepare("UPDATE k2fs SET k2f_target = ? WHERE  k2f_id = ?");
+        $statement->execute([$k2f->k2f_target, $k2f->k2f_id]);
+        return $k2f;
     }
 }

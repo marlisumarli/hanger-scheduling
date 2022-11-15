@@ -6,11 +6,8 @@ use Exception;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Entity\User;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\UserDeleteRequest;
-use Subjig\Report\Model\UserLoginRequest;
 use Subjig\Report\Model\UserRequest;
 use Subjig\Report\Model\UserResponse;
-use Subjig\Report\Model\UserUpdateRequest;
 use Subjig\Report\Repository\UserRepository;
 
 class UserService

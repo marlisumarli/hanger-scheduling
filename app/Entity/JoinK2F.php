@@ -7,6 +7,9 @@ class JoinK2F
     public string $supply_date;
     public string $id;
     public string $k2f_name;
+    public string $k2f_qty;
+    public string $k2f_target;
+    public ?string $jumlah_id = null;
     public ?string $jumlah_line_a = null;
     public ?string $jumlah_line_b = null;
     public ?string $jumlah_line_c = null;
@@ -122,6 +125,54 @@ class JoinK2F
     public function setTotal(string $total): void
     {
         $this->total = $total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getK2fTarget(): string
+    {
+        return $this->k2f_target;
+    }
+
+    /**
+     * @param string $k2f_target
+     */
+    public function setK2fTarget(string $k2f_target): void
+    {
+        $this->k2f_target = $k2f_target;
+    }
+
+    /**
+     * @return string
+     */
+    public function getK2fQty(): string
+    {
+        return $this->k2f_qty;
+    }
+
+    /**
+     * @param string $k2f_qty
+     */
+    public function setK2fQty(string $k2f_qty): void
+    {
+        $this->k2f_qty = $k2f_qty;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getJumlahId(): ?string
+    {
+        return $this->jumlah_id;
+    }
+
+    /**
+     * @param string|null $jumlah_id
+     */
+    public function setJumlahId(?string $jumlah_id): void
+    {
+        $this->jumlah_id = $jumlah_id;
     }
 
 

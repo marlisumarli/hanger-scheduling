@@ -6,6 +6,7 @@ class K2F
 {
     public int $id;
     public string $k2f_id;
+    public int $k2f_target;
     public string $k2f_name;
     public int $k2f_qty;
 
@@ -72,6 +73,22 @@ class K2F
     public function setK2fQty(int $k2f_qty): void
     {
         $this->k2f_qty = $k2f_qty;
+    }
+
+    /**
+     * @return int
+     */
+    public function getK2fTarget(): int
+    {
+        return $this->k2f_target;
+    }
+
+    /**
+     * @param int $k2f_target
+     */
+    public function setK2fTarget(int $k2f_target): void
+    {
+        $this->k2f_target = $k2f_target;
     }
 
 }

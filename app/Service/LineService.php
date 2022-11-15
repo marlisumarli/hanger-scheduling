@@ -42,4 +42,28 @@ class LineService
             throw $exception;
         }
     }
+
+    public function requestUpdate(SupplyRequest $request): SupplyResponse
+    {
+        try {
+            Database::beginTransaction();
+
+            $line = new Line();
+            $line->id = $request->id;
+            $line->jumlah_line_a = $request->jumlahLineA;
+            $line->jumlah_line_b = $request->jumlahLineB;
+            $line->jumlah_line_c = $request->jumlahLineC;
+            $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
+            $this->lineRepository->update($line);
+
+            $response = new SupplyResponse();
+            $response->line = $line;
+
+            Database::commitTransaction();
+            return $response;
+        } catch (Exception $exception) {
+            Database::rollBackTransaction();
+            throw $exception;
+        }
+    }
 }

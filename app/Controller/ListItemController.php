@@ -101,7 +101,7 @@ class ListItemController
             $model = [
                 'title' => 'Admin | Update K2F',
                 'success' => "$k2f->id : Berhasil diubah",
-                'type' => $this->k2FRepository::TYPE,
+                'type' => strtolower($this->k2FRepository::TYPE),
                 'id' => $k2f->id,
                 'name' => $k2f->name,
                 'qty' => $k2f->qty,
@@ -134,11 +134,11 @@ class ListItemController
     {
         for ($i = 0; $i < count($_POST['id']); $i++) {
             $id = $_POST['id'][ $i ];
-            $oId = $_POST['order'][ $i ];
+            $ordered = $_POST['order'][ $i ];
 
             $k2f = new K2FRequest();
             $k2f->id = $id;
-            $k2f->oId = $oId;
+            $k2f->ordered = $ordered;
             $this->k2FService->requestUpdateOrder($k2f);
         }
     }
@@ -157,6 +157,18 @@ class ListItemController
             ];
             View::render('Admin/ListItem/Subjig/delete', compact('model'));
         }
+    }
+
+    public function postTargetK2f()
+    {
+        $k2f = new K2FRequest();
+        $k2f->target = $_POST['target'];
+        $this->k2FService->requestTarget($k2f);
+
+        $model = [
+            'success' => "/admin/list-item/subjig/k2f"
+        ];
+        View::render('Admin/ListItem/Subjig/update-target', compact('model'));
     }
 
 //    TODO K1A

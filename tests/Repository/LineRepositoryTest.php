@@ -37,6 +37,17 @@ class LineRepositoryTest extends TestCase
         $line->jumlah_line_c = 0;
         $line->total = $line->jumlah_line_a + $line->jumlah_line_b + $line->jumlah_line_c;
         $this->lineRepository->save($line);
+
+        $line = new Line();
+        $line->supply_id = $supply->supply_id;
+        $line->subjig_id = $k2f->k2f_id;
+        $line->jumlah_line_a = 500;
+        $line->jumlah_line_b = 50;
+        $line->jumlah_line_c = 0;
+        $line->total = $line->jumlah_line_a + $line->jumlah_line_b + $line->jumlah_line_c;
+        $line->id = 27;
+        $this->lineRepository->update($line);
+
         $result = $this->lineRepository->findById(7);
         self::assertNull($result);
     }

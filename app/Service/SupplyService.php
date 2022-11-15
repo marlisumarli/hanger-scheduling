@@ -44,4 +44,35 @@ class SupplyService
             throw $exception;
         }
     }
+
+    public function requestUpdate(SupplyRequest $request): SupplyResponse
+    {
+        try {
+            Database::beginTransaction();
+
+            $supply = new Supply();
+            $supply->supply_id = $request->supplyId;
+            $supply->supply_date = $request->supplyDate;
+            $this->supplyRepository->update($supply);
+
+            $response = new SupplyResponse();
+            $response->supply = $supply;
+
+            Database::commitTransaction();
+            return $response;
+        } catch (Exception $exception) {
+            Database::rollBackTransaction();
+            throw $exception;
+        }
+    }
+
+    public function requestDelete(SupplyRequest $request): SupplyResponse
+    {
+        $supply = new  Supply();
+        $supply->supply_id = $request->supplyId;
+        $this->supplyRepository->deleteById($supply->supply_id);
+        $response = new SupplyResponse();
+        $response->supply = $supply;
+        return $response;
+    }
 }

@@ -152,4 +152,28 @@ class K2FService
             throw $exception;
         }
     }
+
+    public function requestTarget(K2FRequest $request): SubjigResponse
+    {
+        try {
+            Database::beginTransaction();
+
+            foreach ($this->k2FRepository->findAll() as $key => $value) {
+                $k2f = new K2F();
+                $k2f->k2f_id = $value->getK2fId();
+                $k2f->k2f_target = ceil($request->target / $value->getK2fQty());
+                $this->k2FRepository->updateTarget($k2f);
+            }
+
+            $response = new SubjigResponse();
+            $response->k2F = $k2f;
+
+            Database::commitTransaction();
+            return $response;
+
+        } catch (Exception $exception) {
+            Database::rollBackTransaction();
+            throw $exception;
+        }
+    }
 }

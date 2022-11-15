@@ -32,14 +32,6 @@ class SupplyServiceTest extends TestCase
         $createLine->jumlahLineC = 10;
         $this->lineService->requestCreate($createLine);
 
-        $createLine = new SupplyRequest();
-        $createLine->supplyId = $createSup->supplyId;
-        $createLine->subjigId = 'K2FSB';
-        $createLine->jumlahLineA = 10;
-        $createLine->jumlahLineB = 10;
-        $createLine->jumlahLineC = 10;
-        $this->lineService->requestCreate($createLine);
-
         assertNotNull($response);
     }
 

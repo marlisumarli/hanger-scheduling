@@ -8,4 +8,5 @@ class K2FRequest
     public string $id;
     public string $name;
     public int $qty;
+    public int $target;
 }

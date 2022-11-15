@@ -13,12 +13,12 @@ class SupplyRepositoryTest extends TestCase
     public function testSave()
     {
         $type = 'K2F';
-        $date = '2022-11-12';
+        $date = '2022-11-22';
 
         $supply = new Supply();
-        $supply->supply_id = str_replace(array("-", ":", "/"), '', $date) . $type;
+        $supply->supply_id = "20221114K2F";
         $supply->supply_date = $date;
-        $this->supplyRepository->save($supply);
+        $this->supplyRepository->update($supply);
 
         $result = $this->supplyRepository->findById($supply->supply_id);
 

@@ -51,7 +51,6 @@ class LaporanController
         $model = [
             'title' => 'Admin | Laporan Subjig',
             'joinSupply' => $result,
-            'allK2f' => $this->K2FRepository->findAll(),
             'allSupply' => $this->supplyRepository->findAll(),
             'periode' => [
                 '2022'
