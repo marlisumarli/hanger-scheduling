@@ -4,17 +4,14 @@ namespace Subjig\Report\Controller;
 
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Repository\K2FRepository;
 use Subjig\Report\Repository\SupplyRepository;
 
 class LaporanController
 {
-    private K2FRepository $K2FRepository;
     private SupplyRepository $supplyRepository;
 
     public function __construct()
     {
-        $this->K2FRepository = new K2FRepository(Database::getConnection());
         $this->supplyRepository = new SupplyRepository(Database::getConnection());
     }
 

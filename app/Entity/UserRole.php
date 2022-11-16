@@ -4,10 +4,10 @@ namespace Subjig\Report\Entity;
 
 class UserRole
 {
-    public int $user_role_id;
-    public string $user_role_name;
-    public string $created_at;
-    public ?string $updated_at = null;
+    protected int $user_role_id;
+    protected string $user_role_name;
+    protected string $created_at;
+    protected ?string $updated_at = null;
 
     /**
      * @return int

@@ -5,7 +5,7 @@ namespace Subjig\Report\Repository;
 use Subjig\Report\Entity\JoinUser;
 use Subjig\Report\Entity\User;
 
-class UserRepository
+class UserRepository extends User
 {
     private \PDO $connection;
 

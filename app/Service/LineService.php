@@ -29,6 +29,7 @@ class LineService
             $line->jumlah_line_a = $request->jumlahLineA;
             $line->jumlah_line_b = $request->jumlahLineB;
             $line->jumlah_line_c = $request->jumlahLineC;
+            $line->target_set = $request->supplyTarget;
             $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
             $this->lineRepository->save($line);
 
@@ -49,10 +50,11 @@ class LineService
             Database::beginTransaction();
 
             $line = new Line();
-            $line->id = $request->id;
+            $line->id = $request->lineId;
             $line->jumlah_line_a = $request->jumlahLineA;
             $line->jumlah_line_b = $request->jumlahLineB;
             $line->jumlah_line_c = $request->jumlahLineC;
+            $line->target_set = $request->supplyTarget;
             $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
             $this->lineRepository->update($line);
 

@@ -25,10 +25,10 @@ class IsAdminMiddleware implements Middleware
 
     public function before(): void
     {
-        $userSession = $this->sessionService->current()->username;
+        $userSession = $this->sessionService->current()->getUsername();
         $userDetail = $this->userDetailRepository->findByUsername($userSession);
 
-        if ($userDetail->role_id != 1) {
+        if ($userDetail->getRoleId() != 1) {
             View::redirect('/admin');
         }
     }

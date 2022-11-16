@@ -3,10 +3,10 @@
     @if(isset($model['error']))
         {{$model['error']}}
     @endif
-    <h1>Ubah laporan supply {{$model['idSupply']->supply_id}}</h1>
+    <h1>Ubah laporan supply {{$model['idSupply']->getSupplyId()}}</h1>
     <form action="" method="post">
         <label for="dateUpdate">Tanggal</label>
-        <input type="date" name="dateUpdate" id="dateUpdate" value="{{$model['idSupply']->supply_date}}">
+        <input type="date" name="dateUpdate" id="dateUpdate" value="{{$model['idSupply']->getSupplyDate()}}">
         <br>
         @foreach ($model['allSupply'] as $key => $value)
             <label for="">{{$value->getK2fName()}}</label>

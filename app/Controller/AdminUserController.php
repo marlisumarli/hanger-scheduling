@@ -76,8 +76,8 @@ class AdminUserController
             'title' => 'Admin | User Update',
             'allRole' => $this->userRoleRepository->findAll(),
             'username' => $username ?? View::redirect('/'),
-            'fullName' => $result->full_name ?? View::redirect('/'),
-            'userRole' => $result->role_id
+            'fullName' => $result->getFullName() ?? View::redirect('/'),
+            'userRole' => $result->getRoleId()
         ];
         View::render('Admin/User/update', compact('model'));
     }
@@ -98,8 +98,8 @@ class AdminUserController
                 'title' => 'Admin | User Update',
                 'success' => 'Berhasil diubah',
                 'username' => $username ?? '',
-                'fullName' => $result->full_name ?? '',
-                'userRole' => $result->role_id ?? ''
+                'fullName' => $result->getFullName() ?? '',
+                'userRole' => $result->getRoleId() ?? ''
             ];
             View::render('Admin/User/update', compact('model'));
 
@@ -108,8 +108,8 @@ class AdminUserController
                 'title' => 'Admin | User Update',
                 'error' => $exception->getMessage(),
                 'username' => $username ?? '',
-                'fullName' => $result->full_name ?? '',
-                'userRole' => $result->role_id ?? ''
+                'fullName' => $result->getFullName() ?? '',
+                'userRole' => $result->getRoleId() ?? ''
             ];
             View::render('Admin/User/update', compact('model'));
         }
@@ -169,7 +169,7 @@ class AdminUserController
 
         try {
             $response = $this->userService->requestLogin($request);
-            $this->sessionService->create($response->user->username);
+            $this->sessionService->create($response->user->getUsername());
             View::redirect('/admin/dashboard');
 
         } catch (ValidationException $exception) {

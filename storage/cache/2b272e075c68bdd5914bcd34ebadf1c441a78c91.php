@@ -6,11 +6,6 @@
     <?php endif; ?>
 
     <span>Subjig K2F</span>
-    <form action="/admin/list-item/subjig/k2f-target" method="post">
-        <label for="target">Update Target Supply</label>
-        <input type="number" name="target" id="target" min="100" required="required">
-        <button type="submit">submit</button>
-    </form>
     <div>
         <button id="add">Tambah</button>
         <button id="rm">Hapus</button>
@@ -45,18 +40,16 @@
             <th scope="col">Id</th>
             <th scope="col">Nama</th>
             <th scope="col">Quantity</th>
-            <th scope="col">Target</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
         <?php $__currentLoopData = $model['allK2f']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <th scope="row"><?php echo e($value->getId()); ?></th>
+                <th scope="row"><?php echo e($value->getK2fOrderId()); ?></th>
                 <td><?php echo e($value->getK2fId()); ?></td>
                 <td><?php echo e($value->getK2fName()); ?></td>
                 <td><?php echo e($value->getK2fQty()); ?></td>
-                <td><?php echo e($value->getK2fTarget()); ?></td>
                 <td><a href="/admin/list-item/subjig/k2f-update?id=<?php echo e($value->getK2fId()); ?>">Edit</a>
                     <a href="/admin/list-item/subjig/k2f-delete?id=<?php echo e($value->getK2fId()); ?>"
                        onclick="return confirm('Ingin menghapus?');">Delete</a>

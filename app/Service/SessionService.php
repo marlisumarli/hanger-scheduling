@@ -23,12 +23,12 @@ class SessionService
     public function create(string $username): Session
     {
         $session = new Session();
-        $session->session_id = uniqid();
-        $session->username = $username;
+        $session->setSessionId(uniqid());
+        $session->setUsername($username);
 
         $this->sessionRepository->save($session);
 
-        setcookie(self::COOKIE_NAME, $session->session_id, time() + (60 * 60 * 24 * 30), '/');
+        setcookie(self::COOKIE_NAME, $session->getSessionId(), time() + (60 * 60 * 24 * 30), '/');
         return $session;
     }
 
@@ -49,6 +49,6 @@ class SessionService
             return null;
         }
 
-        return $this->userRepository->findByUsername($session->username);
+        return $this->userRepository->findByUsername($session->getUsername());
     }
 }

@@ -4,11 +4,11 @@ namespace Subjig\Report\Entity;
 
 class UserDetail
 {
-    public string $user_detail_id;
-    public string $username;
-    public string $full_name;
-    public int $role_id;
-    public ?string $updated_at = null;
+    protected string $user_detail_id;
+    protected string $username;
+    protected string $full_name;
+    protected int $role_id;
+    protected ?string $updated_at = null;
 
     /**
      * @return string

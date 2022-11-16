@@ -26,12 +26,12 @@ class SupplyService
 
             $supply = $this->supplyRepository->findById($request->supplyId);
             if ($supply != null) {
-                throw new ValidationException("ID Laporan : [$request->supplyId] sudah ada");
+                throw new ValidationException("ID Laporan : [$request->supplyId] sudah ada, coba untuk ganti ke tanggal lain terlebih dahulu");
             }
 
             $supply = new Supply();
-            $supply->supply_id = $request->supplyId;
-            $supply->supply_date = $request->supplyDate;
+            $supply->setSupplyId($request->supplyId);
+            $supply->setSupplyDate($request->supplyDate);
             $this->supplyRepository->save($supply);
 
             $response = new SupplyResponse();
@@ -51,8 +51,8 @@ class SupplyService
             Database::beginTransaction();
 
             $supply = new Supply();
-            $supply->supply_id = $request->supplyId;
-            $supply->supply_date = $request->supplyDate;
+            $supply->setSupplyId($request->supplyId);
+            $supply->setSupplyId($request->supplyDate);
             $this->supplyRepository->update($supply);
 
             $response = new SupplyResponse();
@@ -69,8 +69,8 @@ class SupplyService
     public function requestDelete(SupplyRequest $request): SupplyResponse
     {
         $supply = new  Supply();
-        $supply->supply_id = $request->supplyId;
-        $this->supplyRepository->deleteById($supply->supply_id);
+        $supply->setSupplyId($request->supplyId);
+        $this->supplyRepository->deleteById($supply->getSupplyId());
         $response = new SupplyResponse();
         $response->supply = $supply;
         return $response;

@@ -4,12 +4,12 @@ namespace Subjig\Report\Entity;
 
 class JoinUser
 {
-    public string $username;
-    public string $full_name;
-    public string $role_name;
-    public string $created_at;
-    public ?string $user_detail_updated_at = null;
-    public ?string $user_update_password_at = null;
+    private string $username;
+    private string $full_name;
+    private string $role_name;
+    private string $created_at;
+    private ?string $user_detail_updated_at = null;
+    private ?string $user_update_password_at = null;
 
     /**
      * @return string

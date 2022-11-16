@@ -6,9 +6,12 @@
     <?php endif; ?>
 
     <form method="post">
-
         <label for="date">Tanggal</label>
         <input type="date" name="date" id="date" value="">
+
+        <label for="target">Update Target Supply</label>
+        <input type="number" name="target" id="target" min="100" value="700" required="required">
+
         <br>
         <?php $__currentLoopData = $model['allK2f']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <label for=""><?php echo e($value->getK2fName()); ?></label>

@@ -5,9 +5,12 @@
     @endif
 
     <form method="post">
-
         <label for="date">Tanggal</label>
         <input type="date" name="date" id="date" value="">
+
+        <label for="target">Update Target Supply</label>
+        <input type="number" name="target" id="target" min="100" value="700" required="required">
+
         <br>
         @foreach ($model['allK2f'] as $key => $value)
             <label for="">{{$value->getK2fName()}}</label>

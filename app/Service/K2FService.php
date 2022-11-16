@@ -25,19 +25,19 @@ class K2FService
         try {
             Database::beginTransaction();
 
-            $k2fId = $this->k2FRepository->findById($request->id);
-            $k2fName = $this->k2FRepository->findByName($request->name);
+            $k2fId = $this->k2FRepository->findById(strtoupper($request->id));
+            $k2fName = $this->k2FRepository->findByName(strtoupper($request->name));
             if ($k2fId != null) {
-                throw new ValidationException("Id : $request->id sudah ada");
+                throw new ValidationException("Id : " . strtoupper($request->id) . " sudah ada");
             } elseif ($k2fName != null) {
-                throw new ValidationException("Nama : $request->name sudah ada");
+                throw new ValidationException("Nama : " . strtoupper($request->name) . " sudah ada");
             }
 
             $k2f = new K2F();
-            $k2f->id = count($this->k2FRepository->findAll()) + 1;
-            $k2f->k2f_id = strtoupper(trim($request->id));
-            $k2f->k2f_name = ucwords(trim($request->name));
-            $k2f->k2f_qty = $request->qty;
+            $k2f->setK2fOrderId(count($this->k2FRepository->findAll()) + 1);
+            $k2f->setK2fId(strtoupper(trim($request->id)));
+            $k2f->setK2fName(ucwords(trim($request->name)));
+            $k2f->setK2fQty($request->qty);
             $this->k2FRepository->save($k2f);
 
             $response = new SubjigResponse();
@@ -75,9 +75,9 @@ class K2FService
             }
 
             $k2f = new K2F();
-            $k2f->k2f_id = strtoupper(trim($request->id));
-            $k2f->k2f_name = ucwords(trim($request->name));
-            $k2f->k2f_qty = $request->qty;
+            $k2f->setK2fId(strtoupper(trim($request->id)));
+            $k2f->setK2fName(ucwords(trim($request->name)));
+            $k2f->setK2fQty($request->qty);
             $this->k2FRepository->update($k2f);
 
             $response = new SubjigResponse();
@@ -107,8 +107,8 @@ class K2FService
             Database::beginTransaction();
 
             $k2f = new K2F();
-            $k2f->k2f_id = $request->id;
-            $k2f->id = $request->ordered;
+            $k2f->setK2fId($request->id);
+            $k2f->setK2fOrderId($request->ordered);
             $this->k2FRepository->updateOrder($k2f);
 
             $response = new SubjigResponse();
@@ -129,40 +129,16 @@ class K2FService
             Database::beginTransaction();
 
             $k2f = new  K2F();
-            $k2f->k2f_id = $request->id;
-            $this->k2FRepository->deleteById($k2f->k2f_id);
+            $k2f->setK2fId($request->id);
+            $this->k2FRepository->deleteById($k2f->getK2fId());
 
             foreach ($this->k2FRepository->findAll() as $key => $value) {
                 $k2f = new K2F();
-                $k2f->k2f_id = $value->getK2fId();
-                $k2f->id = $key + 1;
-                $k2f->k2f_name = $value->getK2fName();
-                $k2f->k2f_qty = $value->getK2fQty();
+                $k2f->setK2fId($value->getK2fId());
+                $k2f->setK2fOrderId($key + 1);
+                $k2f->setK2fName($value->getK2fName());
+                $k2f->setK2fQty($value->getK2fQty());
                 $this->k2FRepository->update($k2f);
-            }
-
-            $response = new SubjigResponse();
-            $response->k2F = $k2f;
-
-            Database::commitTransaction();
-            return $response;
-
-        } catch (Exception $exception) {
-            Database::rollBackTransaction();
-            throw $exception;
-        }
-    }
-
-    public function requestTarget(K2FRequest $request): SubjigResponse
-    {
-        try {
-            Database::beginTransaction();
-
-            foreach ($this->k2FRepository->findAll() as $key => $value) {
-                $k2f = new K2F();
-                $k2f->k2f_id = $value->getK2fId();
-                $k2f->k2f_target = ceil($request->target / $value->getK2fQty());
-                $this->k2FRepository->updateTarget($k2f);
             }
 
             $response = new SubjigResponse();

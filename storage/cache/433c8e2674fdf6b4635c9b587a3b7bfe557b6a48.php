@@ -1,6 +1,6 @@
 
 <?php $__env->startSection('content'); ?>
-    <form action="#" method="post">
+    <form action="" method="post">
         <table border="1">
             <thead>
             <tr>
@@ -15,7 +15,7 @@
                 <tr>
                     <th scope="row">
                         <label for="order"></label>
-                        <input type="number" name="order[]" id="order" value="<?php echo e($value->getId()); ?>" min="1"></th>
+                        <input type="number" name="order[]" id="order" value="<?php echo e($value->getK2fOrderId()); ?>" min="1"></th>
                     <td><?php echo e($value->getK2fName()); ?></td>
                     <td><input type="text" name="id[]" value="<?php echo e($value->getK2fId()); ?>"></td>
                     <td><?php echo e($value->getK2fQty()); ?></td>

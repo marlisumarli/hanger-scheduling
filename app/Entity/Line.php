@@ -10,7 +10,25 @@ class Line
     public int $jumlah_line_a;
     public int $jumlah_line_b;
     public int $jumlah_line_c;
+    public int $target_set;
     public int $total;
+
+    /**
+     * @return int
+     */
+    public function getTargetSet(): int
+    {
+        return $this->target_set;
+    }
+
+    /**
+     * @param int $target_set
+     */
+    public function setTargetSet(int $target_set): void
+    {
+        $this->target_set = $target_set;
+    }
+
 
     /**
      * @return int

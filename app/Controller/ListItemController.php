@@ -79,8 +79,8 @@ class ListItemController
             'title' => 'Admin | Update Subjig K2F',
             'type' => $this->k2FRepository::TYPE,
             'id' => $_GET['id'],
-            'name' => $result->k2f_name,
-            'qty' => $result->k2f_qty,
+            'name' => $result->getK2fName(),
+            'qty' => $result->getK2fQty(),
         ];
         View::render('Admin/ListItem/Subjig/update', compact('model'));
     }
@@ -141,6 +141,7 @@ class ListItemController
             $k2f->ordered = $ordered;
             $this->k2FService->requestUpdateOrder($k2f);
         }
+        View::redirect('/admin/list-item/subjig/k2f-update-order');
     }
 
     public function deleteK2f()
@@ -157,18 +158,6 @@ class ListItemController
             ];
             View::render('Admin/ListItem/Subjig/delete', compact('model'));
         }
-    }
-
-    public function postTargetK2f()
-    {
-        $k2f = new K2FRequest();
-        $k2f->target = $_POST['target'];
-        $this->k2FService->requestTarget($k2f);
-
-        $model = [
-            'success' => "/admin/list-item/subjig/k2f"
-        ];
-        View::render('Admin/ListItem/Subjig/update-target', compact('model'));
     }
 
 //    TODO K1A

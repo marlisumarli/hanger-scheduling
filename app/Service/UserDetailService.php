@@ -30,10 +30,10 @@ class UserDetailService
                 throw new ValidationException('User ada');
             } else {
                 $userDetail = new  UserDetail();
-                $userDetail->user_detail_id = uniqid();
-                $userDetail->username = $request->username;
-                $userDetail->full_name = ucwords(strtolower(trim($request->fullName)));
-                $userDetail->role_id = $request->roleId;
+                $userDetail->setUserDetailId(uniqid());
+                $userDetail->setUsername($request->username);
+                $userDetail->setFullName(ucwords(strtolower(trim($request->fullName))));
+                $userDetail->setRoleId($request->roleId);
                 $this->userDetailRepository->save($userDetail);
             }
 
@@ -68,9 +68,9 @@ class UserDetailService
                 throw new ValidationException('Update failed');
             } else {
                 $userDetail = new  UserDetail();
-                $userDetail->username = $request->username;
-                $userDetail->full_name = ucwords(strtolower(trim($request->fullName)));
-                $userDetail->role_id = $request->roleId;
+                $userDetail->setUsername($request->username);
+                $userDetail->setFullName(ucwords(strtolower(trim($request->fullName))));
+                $userDetail->setRoleId($request->roleId);
                 $this->userDetailRepository->update($userDetail);
             }
             $response = new UserResponse();

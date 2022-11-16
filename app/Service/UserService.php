@@ -31,8 +31,8 @@ class UserService
             }
 
             $user = new  User();
-            $user->username = strtolower(trim($request->username));
-            $user->password = password_hash($request->password, PASSWORD_BCRYPT);
+            $user->setUsername(strtolower(trim($request->username)));
+            $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
             $this->userRepository->save($user);
 
             $response = new UserResponse();
@@ -66,7 +66,7 @@ class UserService
         if ($user == null) {
             throw new ValidationException("Gagal login, username atau password salah");
         }
-        if (password_verify($userLoginRequest->password, $user->password)) {
+        if (password_verify($userLoginRequest->password, $user->getPassword())) {
             $response = new UserResponse();
             $response->user = $user;
             return $response;
@@ -85,8 +85,8 @@ class UserService
             }
 
             $user = new  User();
-            $user->username = $request->username;
-            $user->password = password_hash($request->password, PASSWORD_BCRYPT);
+            $user->setUsername($request->username);
+            $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
             $this->userRepository->update($user);
 
             $response = new UserResponse();
@@ -108,8 +108,8 @@ class UserService
             throw new ValidationException('Hapus gagal');
         } else {
             $user = new  User();
-            $user->username = $request->username;
-            $this->userRepository->deleteByUsername($user->username);
+            $user->setUsername($request->username);
+            $this->userRepository->deleteByUsername($user->getUsername());
         }
         $response = new UserResponse();
         $response->user = $user;

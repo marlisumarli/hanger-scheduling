@@ -4,7 +4,7 @@ namespace Subjig\Report\Repository;
 
 use Subjig\Report\Entity\Session;
 
-class SessionRepository
+class SessionRepository extends Session
 {
 
     private \PDO $connection;

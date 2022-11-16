@@ -4,10 +4,10 @@
         <?php echo e($model['error']); ?>
 
     <?php endif; ?>
-    <h1>Ubah laporan supply <?php echo e($model['idSupply']->supply_id); ?></h1>
+    <h1>Ubah laporan supply <?php echo e($model['idSupply']->getSupplyId()); ?></h1>
     <form action="" method="post">
         <label for="dateUpdate">Tanggal</label>
-        <input type="date" name="dateUpdate" id="dateUpdate" value="<?php echo e($model['idSupply']->supply_date); ?>">
+        <input type="date" name="dateUpdate" id="dateUpdate" value="<?php echo e($model['idSupply']->getSupplyDate()); ?>">
         <br>
         <?php $__currentLoopData = $model['allSupply']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <label for=""><?php echo e($value->getK2fName()); ?></label>

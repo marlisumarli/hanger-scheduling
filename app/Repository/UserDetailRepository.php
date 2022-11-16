@@ -4,7 +4,7 @@ namespace Subjig\Report\Repository;
 
 use Subjig\Report\Entity\UserDetail;
 
-class UserDetailRepository
+class UserDetailRepository extends UserDetail
 {
     private \PDO $connection;
 

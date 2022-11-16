@@ -26,7 +26,7 @@ class AdminHomeController
 
     public function index()
     {
-        $username = $this->sessionService->current()->username;
+        $username = $this->sessionService->current()->getUsername();
         $userDetail = $this->userDetailRepository->findByUsername($username);
 
         $model = [

@@ -4,28 +4,26 @@ namespace Subjig\Report\Entity;
 
 class K2F
 {
-    public int $id;
-    public string $k2f_id;
-    public int $k2f_target;
-    public string $k2f_name;
-    public int $k2f_qty;
+    protected int $k2f_order_id;
+    protected string $k2f_id;
+    protected string $k2f_name;
+    protected int $k2f_qty;
 
     /**
      * @return int
      */
-    public function getId(): int
+    public function getK2fOrderId(): int
     {
-        return $this->id;
+        return $this->k2f_order_id;
     }
 
     /**
-     * @param int $id
+     * @param int $k2f_order_id
      */
-    public function setId(int $id): void
+    public function setK2fOrderId(int $k2f_order_id): void
     {
-        $this->id = $id;
+        $this->k2f_order_id = $k2f_order_id;
     }
-
 
     /**
      * @return string
@@ -74,21 +72,4 @@ class K2F
     {
         $this->k2f_qty = $k2f_qty;
     }
-
-    /**
-     * @return int
-     */
-    public function getK2fTarget(): int
-    {
-        return $this->k2f_target;
-    }
-
-    /**
-     * @param int $k2f_target
-     */
-    public function setK2fTarget(int $k2f_target): void
-    {
-        $this->k2f_target = $k2f_target;
-    }
-
 }

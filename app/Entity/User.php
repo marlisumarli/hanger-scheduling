@@ -4,11 +4,11 @@ namespace Subjig\Report\Entity;
 
 class User
 {
-    public string $username;
-    public string $password;
-    public string $created_at;
-    public ?string $update_password_at = null;
-    public ?string $last_login = null;
+    protected string $username;
+    protected string $password;
+    protected string $created_at;
+    protected ?string $update_password_at = null;
+    protected ?string $last_login = null;
 
     /**
      * @return string

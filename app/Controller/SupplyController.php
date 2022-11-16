@@ -67,6 +67,7 @@ class SupplyController
                 $createLine->jumlahLineA = $_POST['k2fLnA'][ $key ];
                 $createLine->jumlahLineB = $_POST['k2fLnB'][ $key ];
                 $createLine->jumlahLineC = $_POST['k2fLnC'][ $key ];
+                $createLine->supplyTarget = $_POST['target'];
                 $this->lineService->requestCreate($createLine);
             }
             $model = [
@@ -113,10 +114,11 @@ class SupplyController
 
             foreach ($allSupply as $key => $value) {
                 $createLine = new SupplyRequest();
-                $createLine->id = $value->getJumlahId();
+                $createLine->lineId = $value->getJumlahId();
                 $createLine->jumlahLineA = $_POST['k2fLnA'][ $key ];
                 $createLine->jumlahLineB = $_POST['k2fLnB'][ $key ];
                 $createLine->jumlahLineC = $_POST['k2fLnC'][ $key ];
+                $createLine->supplyTarget = $_POST['target'];
                 $this->lineService->requestUpdate($createLine);
             }
             $model = [

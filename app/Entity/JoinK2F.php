@@ -4,16 +4,33 @@ namespace Subjig\Report\Entity;
 
 class JoinK2F
 {
-    public string $supply_date;
-    public string $id;
-    public string $k2f_name;
-    public string $k2f_qty;
-    public string $k2f_target;
-    public ?string $jumlah_id = null;
-    public ?string $jumlah_line_a = null;
-    public ?string $jumlah_line_b = null;
-    public ?string $jumlah_line_c = null;
-    public string $total;
+    private string $supply_date;
+    private string $k2f_order_id;
+    private string $k2f_name;
+    private string $k2f_qty;
+    private string $k2f_target;
+    private ?string $jumlah_id = null;
+    private ?string $jumlah_line_a = null;
+    private ?string $jumlah_line_b = null;
+    private ?string $jumlah_line_c = null;
+    private string $target_set;
+    private string $total;
+
+    /**
+     * @return string
+     */
+    public function getTargetSet(): string
+    {
+        return $this->target_set;
+    }
+
+    /**
+     * @param string $target_set
+     */
+    public function setTargetSet(string $target_set): void
+    {
+        $this->target_set = $target_set;
+    }
 
     /**
      * @return string
@@ -34,17 +51,17 @@ class JoinK2F
     /**
      * @return string
      */
-    public function getId(): string
+    public function getK2fOrderId(): string
     {
-        return $this->id;
+        return $this->k2f_order_id;
     }
 
     /**
-     * @param string $id
+     * @param string $k2f_order_id
      */
-    public function setId(string $id): void
+    public function setK2fOrderId(string $k2f_order_id): void
     {
-        $this->id = $id;
+        $this->k2f_order_id = $k2f_order_id;
     }
 
     /**

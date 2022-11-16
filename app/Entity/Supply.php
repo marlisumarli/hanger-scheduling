@@ -4,8 +4,8 @@ namespace Subjig\Report\Entity;
 
 class Supply
 {
-    public string $supply_id;
-    public string $supply_date;
+    protected string $supply_id;
+    protected string $supply_date;
 
     /**
      * @return string
