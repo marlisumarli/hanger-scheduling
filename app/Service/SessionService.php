@@ -3,8 +3,8 @@
 namespace Subjig\Report\Service;
 
 
-use Subjig\Report\Entity\Session;
-use Subjig\Report\Entity\User;
+use Subjig\Report\Model\Session;
+use Subjig\Report\Model\User;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\UserRepository;
 

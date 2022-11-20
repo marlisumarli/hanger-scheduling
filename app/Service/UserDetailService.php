@@ -4,10 +4,10 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\UserDetail;
+use Subjig\Report\HTTP\ResponseSubjigApp;
+use Subjig\Report\Model\UserDetail;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\UserRequest;
-use Subjig\Report\Model\UserResponse;
+use Subjig\Report\HTTP\Request\UserRequest;
 use Subjig\Report\Repository\UserDetailRepository;
 
 class UserDetailService
@@ -19,7 +19,7 @@ class UserDetailService
         $this->userDetailRepository = $userDetailRepository;
     }
 
-    public function requestCreateUserDetail(UserRequest $request): UserResponse
+    public function requestCreateUserDetail(UserRequest $request): ResponseSubjigApp
     {
         $this->validationCreateRequest($request);
         try {
@@ -37,7 +37,7 @@ class UserDetailService
                 $this->userDetailRepository->save($userDetail);
             }
 
-            $response = new UserResponse();
+            $response = new ResponseSubjigApp();
             $response->userDetail = $userDetail;
 
             Database::commitTransaction();
@@ -49,14 +49,7 @@ class UserDetailService
         }
     }
 
-    private function validationCreateRequest(UserRequest $request): void
-    {
-        if (preg_match('/[^a-zA-Z| ]/i', $request->fullName) || $request->fullName == '') {
-            throw new ValidationException('Invalid characters');
-        }
-    }
-
-    public function requestUpdateUserDetail(UserRequest $request): UserResponse
+    public function requestUpdateUserDetail(UserRequest $request): ResponseSubjigApp
     {
         $this->validationUpdateRequest($request);
 
@@ -73,7 +66,7 @@ class UserDetailService
                 $userDetail->setRoleId($request->roleId);
                 $this->userDetailRepository->update($userDetail);
             }
-            $response = new UserResponse();
+            $response = new ResponseSubjigApp();
             $response->userDetail = $userDetail;
 
             Database::commitTransaction();
@@ -82,6 +75,13 @@ class UserDetailService
         } catch (Exception $exception) {
             Database::rollBackTransaction();
             throw $exception;
+        }
+    }
+
+    private function validationCreateRequest(UserRequest $request): void
+    {
+        if (preg_match('/[^a-zA-Z| ]/i', $request->fullName) || $request->fullName == '') {
+            throw new ValidationException('Invalid characters');
         }
     }
 

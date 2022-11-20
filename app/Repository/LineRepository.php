@@ -2,7 +2,7 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\Line;
+use Subjig\Report\Model\Line;
 
 class LineRepository
 {

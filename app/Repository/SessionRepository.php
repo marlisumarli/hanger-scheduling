@@ -2,9 +2,9 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\Session;
+use Subjig\Report\Model\Session;
 
-class SessionRepository extends Session
+class SessionRepository
 {
 
     private \PDO $connection;
@@ -18,7 +18,7 @@ class SessionRepository extends Session
     {
         $statement = $this->connection
             ->prepare("INSERT INTO sessions(session_id, username)  VALUES (?, ?)");
-        $statement->execute([$session->session_id, $session->username]);
+        $statement->execute([$session->getSessionId(), $session->getUsername()]);
         return $session;
     }
 
@@ -30,8 +30,8 @@ class SessionRepository extends Session
         try {
             if ($row = $statement->fetch()) {
                 $session = new Session();
-                $session->session_id = $row['session_id'];
-                $session->username = $row['username'];
+                $session->setSessionId($row['session_id']);
+                $session->setUsername($row['username']);
                 return $session;
             } else {
                 return null;

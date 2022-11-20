@@ -5,19 +5,19 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\K2FRequest;
-use Subjig\Report\Repository\K2FRepository;
-use Subjig\Report\Service\K2FService;
+use Subjig\Report\HTTP\Request\TypeRequest;
+use Subjig\Report\Repository\TypeRepository;
+use Subjig\Report\Service\TypeService;
 
 class ListItemController
 {
-    private K2FRepository $k2FRepository;
-    private K2FService $k2FService;
+    private TypeService $typeService;
+    private TypeRepository $typeRepository;
 
     public function __construct()
     {
-        $this->k2FRepository = new K2FRepository(Database::getConnection());
-        $this->k2FService = new K2FService($this->k2FRepository);
+        $this->typeRepository = new TypeRepository(Database::getConnection());
+        $this->typeService = new TypeService($this->typeRepository);
     }
 
     public function index()
@@ -28,137 +28,81 @@ class ListItemController
         View::render('Admin/ListItem/index', compact('model'));
     }
 
-    public function subjig()
+    public function typeItem()
     {
         $model = [
-            'title' => 'Admin | Daftar Subjig'
+            'title' => 'Admin | Daftar Subjig',
+            'allType' => $this->typeRepository->findAll()
         ];
-        View::render('Admin/ListItem/Subjig/index', compact('model'));
+        View::render('Admin/TypeItem/index', compact('model'));
     }
 
-    public function k2f()
+    public function postCreateType()
     {
-        $model = [
-            'title' => 'Admin | Subjig K2F',
-            'allK2f' => $this->k2FRepository->findAll()
-        ];
-        View::render('Admin/ListItem/Subjig/k2f', compact('model'));
-    }
-
-    public function postK2f()
-    {
-
-        try {
-            for ($i = 0; $i < count($_POST['id']); $i++) {
-                $id = $_POST['id'][ $i ];
-                $name = $_POST['name'][ $i ];
-                $qty = $_POST['qty'][ $i ];
-
-                $k2f = new K2FRequest();
-                $k2f->id = $this->k2FRepository::TYPE . $id;
-                $k2f->name = $name;
-                $k2f->qty = $qty;
-                $this->k2FService->requestCreate($k2f);
-            }
-            View::redirect('/admin/list-item/subjig/k2f');
-
-        } catch (ValidationException $exception) {
-            $model = [
-                'title' => 'Admin | K2F',
-                'error' => $exception->getMessage(),
-                'allK2f' => $this->k2FRepository->findAll()
-            ];
-            View::render('Admin/ListItem/Subjig/k2f', compact('model'));
-        }
-    }
-
-    public function updateK2f()
-    {
-        $result = $this->k2FRepository->findById($_GET['id']);
-        $model = [
-            'title' => 'Admin | Update Subjig K2F',
-            'type' => $this->k2FRepository::TYPE,
-            'id' => $_GET['id'],
-            'name' => $result->getK2fName(),
-            'qty' => $result->getK2fQty(),
-        ];
-        View::render('Admin/ListItem/Subjig/update', compact('model'));
-    }
-
-    public function postUpdateK2f()
-    {
-        $id = $_GET['id'];
-        $name = $_POST['name'];
+        $id = $_POST['id'];
         $qty = $_POST['qty'];
 
-        $k2f = new K2FRequest();
-        $k2f->id = $id;
-        $k2f->name = $name;
-        $k2f->qty = $qty;
-
+        $request = new TypeRequest();
+        $request->id = $id;
+        $request->qty = $qty;
         try {
-            $this->k2FService->requestUpdate($k2f);
-            $model = [
-                'title' => 'Admin | Update K2F',
-                'success' => "$k2f->id : Berhasil diubah",
-                'type' => strtolower($this->k2FRepository::TYPE),
-                'id' => $k2f->id,
-                'name' => $k2f->name,
-                'qty' => $k2f->qty,
-            ];
-            View::render('Admin/ListItem/Subjig/update', compact('model'));
-
+            $this->typeService->requestCreate($request);
+            View::redirect("/admin/subjig/$id/list");
         } catch (ValidationException $exception) {
             $model = [
-                'title' => 'Admin | Update K2F',
+                'title' => 'Admin | Daftar Subjig',
                 'error' => $exception->getMessage(),
-                'type' => $this->k2FRepository::TYPE,
-                'id' => $k2f->id,
-                'name' => $k2f->name,
-                'qty' => $k2f->qty,
+                'allType' => $this->typeRepository->findAll()
             ];
-            View::render('Admin/ListItem/Subjig/update', compact('model'));
+            View::render('Admin/TypeItem/index', compact('model'));
         }
     }
 
-    public function updateOrderedK2f()
+    public function postUpdateType()
     {
-        $model = [
-            'title' => 'Admin | Subjig K2F',
-            'allK2f' => $this->k2FRepository->findAll()
-        ];
-        View::render('Admin/ListItem/Subjig/update-ordered', compact('model'));
-    }
-
-    public function postUpdateOrderedK2f()
-    {
-        for ($i = 0; $i < count($_POST['id']); $i++) {
-            $id = $_POST['id'][ $i ];
-            $ordered = $_POST['order'][ $i ];
-
-            $k2f = new K2FRequest();
-            $k2f->id = $id;
-            $k2f->ordered = $ordered;
-            $this->k2FService->requestUpdateOrder($k2f);
-        }
-        View::redirect('/admin/list-item/subjig/k2f-update-order');
-    }
-
-    public function deleteK2f()
-    {
-        if (isset($_GET['id'])) {
-
+        if (isset($_POST['updateId'])) {
             $id = $_GET['id'];
-            $request = new K2FRequest();
-            $request->id = $id;
-            $this->k2FService->requestDelete($request);
+            $newId = $_POST['newId'];
+            try {
+                $request = new TypeRequest();
+                $request->newId = $newId;
+                $request->id = $id;
+                $this->typeService->requestUpdate($request);
 
-            $model = [
-                'success' => '/admin/list-item/subjig/k2f'
-            ];
-            View::render('Admin/ListItem/Subjig/delete', compact('model'));
+                $model = [
+                    'success' => '/admin/list-item/subjig'
+                ];
+                View::render('Admin/TypeItem/update', compact('model'));
+
+            } catch (ValidationException $exception) {
+                $model = [
+                    'error' => $exception->getMessage(),
+                    'allType' => $this->typeRepository->findAll()
+                ];
+                View::render('Admin/TypeItem/index', compact('model'));
+            }
+        } elseif (isset($_POST['updateQty'])) {
+            $id = $_GET['id'];
+            $qty = $_POST['qty'];
+            try {
+                $request = new TypeRequest();
+                $request->id = $id;
+                $request->qty = $qty;
+                $this->typeService->requestUpdate($request);
+
+                $model = [
+                    'success' => '/admin/list-item/subjig'
+                ];
+                View::render('Admin/TypeItem/update', compact('model'));
+
+            } catch (ValidationException $exception) {
+                $model = [
+                    'error' => $exception->getMessage(),
+                    'allType' => $this->typeRepository->findAll()
+                ];
+                View::render('Admin/TypeItem/index', compact('model'));
+            }
         }
     }
 
-//    TODO K1A
 }

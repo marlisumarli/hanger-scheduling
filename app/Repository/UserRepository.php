@@ -2,10 +2,10 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\JoinUser;
-use Subjig\Report\Entity\User;
+use Subjig\Report\Model\JoinUser;
+use Subjig\Report\Model\User;
 
-class UserRepository extends User
+class UserRepository
 {
     private \PDO $connection;
 
@@ -18,7 +18,7 @@ class UserRepository extends User
     {
         $statement = $this->connection
             ->prepare("INSERT INTO users(username, password, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$user->username, $user->password]);
+        $statement->execute([$user->getUsername(), $user->getPassword()]);
         return $user;
     }
 
@@ -26,7 +26,7 @@ class UserRepository extends User
     {
         $statement = $this->connection
             ->prepare("UPDATE users SET password = ?, update_password_at = CURRENT_TIMESTAMP WHERE  username = ?");
-        $statement->execute([$user->password, $user->username]);
+        $statement->execute([$user->getPassword(), $user->getUsername()]);
         return $user;
     }
 
@@ -39,11 +39,11 @@ class UserRepository extends User
         try {
             if ($row = $statement->fetch()) {
                 $user = new User();
-                $user->username = $row['username'];
-                $user->password = $row['password'];
-                $user->created_at = $row['created_at'];
-                $user->update_password_at = $row['update_password_at'];
-                $user->last_login = $row['last_login'];
+                $user->setUsername($row['username']);
+                $user->setPassword($row['password']);
+                $user->setCreatedAt($row['created_at']);
+                $user->setUpdatePasswordAt($row['update_password_at']);
+                $user->setLastLogin($row['last_login']);
 
                 return $user;
             } else {

@@ -5,7 +5,7 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\UserRequest;
+use Subjig\Report\HTTP\Request\UserRequest;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;

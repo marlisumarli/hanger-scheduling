@@ -4,7 +4,7 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\Supply;
+use Subjig\Report\Model\Supply;
 
 class SupplyRepositoryTest extends TestCase
 {

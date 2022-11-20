@@ -4,7 +4,7 @@ namespace Subjig\Report\Service;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\User;
+use Subjig\Report\Model\User;
 use Subjig\Report\Model\UserDetailCreateRequest;
 use Subjig\Report\Model\UserDetailUpdateRequest;
 use Subjig\Report\Repository\UserDetailRepository;

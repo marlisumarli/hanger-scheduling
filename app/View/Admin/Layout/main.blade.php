@@ -14,46 +14,23 @@
         crossorigin="anonymous"></script>
 
 <script>
-    let dataRow = 0
-    $('#add').click(() => {
-        dataRow++
-        inputRow(dataRow)
-    })
-    inputRow = (i) => {
-        i += 1;
-        var tr = [`
-<divid>
-<span>${i}.</span>
-<label for="id${i}">Id</label>
-<input type="text" name="id[]" id="id${i}" title="Tidak boleh mengandung angka atau spasi" pattern="[A-Za-z]{1,}" required="required">
-<br>
-<label for="name${i}">Nama</label>
-<input type="text" name="name[]" id="name${i}" title="Tidak boleh mengandung angka" pattern="[A-Za-z ]{1,}" required="required">
-<br>
-<label for="qty${i}">Quantity</label>
-<input type="number" name="qty[]" id="qty${i}" required="required">
-<hr>
-</divid>`];
-
-        $('#data').append(tr)
+    //    Generate sequence number
+    const generate = document.getElementById('generate');
+    const id = document.querySelectorAll('.order');
+    const makeArray = (count, content) => {
+        const result = [];
+        if (typeof content === "function") {
+            for (let i = 0; i < count; i++) {
+                result.push(content(i));
+            }
+        }
+        return result;
     }
-
-    $('#rm').click(() => {
-        let data = $('#data');
-        if (dataRow > 0) {
-            dataRow--
-        }
-        let lists = data.find('divid');
-
-        if (lists.length) {
-            data.find('divid').last().remove();
-        }
-    })
-
-    // Date
-    document.getElementById("date").valueAsDate = new Date()
-
-
+    generate.addEventListener('click', () => {
+        makeArray(id.length, (i) => {
+            return id[i].value = i + 1;
+        });
+    });
 </script>
 </body>
 </html>

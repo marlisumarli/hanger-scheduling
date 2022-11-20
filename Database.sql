@@ -209,11 +209,6 @@ alter table messboat
     add created_at datetime not null,
     add updated_at datetime null;
 
-alter table karyawan_details
-    add constraint karyawan_details_karyawans_null_fk
-        foreign key (username) references subjig_report.karyawans (username)
-            on update cascade on delete cascade;
-
 
 SELECT karyawans.username, karyawan_details.name
 FROM karyawan_details
@@ -239,11 +234,6 @@ alter table category
 alter table category
     add constraint category_pk
         unique (name);
-
-alter table tx_k2f
-    add constraint fk_tx_k2f_category
-        FOREIGN KEY (kode_category) REFERENCES category (kode);
-
 
 
 CREATE DATABASE subjig_report;
@@ -470,12 +460,6 @@ create table tx_surat_jalan
     messboat_line_b int  null,
     messboat_line_c int  null
 );
-
-alter table subjig_report_test.user_details
-    add constraint user_details_users_null_fk
-        foreign key (credential) references subjig_report_test.users (username);
-
-
 
 CREATE DATABASE subjig_report;
 
@@ -997,7 +981,7 @@ FROM user_details as usr_d
 WHERE usr_r.id = 2;
 
 SELECT supply.supply_date,
-       k2f.id,
+       k2f.k2f_id,
        k2f.k2f_name,
        line.jumlah_line_a,
        line.jumlah_line_b,
@@ -1013,6 +997,73 @@ CREATE TABLE periode
     supply_id   varchar(11) NOT NULL,
     supply_date date        NOT NULL,
     PRIMARY KEY (supply_id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
+) ENGINE = InnoDB;
+
+CREATE TABLE types
+(
+    type_id    varchar(11) PRIMARY KEY NOT NULL,
+    type_qty   INT                     NOT NULL,
+    created_at TIMESTAMP               NOT NULL,
+    updated_at TIMESTAMP               NOT NULL
+
+) ENGINE = InnoDB;
+
+CREATE TABLE subjigs
+(
+    subjig_id    VARCHAR(11) PRIMARY KEY NOT NULL,
+    type_id      VARCHAR(11)             NOT NULL,
+    order_number INT                     NOT NULL,
+    subjig_name  VARCHAR(55)             NOT NULL,
+    subjig_qty   INT                     NOT NULL,
+    label        VARCHAR(55)             NULL,
+    created_at   TIMESTAMP               NOT NULL,
+    updated_at   TIMESTAMP               NULL
+
+) ENGINE = InnoDB;
+
+alter table subjigs
+    add constraint subjigs_types_null_fk
+        foreign key (type_id) references types (type_id)
+            on update cascade;
+
+
+SELECT subjig.order_number,
+       subjig.subjig_id,
+       subjig.subjig_name,
+       type.type_id,
+       subjig.subjig_qty,
+       subjig.created_at,
+       subjig.updated_at
+FROM subjigs subjig
+         INNER JOIN types type ON type.type_id = subjig.type_id
+WHERE type.type_id = ?;
+
+CREATE TABLE get_years
+(
+    year_id VARCHAR(11) PRIMARY KEY NOT NULL
+
+) ENGINE = InnoDB;
+
+
+SELECT *
+FROM supplies supply
+         INNER JOIN types type ON type.type_id = supply.type_id
+where supply.type_id = ?;
+
+SELECT supply.supply_id,
+       supply.supply_date,
+       supply.target_set,
+       order_number,
+       subjig_name,
+       subjig_qty,
+       line.target_set,
+       jumlah_line_a,
+       jumlah_line_b,
+       jumlah_line_c,
+       total
+FROM supplies supply
+         INNER JOIN supply_lines line ON line.supply_id = supply.supply_id
+         INNER JOIN subjigs subjig on line.subjig_id = subjig.subjig_id
+         INNER JOIN types type on supply.type_id = type.type_id
+WHERE type.type_id = 'WAWA'
+

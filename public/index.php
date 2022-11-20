@@ -9,6 +9,7 @@ use Subjig\Report\Controller\AdminUserController;
 use Subjig\Report\Controller\HomeController;
 use Subjig\Report\Controller\LaporanController;
 use Subjig\Report\Controller\ListItemController;
+use Subjig\Report\Controller\SubjigController;
 use Subjig\Report\Controller\SupplyController;
 use Subjig\Report\Middleware\IsAdminMiddleware;
 use Subjig\Report\Middleware\IsNotLoginMiddleware;
@@ -39,35 +40,29 @@ Router::get('GET', '/admin/user-delete', AdminUserController::class, 'delete', [
 
 // List Item
 Router::get('GET', '/admin/list-item', ListItemController::class, 'index', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig', ListItemController::class, 'subjig', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig', ListItemController::class, 'typeItem', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/list-item/subjig', ListItemController::class, 'postCreateType', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/list-item/subjig-update', ListItemController::class, 'postUpdateType', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/list-item/subjig-update', ListItemController::class, 'postUpdateType', [MandatoryLoginMiddleware::class]);
 
-// K2F
-Router::get('GET', '/admin/list-item/subjig/k2f', ListItemController::class, 'k2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/list-item/subjig/k2f', ListItemController::class, 'postK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'updateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/list-item/subjig/k2f-update', ListItemController::class, 'postUpdateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-update-order', ListItemController::class, 'updateOrderedK2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/list-item/subjig/k2f-update-order', ListItemController::class, 'postUpdateOrderedK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-delete', ListItemController::class, 'deleteK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/list-item/subjig/k2f-target', ListItemController::class, 'targetK2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/list-item/subjig/k2f-target', ListItemController::class, 'postTargetK2f', [MandatoryLoginMiddleware::class]);
-
+// Subjig
+Router::get('GET', '/admin/subjig/([0-9a-zA-Z|-]*)', SubjigController::class, 'index', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/subjig/([0-9a-zA-Z|-]*)/list', SubjigController::class, 'list', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/subjig/([0-9a-zA-Z|-]*)/list', SubjigController::class, 'postList', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/subjig/([0-9a-zA-Z|-]*)/list', SubjigController::class, 'postList', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/subjig/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)-delete', SubjigController::class, 'delete', [MandatoryLoginMiddleware::class]);
 
 // Supply
 Router::get('GET', '/admin/supply', SupplyController::class, 'index', [MandatoryLoginMiddleware::class]);
-// Supply K2F
-Router::get('GET', '/admin/supply/subjig/k2f', SupplyController::class, 'K2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/supply/subjig/k2f', SupplyController::class, 'postCreateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/subjig/k2f-update', SupplyController::class, 'updateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/supply/subjig/k2f-update', SupplyController::class, 'postUpdateK2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/subjig/delete', SupplyController::class, 'delete', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)', SupplyController::class, 'create', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)', SupplyController::class, 'postCreate', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', SupplyController::class, 'update', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', SupplyController::class, 'postUpdate', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/delete', SupplyController::class, 'delete', [MandatoryLoginMiddleware::class]);
 
-// laporan 2022
+// laporan
 Router::get('GET', '/admin/laporan', LaporanController::class, 'index', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/laporan/2022', LaporanController::class, 't2022', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/laporan/2022/subjig', LaporanController::class, 'subjig', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/laporan/2022/subjig/k2f', LaporanController::class, 'k2f', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/laporan/2022/subjig/k2f/supply', LaporanController::class, 'k2f', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/laporan/([0-9a-zA-Z|-]*)/supply', LaporanController::class, 'supply', [MandatoryLoginMiddleware::class]);
 
 // Guest
 Router::get('GET', '/', HomeController::class, 'index', []);
