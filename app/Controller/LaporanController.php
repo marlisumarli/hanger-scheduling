@@ -5,54 +5,39 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Repository\SupplyRepository;
+use Subjig\Report\Repository\TypeRepository;
 
 class LaporanController
 {
     private SupplyRepository $supplyRepository;
+    private TypeRepository $typeRepository;
 
     public function __construct()
     {
         $this->supplyRepository = new SupplyRepository(Database::getConnection());
+        $this->typeRepository = new TypeRepository(Database::getConnection());
     }
 
     public function index()
     {
         $model = [
-            'title' => 'Admin | Laporan'
+            'title' => 'Admin | Laporan',
+            'allType' => $this->typeRepository->findAll()
         ];
         View::render('Admin/Laporan/index', compact('model'));
     }
 
-    public function t2022()
-    {
-        $model = [
-            'title' => 'Admin | Laporan'
-        ];
-        View::render('Admin/Laporan/2022/index', compact('model'));
-    }
-
-    public function subjig()
-    {
-        $model = [
-            'title' => 'Admin | Laporan Subjig'
-        ];
-        View::render('Admin/Laporan/2022/Subjig/index', compact('model'));
-    }
-
-    public function k2f()
+    public function supply(string $id)
     {
         $result = [];
-        foreach ($this->supplyRepository->findAll() as $item => $value) {
-            $result[] = $this->supplyRepository->supplyK2f($value->getSupplyId());
+        foreach ($this->supplyRepository->findAll($id) as $item => $value) {
+            $result[] = $this->supplyRepository->allSupplyLine($value->getSupplyId());
         }
         $model = [
-            'title' => 'Admin | Laporan Subjig',
-            'joinSupply' => $result,
-            'allSupply' => $this->supplyRepository->findAll(),
-            'periode' => [
-                '2022'
-            ]
+            'title' => "Admin | Laporan Supply $id",
+            'allSupplyDate' => $this->supplyRepository->findAll($id),
+            'allSupplyLine' => $result,
         ];
-        View::render('Admin/Laporan/2022/Subjig/k2f', compact('model'));
+        View::render('Admin/Laporan/supply', compact('model'));
     }
 }

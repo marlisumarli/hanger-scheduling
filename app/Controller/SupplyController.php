@@ -5,17 +5,19 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\SupplyRequest;
-use Subjig\Report\Repository\K2FRepository;
+use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\LineRepository;
+use Subjig\Report\Repository\SubjigRepository;
 use Subjig\Report\Repository\SupplyRepository;
+use Subjig\Report\Repository\TypeRepository;
 use Subjig\Report\Service\LineService;
 use Subjig\Report\Service\SupplyService;
 
 
 class SupplyController
 {
-    private K2FRepository $k2FRepository;
+    private TypeRepository $typeRepository;
+    private SubjigRepository $subjigRepository;
     private SupplyService $supplyService;
     private SupplyRepository $supplyRepository;
     private LineService $lineService;
@@ -23,7 +25,8 @@ class SupplyController
 
     public function __construct()
     {
-        $this->k2FRepository = new K2FRepository(Database::getConnection());
+        $this->typeRepository = new TypeRepository(Database::getConnection());
+        $this->subjigRepository = new SubjigRepository(Database::getConnection());
         $this->lineRepository = new LineRepository(Database::getConnection());
         $this->supplyRepository = new SupplyRepository(Database::getConnection());
         $this->lineService = new LineService($this->lineRepository);
@@ -33,125 +36,119 @@ class SupplyController
     public function index()
     {
         $model = [
-            'title' => 'Admin | Supply'
+            'title' => 'Admin | Supply',
+            'allType' => $this->typeRepository->findAll(),
         ];
         View::render('Admin/Supply/index', compact('model'));
     }
 
-    public function K2f()
+    public function create(string $id)
     {
         $model = [
-            'title' => 'Admin | Supply K2F',
-            'allK2f' => $this->k2FRepository->findAll(),
-            'k2fText' => $this->k2FRepository::TYPE
+            'title' => "Admin | Supply $id",
+            'allSubjig' => $this->subjigRepository->data($id),
         ];
-        View::render('Admin/Supply/Subjig/K2F/index', compact('model'));
+        View::render('Admin/Supply/Subjig/index', compact('model'));
     }
 
-    public function postCreateK2f()
+    public function postCreate(string $id)
     {
-        $allK2f = $this->k2FRepository->findAll();
+        $allSubjig = $this->subjigRepository->data($id);
         $date = $_POST['date'];
-        $type = $this->k2FRepository::TYPE;
 
         try {
             $createSup = new SupplyRequest();
-            $createSup->supplyId = str_replace(array("-", ":", "/"), '', $date) . $type;
+            $createSup->supplyId = str_replace(array("-", ":", "/"), '', $date) . $id;
+            $createSup->typeId = $id;
             $createSup->supplyDate = $date;
+            $createSup->supplyTarget = $_POST['target'];
             $this->supplyService->requestCreate($createSup);
 
-            foreach ($allK2f as $key => $value) {
+            foreach ($allSubjig as $key => $value) {
                 $createLine = new SupplyRequest();
                 $createLine->supplyId = $createSup->supplyId;
-                $createLine->subjigId = $value->getK2fId();
-                $createLine->jumlahLineA = $_POST['k2fLnA'][ $key ];
-                $createLine->jumlahLineB = $_POST['k2fLnB'][ $key ];
-                $createLine->jumlahLineC = $_POST['k2fLnC'][ $key ];
-                $createLine->supplyTarget = $_POST['target'];
+                $createLine->subjigId = $value->getSubjigId();
+                $createLine->jumlahLineA = $_POST['lnA'][ $key ];
+                $createLine->jumlahLineB = $_POST['lnB'][ $key ];
+                $createLine->jumlahLineC = $_POST['lnC'][ $key ];
+                $createLine->supplyTarget = $createSup->supplyTarget;
                 $this->lineService->requestCreate($createLine);
             }
             $model = [
-                'title' => 'Admin | Supply K2F',
-                'success' => '/admin/laporan/2022/subjig/k2f',
-                'allK2f' => $this->k2FRepository->findAll(),
+                'title' => "Admin | Supply $id",
+                'success' => "/admin/laporan/$id/supply",
+                'allSubjig' => $this->subjigRepository->data($id),
             ];
-            View::render('Admin/Supply/Subjig/K2F/index', compact('model'));
+            View::render('Admin/Supply/Subjig/index', compact('model'));
 
         } catch (ValidationException $exception) {
             $model = [
                 'title' => 'Admin | Supply K2F',
                 'error' => $exception->getMessage(),
-                'allK2f' => $this->k2FRepository->findAll(),
+                'allSubjig' => $this->subjigRepository->data($id),
             ];
-            View::render('Admin/Supply/Subjig/K2F/index', compact('model'));
+            View::render('Admin/Supply/Subjig/index', compact('model'));
         }
     }
 
-    public function updateK2f()
+    public function update(string $type, string $id)
     {
-        $idSupply = $_GET['id'];
-
         $model = [
-            'title' => 'Admin | Update Supply K2F',
-            'idSupply' => $this->supplyRepository->findById($idSupply),
-            'allSupply' => $this->supplyRepository->supplyK2f($idSupply),
-            'k2fText' => $this->k2FRepository::TYPE
+            'title' => "Admin | Update Supply $id",
+            'idSupply' => $this->supplyRepository->findById($id),
+            'allSupply' => $this->supplyRepository->allSupplyLine($id),
+            'back' => $type
         ];
-        View::render('Admin/Supply/Subjig/K2F/update', compact('model'));
+        View::render('Admin/Supply/Subjig/update', compact('model'));
     }
 
-    public function postUpdateK2f()
+    public function postUpdate(string $type, string $id)
     {
-        $idSupply = $_GET['id'];
-        $allSupply = $this->supplyRepository->supplyK2f($idSupply);
+        $allSupply = $this->supplyRepository->allSupplyLine($id);
         $date = $_POST['dateUpdate'];
 
         try {
             $updateSup = new SupplyRequest();
-            $updateSup->supplyId = $idSupply;
+            $updateSup->supplyId = $id;
             $updateSup->supplyDate = $date;
+            $updateSup->supplyTarget = $_POST['target'];
             $this->supplyService->requestUpdate($updateSup);
 
             foreach ($allSupply as $key => $value) {
                 $createLine = new SupplyRequest();
-                $createLine->lineId = $value->getJumlahId();
-                $createLine->jumlahLineA = $_POST['k2fLnA'][ $key ];
-                $createLine->jumlahLineB = $_POST['k2fLnB'][ $key ];
-                $createLine->jumlahLineC = $_POST['k2fLnC'][ $key ];
-                $createLine->supplyTarget = $_POST['target'];
+                $createLine->lineId = $value->getSupplyLineId();
+                $createLine->jumlahLineA = $_POST['lnA'][ $key ];
+                $createLine->jumlahLineB = $_POST['lnB'][ $key ];
+                $createLine->jumlahLineC = $_POST['lnC'][ $key ];
+                $createLine->supplyTarget = $updateSup->supplyTarget;
                 $this->lineService->requestUpdate($createLine);
             }
             $model = [
-                'title' => 'Admin | Update Supply K2F',
-                'success' => '/admin/laporan/2022/subjig/k2f',
-                'idSupply' => $this->supplyRepository->findById($idSupply),
-                'allSupply' => $this->supplyRepository->supplyK2f($idSupply),
-                'k2fText' => $this->k2FRepository::TYPE,
+                'title' => "Admin | Update Supply $id",
+                'success' => "/admin/supply/$type/$id/update",
+                'idSupply' => $this->supplyRepository->findById($id),
+                'allSupply' => $this->supplyRepository->allSupplyLine($id)
             ];
-            View::render('Admin/Supply/Subjig/K2F/update', compact('model'));
+            View::render('Admin/Supply/Subjig/update', compact('model'));
 
         } catch (ValidationException $exception) {
             $model = [
                 'error' => $exception->getMessage(),
-                'title' => 'Admin | K2F',
-                'allK2f' => $this->k2FRepository->findAll(),
+                'title' => "Admin | $id",
             ];
-            View::render('Admin/Supply/Subjig/K2F/update', compact('model'));
+            View::render('Admin/Supply/Subjig/update', compact('model'));
         }
     }
 
-    public function delete()
+    public function delete(string $type, string $id)
     {
-        if (isset($_GET['id'])) {
-            $idSupply = $_GET['id'];
-            $request = new SupplyRequest();
-            $request->supplyId = $idSupply;
-            $this->supplyService->requestDelete($request);
+        $request = new SupplyRequest();
+        $request->supplyId = $id;
+        $this->supplyService->requestDelete($request);
 
-            $model = [
-                'success' => '/admin/laporan/2022/subjig/k2f'
-            ];
-            View::render('Admin/Supply/Subjig/delete', compact('model'));
-        }
+        $model = [
+            'success' => "/admin/laporan/$type/supply"
+        ];
+        View::render('Admin/Supply/Subjig/delete', compact('model'));
     }
 }

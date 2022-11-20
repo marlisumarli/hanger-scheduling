@@ -4,9 +4,9 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\Line;
-use Subjig\Report\Model\SupplyRequest;
-use Subjig\Report\Model\SupplyResponse;
+use Subjig\Report\HTTP\Request\SupplyRequest;
+use Subjig\Report\HTTP\ResponseSubjigApp;
+use Subjig\Report\Model\Line;
 use Subjig\Report\Repository\LineRepository;
 
 class LineService
@@ -18,7 +18,7 @@ class LineService
         $this->lineRepository = $lineRepository;
     }
 
-    public function requestCreate(SupplyRequest $request): SupplyResponse
+    public function requestCreate(SupplyRequest $request): ResponseSubjigApp
     {
         try {
             Database::beginTransaction();
@@ -33,7 +33,7 @@ class LineService
             $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
             $this->lineRepository->save($line);
 
-            $response = new SupplyResponse();
+            $response = new ResponseSubjigApp();
             $response->line = $line;
 
             Database::commitTransaction();
@@ -44,7 +44,7 @@ class LineService
         }
     }
 
-    public function requestUpdate(SupplyRequest $request): SupplyResponse
+    public function requestUpdate(SupplyRequest $request): ResponseSubjigApp
     {
         try {
             Database::beginTransaction();
@@ -58,7 +58,7 @@ class LineService
             $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
             $this->lineRepository->update($line);
 
-            $response = new SupplyResponse();
+            $response = new ResponseSubjigApp();
             $response->line = $line;
 
             Database::commitTransaction();

@@ -4,10 +4,10 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\User;
+use Subjig\Report\HTTP\ResponseSubjigApp;
+use Subjig\Report\Model\User;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\UserRequest;
-use Subjig\Report\Model\UserResponse;
+use Subjig\Report\HTTP\Request\UserRequest;
 use Subjig\Report\Repository\UserRepository;
 
 class UserService
@@ -19,7 +19,7 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function requestCreateUser(UserRequest $request): UserResponse
+    public function requestCreateUser(UserRequest $request): ResponseSubjigApp
     {
         $this->validateColumnCreateRequest($request);
         try {
@@ -35,7 +35,7 @@ class UserService
             $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
             $this->userRepository->save($user);
 
-            $response = new UserResponse();
+            $response = new ResponseSubjigApp();
             $response->user = $user;
 
             Database::commitTransaction();
@@ -49,17 +49,7 @@ class UserService
 
 //    TODO validation timeout login
 
-    private function validateColumnCreateRequest(UserRequest $request): void
-    {
-        if ($request->username == null || $request->password == null ||
-            trim($request->username) == '' || trim($request->password) == '') {
-            throw new ValidationException('Kolom tidak boleh kosong');
-        } elseif (preg_match('/[^a-zA-Z0-9]/i', $request->username)) {
-            throw new ValidationException('Invalid character');
-        }
-    }
-
-    public function requestLogin(UserRequest $userLoginRequest): UserResponse
+    public function requestLogin(UserRequest $userLoginRequest): ResponseSubjigApp
     {
         $user = $this->userRepository->findByUsername($userLoginRequest->username);
 
@@ -67,7 +57,7 @@ class UserService
             throw new ValidationException("Gagal login, username atau password salah");
         }
         if (password_verify($userLoginRequest->password, $user->getPassword())) {
-            $response = new UserResponse();
+            $response = new ResponseSubjigApp();
             $response->user = $user;
             return $response;
         } else {
@@ -75,7 +65,7 @@ class UserService
         }
     }
 
-    public function requestUpdateUser(UserRequest $request): UserResponse
+    public function requestUpdateUser(UserRequest $request): ResponseSubjigApp
     {
         try {
             Database::beginTransaction();
@@ -89,7 +79,7 @@ class UserService
             $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
             $this->userRepository->update($user);
 
-            $response = new UserResponse();
+            $response = new ResponseSubjigApp();
             $response->user = $user;
 
             Database::commitTransaction();
@@ -101,7 +91,7 @@ class UserService
         }
     }
 
-    public function requestDeleteUser(UserRequest $request): UserResponse
+    public function requestDeleteUser(UserRequest $request): ResponseSubjigApp
     {
         $user = $this->userRepository->findByUsername($request->username);
         if ($user == null) {
@@ -111,8 +101,18 @@ class UserService
             $user->setUsername($request->username);
             $this->userRepository->deleteByUsername($user->getUsername());
         }
-        $response = new UserResponse();
+        $response = new ResponseSubjigApp();
         $response->user = $user;
         return $response;
+    }
+
+    private function validateColumnCreateRequest(UserRequest $request): void
+    {
+        if ($request->username == null || $request->password == null ||
+            trim($request->username) == '' || trim($request->password) == '') {
+            throw new ValidationException('Kolom tidak boleh kosong');
+        } elseif (preg_match('/[^a-zA-Z0-9]/i', $request->username)) {
+            throw new ValidationException('Invalid character');
+        }
     }
 }

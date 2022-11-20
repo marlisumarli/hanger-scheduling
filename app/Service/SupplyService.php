@@ -4,10 +4,10 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\Supply;
 use Subjig\Report\Exception\ValidationException;
-use Subjig\Report\Model\SupplyRequest;
-use Subjig\Report\Model\SupplyResponse;
+use Subjig\Report\HTTP\Request\SupplyRequest;
+use Subjig\Report\HTTP\ResponseSubjigApp;
+use Subjig\Report\Model\Supply;
 use Subjig\Report\Repository\SupplyRepository;
 
 class SupplyService
@@ -19,7 +19,7 @@ class SupplyService
         $this->supplyRepository = $supplyRepository;
     }
 
-    public function requestCreate(SupplyRequest $request): SupplyResponse
+    public function requestCreate(SupplyRequest $request): ResponseSubjigApp
     {
         try {
             Database::beginTransaction();
@@ -31,10 +31,12 @@ class SupplyService
 
             $supply = new Supply();
             $supply->setSupplyId($request->supplyId);
+            $supply->setTypeId($request->typeId);
             $supply->setSupplyDate($request->supplyDate);
+            $supply->setTargetSet($request->supplyTarget);
             $this->supplyRepository->save($supply);
 
-            $response = new SupplyResponse();
+            $response = new ResponseSubjigApp();
             $response->supply = $supply;
 
             Database::commitTransaction();
@@ -45,17 +47,18 @@ class SupplyService
         }
     }
 
-    public function requestUpdate(SupplyRequest $request): SupplyResponse
+    public function requestUpdate(SupplyRequest $request): ResponseSubjigApp
     {
         try {
             Database::beginTransaction();
 
             $supply = new Supply();
             $supply->setSupplyId($request->supplyId);
-            $supply->setSupplyId($request->supplyDate);
+            $supply->setSupplyDate($request->supplyDate);
+            $supply->setTargetSet($request->supplyTarget);
             $this->supplyRepository->update($supply);
 
-            $response = new SupplyResponse();
+            $response = new ResponseSubjigApp();
             $response->supply = $supply;
 
             Database::commitTransaction();
@@ -66,12 +69,12 @@ class SupplyService
         }
     }
 
-    public function requestDelete(SupplyRequest $request): SupplyResponse
+    public function requestDelete(SupplyRequest $request): ResponseSubjigApp
     {
         $supply = new  Supply();
         $supply->setSupplyId($request->supplyId);
         $this->supplyRepository->deleteById($supply->getSupplyId());
-        $response = new SupplyResponse();
+        $response = new ResponseSubjigApp();
         $response->supply = $supply;
         return $response;
     }

@@ -2,9 +2,9 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\UserDetail;
+use Subjig\Report\Model\UserDetail;
 
-class UserDetailRepository extends UserDetail
+class UserDetailRepository
 {
     private \PDO $connection;
 
@@ -18,7 +18,7 @@ class UserDetailRepository extends UserDetail
     {
         $statement = $this->connection
             ->prepare("INSERT INTO user_details(user_detail_id, username, full_name, role_id ) VALUES (?,?,?,?)");
-        $statement->execute([$userDetail->user_detail_id, $userDetail->username, $userDetail->full_name, $userDetail->role_id]);
+        $statement->execute([$userDetail->getUserDetailId(), $userDetail->getUsername(), $userDetail->getFullName(), $userDetail->getRoleId()]);
         return $userDetail;
     }
 
@@ -26,7 +26,7 @@ class UserDetailRepository extends UserDetail
     {
         $statement = $this->connection
             ->prepare("UPDATE user_details SET full_name = ?, role_id = ?, updated_at = CURRENT_TIMESTAMP WHERE username = ?");
-        $statement->execute([$userDetail->full_name, $userDetail->role_id, $userDetail->username]);
+        $statement->execute([$userDetail->getFullName(), $userDetail->getRoleId(), $userDetail->getUsername()]);
         return $userDetail;
     }
 
@@ -39,7 +39,7 @@ class UserDetailRepository extends UserDetail
         try {
             if ($row = $statement->fetch()) {
                 $userDetail = new UserDetail();
-                $userDetail->user_detail_id = $row['user_detail_id'];
+                $userDetail->setUserDetailId($row['user_detail_id']);
                 $userDetail->setUsername($row['username']);
                 $userDetail->setFullName($row['full_name']);
                 $userDetail->setRoleId($row['role_id']);

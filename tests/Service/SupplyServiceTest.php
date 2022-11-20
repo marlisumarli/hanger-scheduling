@@ -4,7 +4,7 @@ namespace Subjig\Report\Service;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Model\SupplyRequest;
+use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\LineRepository;
 use Subjig\Report\Repository\SupplyRepository;
 use function PHPUnit\Framework\assertNotNull;
@@ -16,20 +16,23 @@ class SupplyServiceTest extends TestCase
 
     public function testRequestCreate()
     {
-        $date = '2022-11-12';
-        $type = 'K2F';
+        $date = '2022-10-12';
+        $type = 'A';
 
         $createSup = new SupplyRequest();
         $createSup->supplyId = str_replace(array("-", ":", "/"), '', $date) . $type;
         $createSup->supplyDate = $date;
+        $createSup->typeId = $type;
+        $createSup->supplyTarget = 200;
         $response = $this->supplyService->requestCreate($createSup);
 
         $createLine = new SupplyRequest();
         $createLine->supplyId = $createSup->supplyId;
-        $createLine->subjigId = 'K2FSA';
+        $createLine->subjigId = 'AB0';
         $createLine->jumlahLineA = 10;
         $createLine->jumlahLineB = 10;
         $createLine->jumlahLineC = 10;
+        $createLine->supplyTarget = 10;
         $this->lineService->requestCreate($createLine);
 
         assertNotNull($response);
@@ -37,12 +40,10 @@ class SupplyServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $lineRep = new LineRepository(Database::getConnection());
-        $supplyRep = new SupplyRepository(Database::getConnection());
+        $lineRep = new LineRepository(Database::getConnection('prod'));
+        $supplyRep = new SupplyRepository(Database::getConnection('prod'));
 
         $this->lineService = new LineService($lineRep);
         $this->supplyService = new SupplyService($supplyRep);
-
-        $supplyRep->deleteAll();
     }
 }

@@ -4,7 +4,7 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\User;
+use Subjig\Report\Model\User;
 
 class UserRepositoryTest extends TestCase
 {

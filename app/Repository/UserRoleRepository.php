@@ -2,9 +2,9 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\UserRole;
+use Subjig\Report\Model\UserRole;
 
-class UserRoleRepository extends UserRole
+class UserRoleRepository
 {
     private \PDO $connection;
 
@@ -17,7 +17,7 @@ class UserRoleRepository extends UserRole
     {
         $statement = $this->connection
             ->prepare("INSERT INTO user_roles(user_role_id, user_role_name, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)");
-        $statement->execute([$userRole->user_role_id, $userRole->user_role_name]);
+        $statement->execute([$userRole->getUserRoleId(), $userRole->getUserRoleName()]);
         return $userRole;
     }
 
@@ -25,7 +25,7 @@ class UserRoleRepository extends UserRole
     {
         $statement = $this->connection
             ->prepare("UPDATE user_roles SET user_role_name = ? ,updated_at = CURRENT_TIMESTAMP WHERE  user_role_id = ?");
-        $statement->execute([$userRole->user_role_name, $userRole->user_role_id]);
+        $statement->execute([$userRole->getUserRoleName(), $userRole->getUserRoleId()]);
         return $userRole;
     }
 
@@ -37,10 +37,10 @@ class UserRoleRepository extends UserRole
         try {
             if ($row = $statement->fetch()) {
                 $userRole = new UserRole();
-                $userRole->user_role_id = $row['user_role_id'];
-                $userRole->user_role_name = $row['user_role_name'];
-                $userRole->created_at = $row['created_at'];
-                $userRole->updated_at = $row['updated_at'];
+                $userRole->setUserRoleId($row['user_role_id']);
+                $userRole->setUserRoleName($row['user_role_name']);
+                $userRole->setCreatedAt($row['created_at']);
+                $userRole->setUpdatedAt($row['updated_at']);
                 return $userRole;
             } else {
                 return null;
@@ -48,17 +48,6 @@ class UserRoleRepository extends UserRole
         } finally {
             $statement->closeCursor();
         }
-    }
-
-    public function deleteById(int $id): void
-    {
-        $statement = $this->connection->prepare("DELETE FROM user_roles WHERE user_role_id = ?");
-        $statement->execute([$id]);
-    }
-
-    public function deleteAll(): void
-    {
-        $this->connection->exec("DELETE FROM user_roles");
     }
 
     public function findAll(): array

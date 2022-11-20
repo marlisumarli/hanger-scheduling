@@ -4,9 +4,9 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Entity\K2F;
-use Subjig\Report\Entity\Line;
-use Subjig\Report\Entity\Supply;
+use Subjig\Report\Model\K2F;
+use Subjig\Report\Model\Line;
+use Subjig\Report\Model\Supply;
 
 class LineRepositoryTest extends TestCase
 {

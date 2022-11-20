@@ -2,10 +2,10 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Entity\JoinK2F;
-use Subjig\Report\Entity\Supply;
+use Subjig\Report\Model\SubjigJoinSupply;
+use Subjig\Report\Model\Supply;
 
-class SupplyRepository extends Supply
+class SupplyRepository
 {
     private \PDO $connection;
 
@@ -17,29 +17,31 @@ class SupplyRepository extends Supply
     public function save(Supply $supply): Supply
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO supplies(supply_id, supply_date) VALUES (?, ?)");
-        $statement->execute([$supply->supply_id, $supply->supply_date]);
+            ->prepare("INSERT INTO supplies(supply_id, type_id, supply_date, target_set) VALUES (?, ?, ?, ?)");
+        $statement->execute([$supply->getSupplyId(), $supply->getTypeId(), $supply->getSupplyDate(), $supply->getTargetSet()]);
         return $supply;
     }
 
     public function update(Supply $supply): Supply
     {
         $statement = $this->connection
-            ->prepare("UPDATE supplies SET supply_id = ?, supply_date = ? WHERE  supply_id = ?");
-        $statement->execute([$supply->supply_id, $supply->supply_date, $supply->supply_id]);
+            ->prepare("UPDATE supplies SET supply_id = ?, supply_date = ?, target_set = ? WHERE  supply_id = ?");
+        $statement->execute([$supply->getSupplyId(), $supply->getSupplyDate(), $supply->getTargetSet(), $supply->getSupplyId()]);
         return $supply;
     }
 
     public function findById(string $id): ?Supply
     {
-        $statement = $this->connection->prepare("SELECT supply_id, supply_date FROM supplies WHERE supply_id = ?");
+        $statement = $this->connection->prepare("SELECT supply_id, type_id, supply_date, target_set FROM supplies WHERE supply_id = ?");
         $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $supply = new Supply();
-                $supply->supply_id = $row['supply_id'];
-                $supply->supply_date = $row['supply_date'];
+                $supply->setSupplyId($row['supply_id']);
+                $supply->setTypeId($row['type_id']);
+                $supply->setSupplyDate($row['supply_date']);
+                $supply->setTargetSet($row['target_set']);
                 return $supply;
             } else {
                 return null;
@@ -55,11 +57,15 @@ class SupplyRepository extends Supply
         $statement->execute([$id]);
     }
 
-    public function findAll(): array
+    public function findAll(string $id): array
     {
-        $sql = "SELECT supply_id, supply_date FROM supplies ORDER BY supply_id";
+        $sql = "SELECT supply_id, supply.type_id, supply_date, target_set
+FROM supplies supply
+         INNER JOIN types type ON type.type_id = supply.type_id
+where supply.type_id = ?";
+
         $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        $statement->execute([$id]);
 
         $result = [];
 
@@ -68,43 +74,56 @@ class SupplyRepository extends Supply
         foreach ($allSupply as $row) {
             $supply = new Supply();
             $supply->setSupplyId($row['supply_id']);
+            $supply->setTypeId($row['type_id']);
             $supply->setSupplyDate($row['supply_date']);
+            $supply->setTargetSet($row['target_set']);
 
             $result[] = $supply;
         }
         return $result;
     }
 
-    public function supplyK2f(string $supplyId): array
+    public function allSupplyLine(string $type): array
     {
-        $sql = "SELECT supply.supply_date, k2f.k2f_order_id, k2f.k2f_name, k2f.k2f_qty, line.id, line.jumlah_line_a, line.jumlah_line_b, line.jumlah_line_c, line.target_set, line.total
+        $sql = "SELECT
+       supply.supply_date,
+       supply.target_set,
+       order_number,
+       subjig_name,
+       subjig_qty,
+       line.id,
+       jumlah_line_a,
+       jumlah_line_b,
+       jumlah_line_c,
+       total
 FROM supplies supply
          INNER JOIN supply_lines line ON line.supply_id = supply.supply_id
-         INNER JOIN k2fs k2f on line.subjig_id = k2f.k2f_id
+         INNER JOIN subjigs subjig on line.subjig_id = subjig.subjig_id
+         INNER JOIN types type on supply.type_id = type.type_id
 WHERE supply.supply_id = ?";
 
         $statement = $this->connection->prepare($sql);
-        $statement->execute([$supplyId]);
+        $statement->execute([$type]);
 
-        $result = [];
         $supplies = $statement->fetchAll();
 
+        $result = [];
         foreach ($supplies as $row) {
-            $supplyK2F = new JoinK2F();
-            $supplyK2F->setJumlahId($row['id']);
-            $supplyK2F->setSupplyDate($row['supply_date']);
-            $supplyK2F->setK2fOrderId($row['k2f_order_id']);
-            $supplyK2F->setK2fName($row['k2f_name']);
-            $supplyK2F->setK2fQty($row['k2f_qty']);
-            $supplyK2F->setJumlahLineA($row['jumlah_line_a']);
-            $supplyK2F->setJumlahLineB($row['jumlah_line_b']);
-            $supplyK2F->setJumlahLineC($row['jumlah_line_c']);
-            $supplyK2F->setTargetSet($row['target_set']);
-            $supplyK2F->setTotal($row['total']);
+            $supplySubjig = new SubjigJoinSupply();
+            $supplySubjig->setSupplyDate($row['supply_date']);
+            $supplySubjig->setSupplyTarget($row['target_set']);
+            $supplySubjig->setOrderId($row['order_number']);
+            $supplySubjig->setSubjigName($row['subjig_name']);
+            $supplySubjig->setSubjigQty($row['subjig_qty']);
+            $supplySubjig->setSupplyLineId($row['id']);
+            $supplySubjig->setLineTarget($row['target_set']);
+            $supplySubjig->setJumlahLineA($row['jumlah_line_a']);
+            $supplySubjig->setJumlahLineB($row['jumlah_line_b']);
+            $supplySubjig->setJumlahLineC($row['jumlah_line_c']);
+            $supplySubjig->setTotal($row['total']);
 
-            $result[] = $supplyK2F;
+            $result[] = $supplySubjig;
         }
-
         return $result;
     }
 }

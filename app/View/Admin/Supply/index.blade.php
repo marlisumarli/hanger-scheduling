@@ -1,6 +1,8 @@
 @extends('Admin/Layout/main')
 @section('content')
     <ul>
-        <li><a href="/admin/supply/subjig/k2f">K2F</a></li>
+        @foreach($model['allType'] as $key => $value)
+            <li><a href="/admin/supply/{{$value->getTypeId()}}">{{$value->getTypeId()}}</a></li>
+        @endforeach
     </ul>
 @endsection
