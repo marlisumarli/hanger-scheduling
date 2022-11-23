@@ -2,6 +2,7 @@
 
 namespace Subjig\Report\Controller;
 
+use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Repository\SessionRepository;
@@ -11,17 +12,16 @@ use Subjig\Report\Service\SessionService;
 
 class AdminHomeController
 {
-    private SessionService $sessionService;
     private UserDetailRepository $userDetailRepository;
+    private SessionService $sessionService;
 
     public function __construct()
     {
-        $connection = Database::getConnection();
-        $userRepository = new UserRepository($connection);
-        $sessionRepository = new SessionRepository($connection);
-
-        $this->userDetailRepository = new UserDetailRepository($connection);
+        $userRepository = new UserRepository(Database::getConnection());
+        $sessionRepository = new SessionRepository(Database::getConnection());
         $this->sessionService = new SessionService($sessionRepository, $userRepository);
+
+        $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
     }
 
     public function index()
@@ -31,8 +31,9 @@ class AdminHomeController
 
         $model = [
             'title' => 'Admin | Dashboard',
-            'fullName' => $userDetail->getFullName(),
+            'fullName' => Util::nameSplitter($userDetail->getFullName()),
             'roleId' => $userDetail->getRoleId(),
+            'dashboard' => 'active'
         ];
         View::render('Admin/Home/index', compact('model'));
     }

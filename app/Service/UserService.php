@@ -4,10 +4,10 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\HTTP\ResponseSubjigApp;
-use Subjig\Report\Model\User;
 use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\UserRequest;
+use Subjig\Report\HTTP\ResponseSubjigApp;
+use Subjig\Report\Model\User;
 use Subjig\Report\Repository\UserRepository;
 
 class UserService
@@ -48,6 +48,16 @@ class UserService
     }
 
 //    TODO validation timeout login
+
+    private function validateColumnCreateRequest(UserRequest $request): void
+    {
+        if ($request->username == null || $request->password == null ||
+            trim($request->username) == '' || trim($request->password) == '') {
+            throw new ValidationException('Kolom tidak boleh kosong');
+        } elseif (preg_match('/[^a-zA-Z0-9]/i', $request->username)) {
+            throw new ValidationException('Invalid character');
+        }
+    }
 
     public function requestLogin(UserRequest $userLoginRequest): ResponseSubjigApp
     {
@@ -104,15 +114,5 @@ class UserService
         $response = new ResponseSubjigApp();
         $response->user = $user;
         return $response;
-    }
-
-    private function validateColumnCreateRequest(UserRequest $request): void
-    {
-        if ($request->username == null || $request->password == null ||
-            trim($request->username) == '' || trim($request->password) == '') {
-            throw new ValidationException('Kolom tidak boleh kosong');
-        } elseif (preg_match('/[^a-zA-Z0-9]/i', $request->username)) {
-            throw new ValidationException('Invalid character');
-        }
     }
 }

@@ -40,4 +40,23 @@
         @endif
     </form>
 
+    <script>
+        //    Generate sequence number
+        const generate = document.getElementById('generate');
+        const id = document.querySelectorAll('.order');
+        const makeArray = (count, content) => {
+            const result = [];
+            if (typeof content === "function") {
+                for (let i = 0; i < count; i++) {
+                    result.push(content(i));
+                }
+            }
+            return result;
+        }
+        generate.addEventListener('click', () => {
+            makeArray(id.length, (i) => {
+                return id[i].value = i + 1;
+            });
+        });
+    </script>
 @endsection

@@ -1,7 +1,7 @@
 @extends('Admin/Layout/main')
 @section('content')
     @foreach($model['allSupplyDate'] as $index => $value)
-        <h1>Tanggal : {{$value->getSupplyDate()}}</h1>
+        <h1 id="{{$value->getSupplyId()}}">Tanggal : {{$value->getSupplyDate()}}</h1>
         <table border="1">
             <thead>
             <tr>

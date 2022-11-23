@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content'); ?>
     <?php $__currentLoopData = $model['allSupplyDate']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <h1>Tanggal : <?php echo e($value->getSupplyDate()); ?></h1>
+        <h1 id="<?php echo e($value->getSupplyId()); ?>">Tanggal : <?php echo e($value->getSupplyDate()); ?></h1>
         <table border="1">
             <thead>
             <tr>

@@ -2,15 +2,20 @@
 
 namespace Subjig\Report\Controller;
 
+use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\LineRepository;
+use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\SubjigRepository;
 use Subjig\Report\Repository\SupplyRepository;
 use Subjig\Report\Repository\TypeRepository;
+use Subjig\Report\Repository\UserDetailRepository;
+use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\LineService;
+use Subjig\Report\Service\SessionService;
 use Subjig\Report\Service\SupplyService;
 
 
@@ -22,9 +27,13 @@ class SupplyController
     private SupplyRepository $supplyRepository;
     private LineService $lineService;
     private LineRepository $lineRepository;
+    private SessionService $sessionService;
 
     public function __construct()
     {
+        $userRepository = new UserRepository(Database::getConnection());
+        $sessionRepository = new SessionRepository(Database::getConnection());
+        $this->sessionService = new SessionService($sessionRepository, $userRepository);
         $this->typeRepository = new TypeRepository(Database::getConnection());
         $this->subjigRepository = new SubjigRepository(Database::getConnection());
         $this->lineRepository = new LineRepository(Database::getConnection());
@@ -35,9 +44,12 @@ class SupplyController
 
     public function index()
     {
+        $fullName = new UserDetailRepository(Database::getConnection());
         $model = [
             'title' => 'Admin | Supply',
             'allType' => $this->typeRepository->findAll(),
+            'supply' => 'active',
+            'fullName' => Util::nameSplitter($fullName->findByUsername($this->sessionService->current()->getUsername())->getFullName())
         ];
         View::render('Admin/Supply/index', compact('model'));
     }
