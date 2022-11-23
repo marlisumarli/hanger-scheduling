@@ -1,6 +1,15 @@
+::-webkit-scrollbar {
+    width: 0;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
+}
+
 .avatar {
     font-size: 14px;
-    font-weight: 550;
+    font-weight: 400;
     width: 2.5em;
     height: 2.5em;
     border-radius: 50%;
@@ -19,7 +28,7 @@
 }
 
 body {
-    background-color: #e6e6e6;
+    background-color: rgb(243 244 246);
 }
 
 body.active .page .sidebar {
@@ -44,15 +53,6 @@ body.active .page .content {
 .page .content {
     margin-left: 0;
     transition: all ease .3s;
-}
-
-.sidebarToggle {
-    color: #F59E0B;
-    margin-left: 10px;
-}
-
-.sidebarToggle.active {
-    margin-left: -5px;
 }
 
 .brand-name {
@@ -80,6 +80,15 @@ body.active .page .content {
     background: #F59E0B;
 }
 
+
+.navigation-list-collapse {
+    color: #111827;
+}
+
+.navigation-list-collapse:hover {
+    color: #F59E0B;
+}
+
 .navigation-link {
     color: #111827;
     letter-spacing: 1px;
@@ -91,13 +100,26 @@ body.active .page .content {
     font-size: 14px;
 }
 
+.navigation-list-collapse i {
+    font-size: small;
+    margin-top: 5px;
+    transition: all ease .2s;
+}
+
+.navigation-list-collapse.show i {
+    font-size: small;
+    margin-bottom: 5px;
+    rotate: -180deg;
+    transition: all ease .2s;
+}
+
 .navigation-list-item:hover .navigation-link {
     color: #111827;
 }
 
 .navigation-list-item.active .navigation-link {
     color: #FFFFFF;
-    font-weight: 540
+    font-weight: 400
 }
 
 .dropdown-item:hover {
@@ -118,7 +140,7 @@ body.active .page .content {
     text-transform: none;
     background-color: transparent;
     border: 0;
-    margin: 0;
+    margin: 0 0 10px;
     overflow: visible;
 }
 
@@ -146,12 +168,12 @@ body.active .page .content {
 .hamburger-inner {
     display: block;
     top: 50%;
-    margin-top: -2px;
+    margin-top: -4px;
 }
 
 .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-    width: 20px;
-    height: 4px;
+    width: 17px;
+    height: 2px;
     background-color: #F59E0B;
     border-radius: 4px;
     position: absolute;
@@ -166,11 +188,11 @@ body.active .page .content {
 }
 
 .hamburger-inner::before {
-    top: 11px;
+    top: 12px;
 }
 
 .hamburger-inner::after {
-    bottom: -5px;
+    bottom: -6px;
     background-color: #0a53be;
 }
 
@@ -203,4 +225,8 @@ body.active .page .content {
     bottom: 0;
     transform: rotate(-90deg);
     transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.content header {
+    position: sticky;
 }

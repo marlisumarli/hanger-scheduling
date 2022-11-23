@@ -143,34 +143,59 @@
         </header>
         <!--        main content-->
         <div class="container-fluid px-5 py-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Supply</a></li>
+                <li aria-current="page" class="breadcrumb-item active">K2F</li>
+            </ol>
             <div class="mb-4">
-                <h1>SUPPLY</h1>
+                <h1>Buat Laporan Supply K2F</h1>
             </div>
-            <div class="row">
-                <div class="col-xl-4 col-lg-5 col-md-6 mb-3">
-                    <div class="card rounded-3 shadow-lg">
-                        <div class="card-header">
-                            <h5 class="card-title"># K2F</h5>
-                        </div>
-                        <div class="card-body d-flex text-center p-3">
-                            <div class="mx-auto">
-                                sebelumnya
-                                <a class="badge text-bg-success text-decoration-none" href="#">
-                                    <span>12/09/2022</span>
-                                </a>
-                            </div>
-                            <div class="mx-auto">
-                                selanjutnya <span class="badge text-bg-warning">12/09/2022</span>
+
+            <form class="d-flex justify-content-center">
+                <div class="row">
+                    <div class="col-md-4 order-md-last mb-3">
+                        <div class="card rounded-3 shadow-lg">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <span>Tanggal dibuat</span><span class="badge text-bg-warning">12/09/2022</span>
+                                </div>
+                                <label class="form-label card-title " for="targetSet">Target Set</label>
+                                <input class="form-control" id="targetSet" min="100" name="" type="number">
                             </div>
                         </div>
-                        <div class="card-footer text-center">
-                            <a class="small" href="supply.html">
-                                buat laporan
-                            </a>
+                    </div>
+
+                    <div class="col-md">
+
+                        <div class="card shadow-lg rounded-3 mb-2">
+                            <div class="card-header border-bottom-0">
+                                <span class="card-title"># Speedometer A</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-1">
+                                    <div class="col-4">
+                                        <label for="1">Line A</label>
+                                        <input class="form-control" id="1" name="" type="number">
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="2">Line B</label>
+                                        <input class="form-control" id="2" name="" type="number">
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="3">Line C</label>
+                                        <input class="form-control" id="3" name="" type="number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-primary rounded-3 mt-3 px mx-2 shadow-lg">submit</button>
+                            <button class="btn btn-secondary rounded-3 mt-3 shadow-lg">batal</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 

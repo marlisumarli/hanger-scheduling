@@ -12,6 +12,18 @@ toggleSidebar.addEventListener("click", () => {
     localStorage.setItem(lsKey, body.classList.contains(active));
 });
 
+const collapse = document.querySelector("#collapseList");
+const navCollapse = document.querySelector("#collapse-link");
+
+if (localStorage.getItem('collapsedList') === "true") {
+    navCollapse.classList.add('show');
+    collapse.classList.add('show');
+}
+navCollapse.addEventListener("click", () => {
+    navCollapse.classList.toggle('show');
+    localStorage.setItem('collapsedList', navCollapse.classList.contains('show'));
+});
+
 const avatars = document.querySelectorAll(".avatar");
 avatars.forEach(a => {
     const charCodeRed = a.dataset.label.charCodeAt(0);
