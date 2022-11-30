@@ -33,7 +33,7 @@ class AdminDashboardController
             'title' => 'Admin | Dashboard',
             'fullName' => Util::nameSplitter($userDetail->getFullName()),
             'roleId' => $userDetail->getRoleId(),
-            'dashboard' => 'active'
+            'dashboard' => 'active bg-warning'
         ];
         View::render('Admin/Dashboard/index', compact('model'));
     }

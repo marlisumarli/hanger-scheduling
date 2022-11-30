@@ -63,7 +63,7 @@ class AdminSupplyController
         $model = [
             'title' => 'Admin | Supply',
             'allType' => $this->typeRepository->findAll(),
-            'supply' => 'active',
+            'supply' => 'active bg-warning',
             'fullName' => Util::nameSplitter($fullName->findByUsername($this->sessionService->current()->getUsername())->getFullName()),
         ];
         View::render('Admin/ScheduleSupply/Supply/index', compact('model'));

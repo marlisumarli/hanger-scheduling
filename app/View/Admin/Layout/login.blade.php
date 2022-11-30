@@ -7,7 +7,7 @@
 </head>
 
 <body>
-@include('Admin/Partial/navlogin')
+@include('Admin/Layout/navlogin')
 @yield('content-login')
 </body>
 </html>
