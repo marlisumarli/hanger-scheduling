@@ -983,14 +983,14 @@ WHERE usr_r.id = 2;
 SELECT supply.supply_date,
        k2f.k2f_id,
        k2f.k2f_name,
-       line.jumlah_line_a,
-       line.jumlah_line_b,
-       line.jumlah_line_c,
+       line.line_a,
+       line.line_b,
+       line.line_c,
        line.total
 FROM supplies supply
-         INNER JOIN supply_lines line ON line.supply_id = supply.supply_id
-         INNER JOIN k2fs k2f on line.subjig_id = k2f.k2f_id
-WHERE supply.supply_id = '20221115K2F';
+         INNER JOIN supply_lines line ON line.supply_id = supply.id
+         INNER JOIN k2fs k2f on line.hanger_id = k2f.k2f_id
+WHERE supply.id = '20221115K2F';
 
 CREATE TABLE periode
 (
@@ -1021,22 +1021,22 @@ CREATE TABLE subjigs
 
 ) ENGINE = InnoDB;
 
-alter table subjigs
+alter table hangers
     add constraint subjigs_types_null_fk
-        foreign key (type_id) references types (type_id)
+        foreign key (hanger_type_id) references hanger_types (id)
             on update cascade;
 
 
 SELECT subjig.order_number,
-       subjig.subjig_id,
-       subjig.subjig_name,
-       type.type_id,
-       subjig.subjig_qty,
+       subjig.id,
+       subjig.hanger_name,
+       type.id,
+       subjig.hanger_type_id,
+       subjig.hanger_qty,
        subjig.created_at,
        subjig.updated_at
-FROM subjigs subjig
-         INNER JOIN types type ON type.type_id = subjig.type_id
-WHERE type.type_id = ?;
+FROM hangers subjig
+         INNER JOIN hanger_types type ON type.id = subjig.hanger_type_id
 
 CREATE TABLE get_years
 (
@@ -1047,23 +1047,121 @@ CREATE TABLE get_years
 
 SELECT *
 FROM supplies supply
-         INNER JOIN types type ON type.type_id = supply.type_id
-where supply.type_id = ?;
+         INNER JOIN hanger_types type ON type.id = supply.hanger_type_id
+where supply.hanger_type_id = ?;
 
-SELECT supply.supply_id,
+SELECT supply.id,
        supply.supply_date,
        supply.target_set,
        order_number,
-       subjig_name,
-       subjig_qty,
+       hanger_name,
+       hanger_qty,
        line.target_set,
-       jumlah_line_a,
-       jumlah_line_b,
-       jumlah_line_c,
+       line_a,
+       line_b,
+       line_c,
        total
 FROM supplies supply
-         INNER JOIN supply_lines line ON line.supply_id = supply.supply_id
-         INNER JOIN subjigs subjig on line.subjig_id = subjig.subjig_id
-         INNER JOIN types type on supply.type_id = type.type_id
-WHERE type.type_id = 'WAWA'
+         INNER JOIN supply_lines line ON line.supply_id = supply.id
+         INNER JOIN hangers subjig on line.hanger_id = subjig.id
+         INNER JOIN hanger_types type on supply.hanger_type_id = type.id
+WHERE type.id = 'WAWA';
 
+
+CREATE TABLE schedules_subjig
+(
+    id         VARCHAR(55) PRIMARY KEY NOT NULL,
+    month      DATE                    NOT NULL,
+    type_id    VARCHAR(11)             NOT NULL,
+    created_at TIMESTAMP               NOT NULL
+) ENGINE = InnoDB;
+
+CREATE TABLE schedules
+(
+    id                 INT PRIMARY KEY AUTO_INCREMENT,
+    schedule_subjig_id VARCHAR(55) NOT NULL,
+    tanggal            DATE        NOT NULL,
+    created_at         TIMESTAMP   NOT NULL
+) ENGINE = InnoDB;
+
+SELECT subjig.id,
+       subjig.order_number,
+       subjig.hanger_name,
+       subjig.hanger_qty,
+       subjig.hanger_type_id,
+       schedule_subjig.id,
+       schedule_subjig.hanger_type_id,
+       schedule_week.id,
+       schedule_week.tanggal,
+       schedule_week.is_implemented,
+       schedule_week.supply_schedules_id,
+       supply.id,
+       supply.target_set,
+       line.id,
+       line.line_a,
+       line.line_b,
+       line.line_c,
+       line.total,
+       line.target_set,
+       line.supply_id,
+       line.hanger_id
+FROM supplies supply
+         INNER JOIN supply_lines line ON line.supply_id = supply.id
+         INNER JOIN hangers subjig ON subjig.id = line.hanger_id
+         INNER JOIN hanger_types type ON type.id = supply.hanger_type_id
+         INNER JOIN supply_schedules schedule_subjig ON schedule_subjig.hanger_type_id = type.id
+         INNER JOIN schedule_weeks schedule_week ON schedule_week.supply_schedules_id = schedule_subjig.id
+         INNER JOIN schedule_weeks schedule_week_supply ON schedule_week_supply.id = supply.schedule_week_id;
+
+SELECT
+    type.id AS type,
+    type.qty,
+    subjig.id,
+    subjig.order_number,
+    subjig.hanger_name,
+    subjig.hanger_qty
+FROM hangers subjig
+         INNER JOIN hanger_types type ON type.id = subjig.hanger_type_id
+WHERE type.id = ? ORDER BY order_number;
+
+SELECT
+    schedule_supply.created_at,
+    type.id AS type_id,
+    schedule_w.id AS schedule_week_id,
+    schedule_w.tanggal,
+    schedule_w.is_implemented
+FROM schedule_weeks schedule_w
+         INNER JOIN supply_schedules AS schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id
+         INNER JOIN hanger_types type ON type.id = schedule_supply.hanger_type_id
+WHERE type.id = ?;
+
+
+SELECT schedule.id AS schedule_id,
+    supply.id AS supply_id,
+    schedule.tanggal,
+    schedule.is_implemented
+FROM supplies supply
+         INNER JOIN schedule_weeks AS schedule ON schedule.id = supply.schedule_week_id
+WHERE supply.hanger_type_id = ?;
+
+SELECT
+    supply.id AS supply_id,
+    supply.target_set,
+    order_number,
+    hanger_name,
+    hanger_qty,
+    line.id AS line_id,
+    line_a,
+    line_b,
+    line_c,
+    total
+FROM supplies supply
+         INNER JOIN supply_lines line ON line.supply_id = supply.id
+         INNER JOIN hangers hanger ON hanger.id = line.hanger_id
+         INNER JOIN hanger_types type ON type.id = supply.hanger_type_id
+WHERE hanger.id = ?;
+
+CREATE TABLE schedule_m_categories
+(
+    id                 VARCHAR(3) PRIMARY KEY
+) ENGINE = InnoDB;

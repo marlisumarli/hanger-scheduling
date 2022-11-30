@@ -17,20 +17,20 @@ class SessionRepository
     public function save(Session $session): Session
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO sessions(session_id, username)  VALUES (?, ?)");
-        $statement->execute([$session->getSessionId(), $session->getUsername()]);
+            ->prepare("INSERT INTO sessions(id, username)  VALUES (?, ?)");
+        $statement->execute([$session->getId(), $session->getUsername()]);
         return $session;
     }
 
     public function findById(string $id): ?Session
     {
-        $statement = $this->connection->prepare("SELECT session_id, username FROM sessions WHERE session_id = ?");
+        $statement = $this->connection->prepare("SELECT id, username FROM sessions WHERE id = ?");
         $statement->execute([$id]);
 
         try {
             if ($row = $statement->fetch()) {
                 $session = new Session();
-                $session->setSessionId($row['session_id']);
+                $session->setId($row['id']);
                 $session->setUsername($row['username']);
                 return $session;
             } else {
@@ -43,12 +43,7 @@ class SessionRepository
 
     public function deleteById(string $id): void
     {
-        $statement = $this->connection->prepare("DELETE FROM sessions WHERE session_id = ?");
+        $statement = $this->connection->prepare("DELETE FROM sessions WHERE id = ?");
         $statement->execute([$id]);
-    }
-
-    public function deleteAll(): void
-    {
-        $this->connection->exec("DELETE FROM sessions");
     }
 }

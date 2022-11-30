@@ -4,73 +4,74 @@ namespace Subjig\Report\Model;
 
 class Supply
 {
-    private string $supply_id;
-    private string $type_id;
-    private string $supply_date;
-    private string $target_set;
+    private string $id;
+    private string $hanger_Type_id;
+    private string $schedule_week_id;
+    private int $target_set = 0;
 
     /**
      * @return string
      */
-    public function getSupplyId(): string
+    public function getId(): string
     {
-        return $this->supply_id;
+        return $this->id;
     }
 
     /**
-     * @param string $supply_id
+     * @param string $id
      */
-    public function setSupplyId(string $supply_id): void
+    public function setId(string $id): void
     {
-        $this->supply_id = $supply_id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeId(): string
-    {
-        return $this->type_id;
-    }
-
-    /**
-     * @param string $type_id
-     */
-    public function setTypeId(string $type_id): void
-    {
-        $this->type_id = $type_id;
+        $this->id = $id;
     }
 
     /**
      * @return string
      */
-    public function getSupplyDate(): string
+    public function getHangerTypeId(): string
     {
-        return $this->supply_date;
+        return $this->hanger_Type_id;
     }
 
     /**
-     * @param string $supply_date
+     * @param string $hanger_Type_id
      */
-    public function setSupplyDate(string $supply_date): void
+    public function setHangerTypeId(string $hanger_Type_id): void
     {
-        $this->supply_date = $supply_date;
+        $this->hanger_Type_id = $hanger_Type_id;
     }
 
     /**
      * @return string
      */
-    public function getTargetSet(): string
+    public function getScheduleWeekId(): string
+    {
+        return $this->schedule_week_id;
+    }
+
+    /**
+     * @param string $schedule_week_id
+     */
+    public function setScheduleWeekId(string $schedule_week_id): void
+    {
+        $this->schedule_week_id = $schedule_week_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTargetSet(): int
     {
         return $this->target_set;
     }
 
     /**
-     * @param string $target_set
+     * @param int $target_set
      */
-    public function setTargetSet(string $target_set): void
+    public function setTargetSet(int $target_set): void
     {
         $this->target_set = $target_set;
     }
+
 
 }

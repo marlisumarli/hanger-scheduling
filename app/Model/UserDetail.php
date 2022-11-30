@@ -4,7 +4,7 @@ namespace Subjig\Report\Model;
 
 class UserDetail
 {
-    private string $user_detail_id;
+    private string $id;
     private string $username;
     private string $full_name;
     private int $role_id;
@@ -13,17 +13,17 @@ class UserDetail
     /**
      * @return string
      */
-    public function getUserDetailId(): string
+    public function getId(): string
     {
-        return $this->user_detail_id;
+        return $this->id;
     }
 
     /**
-     * @param string $user_detail_id
+     * @param string $id
      */
-    public function setUserDetailId(string $user_detail_id): void
+    public function setId(string $id): void
     {
-        $this->user_detail_id = $user_detail_id;
+        $this->id = $id;
     }
 
     /**
@@ -89,6 +89,5 @@ class UserDetail
     {
         $this->updated_at = $updated_at;
     }
-
 
 }

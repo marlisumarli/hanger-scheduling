@@ -47,8 +47,6 @@ class UserService
         }
     }
 
-//    TODO validation timeout login
-
     private function validateColumnCreateRequest(UserRequest $request): void
     {
         if ($request->username == null || $request->password == null ||

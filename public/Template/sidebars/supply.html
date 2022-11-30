@@ -18,6 +18,125 @@
 
 <body>
 
+<!--                <li class="nav-item py-1">-->
+<!--                    <a aria-controls="collapseList" aria-expanded="false"-->
+<!--                       class="navbar-collapse text-decoration-none d-flex justify-content-between text-dark"-->
+<!--                       data-bs-toggle="collapse"-->
+<!--                       href="#collapseList" id="collapse-link" role="button">-->
+<!--                        <span class="mx-2">List Item</span>-->
+<!--                        <i class="fa-solid fa-angle-down"></i>-->
+<!--                    </a>-->
+<!--                    <div class="collapse" id="collapseList">-->
+<!--                        <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1" href=""-->
+<!--                           style="font-size: 14px;">-->
+<!--                            <i class="fa-solid fa-trailer"></i>-->
+<!--                            <span class="ms-4">Supply</span>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </li>-->
+
+
+<aside class="sidebar bg-light border shadow col-1">
+    <header class="p-2 border-bottom mb-3 ms-2">
+        <button class="btn btn-sm btn-outline-primary border-0 rounded-circle"
+                id="sidebarToggle" type="button">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <a class="text-decoration-none ms-3" href="/admin">
+                <span class="fw-bold d-none">
+                    Hanger App
+                </span>
+        </a>
+    </header>
+
+    <nav class="d-flex vh-100 px-2">
+        <ul class="nav flex-column w-100">
+            <li class="nav-item py-1">
+                <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1 active bg-warning text-white"
+                   href=""
+                   style="font-size: 14px;">
+                    <svg class="bi bi-columns-gap" fill="currentColor" height="16" viewBox="0 0 16 16"
+                         width="16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 1v3H1V1h5zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12v3h-5v-3h5zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8v7H1V8h5zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6v7h-5V1h5zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
+                    </svg>
+                    <span class="ms-4">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item py-1">
+                <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1" href=""
+                   style="font-size: 14px;">
+                    <i class="fa-solid fa-trailer"></i>
+                    <span class="ms-4">Supply</span>
+                </a>
+            </li>
+            <hr class="opacity-25 my-2">
+        </ul>
+    </nav>
+</aside>
+
+<div class="vw-100">
+    <header class="content-header d-flex bg-light align-items-center shadow-sm mb-3 sticky-top "
+            id="header"
+            style="height: 51px">
+        <div class="ms-auto">
+            <div class="container-fluid d-grid gap-3 align-items-center">
+                <div class="d-flex align-items-center">
+                    <form class="w-100 me-3" role="search">
+                        <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
+                    </form>
+
+                    <div class="flex-shrink-0 dropdown">
+                        <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle"
+                           data-bs-toggle="dropdown" href="#">
+                            <div class="avatar"
+                                 data-label="MS"></div>
+                        </a>
+                        <ul class="dropdown-menu p-2 text-small shadow">
+                            <li><a class="dropdown-item" href="#">Users</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--        main content-->
+    <div class="container-fluid px-5 py-3">
+        <div class="mb-4">
+            <h1>SUPPLY</h1>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-6 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header">
+                        <h5 class="card-title"># K2F</h5>
+                    </div>
+                    <div class="card-body d-flex text-center p-3">
+                        <div class="mx-auto">
+                            sebelumnya
+                            <a class="badge text-bg-success text-decoration-none" href="#">
+                                <span>12/09/2022</span>
+                            </a>
+                        </div>
+                        <div class="mx-auto">
+                            selanjutnya <span class="badge text-bg-warning">12/09/2022</span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a class="small" href="supply.html">
+                            buat laporan
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="page">
     <div class="sidebar bg-light shadow">
         <div class="d-flex px-2 border-bottom align-items-center p-2">

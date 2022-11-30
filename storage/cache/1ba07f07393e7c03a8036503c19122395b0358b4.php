@@ -52,4 +52,4 @@ $loop = $__env->getLastLoop(); ?>
 <?php $__env->stopSection(); ?>
 
 
-<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Laporan/2022/Subjig/k2f.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/DataReport/2022/Hanger/k2f.blade.php ENDPATH**/ ?>

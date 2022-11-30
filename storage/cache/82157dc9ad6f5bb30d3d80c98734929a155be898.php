@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title><?php echo e($model['title'] ?? 'Subjig | Admin'); ?></title>
+    <title><?php echo e($model['title'] ?? 'Hanger | Admin'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/a09b11b4b2.js"></script>
@@ -218,6 +218,9 @@
 
 <body>
 <?php echo $__env->make('Admin/Partial/navbar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"
+        crossorigin="anonymous"></script>
 
 <script>
     const active = "active";
@@ -233,10 +236,36 @@
         toggleSidebar.classList.toggle(active);
         localStorage.setItem(lsKey, body.classList.contains(active));
     });
+
+    let dataRow = 0
+    $('#add').click(() => {
+        dataRow++
+        inputRow(dataRow)
+    })
+    inputRow = (i) => {
+        i += 4;
+        var tr = [`
+<div id="divId">
+<span>${i}.</span>
+<input type="date" name="date[]" required="required" title="date">
+<hr>
+</div>`];
+
+        $('#data').append(tr)
+    }
+
+    $('#rm').click(() => {
+        let data = $('#data');
+        if (dataRow > 0) {
+            dataRow--
+        }
+        let lists = data.find('#divId');
+
+        if (lists.length) {
+            lists.last().remove();
+        }
+    })
 </script>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"
-        crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>

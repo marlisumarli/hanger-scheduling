@@ -61,6 +61,18 @@
                         </div>
                     </a>
                 </li>
+                <li class="navigation-list-item">
+                    <a href="/admin/schedule" class="navigation-link <?php echo e($model['listItem'] ?? ''); ?>">
+                        <div class="row p-1 px-3 mb-2">
+                            <div class="col-2">
+                                <i class="fa-solid fa-list"></i>
+                            </div>
+                            <div class="col-9">
+                                Schedule
+                            </div>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -115,4 +127,4 @@
         a.style.background = `rgb(${red}, ${green}, ${blue})`;
     });
 </script>
-<?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Partial/navbar.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Partial/sidebar.blade.php ENDPATH**/ ?>

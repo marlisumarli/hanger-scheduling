@@ -8,7 +8,7 @@ class ViewTest extends TestCase
 {
     public function testRender()
     {
-        View::render('Admin/Home/index', [
+        View::render('Admin/Dashboard/index', [
 
         ]);
 
