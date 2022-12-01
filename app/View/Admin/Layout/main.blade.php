@@ -212,7 +212,7 @@
 </head>
 
 <body>
-@include('Admin/Layout/sidebar')
+@include('Admin/Layout/navigation')
 <script>
     const avatars = document.querySelectorAll(".avatar");
     avatars.forEach(a => {

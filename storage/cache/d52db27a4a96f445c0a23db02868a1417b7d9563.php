@@ -127,4 +127,4 @@
         a.style.background = `rgb(${red}, ${green}, ${blue})`;
     });
 </script>
-<?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Partial/sidebar.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Partial/navigation.blade.php ENDPATH**/ ?>

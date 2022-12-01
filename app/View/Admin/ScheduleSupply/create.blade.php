@@ -74,7 +74,6 @@
             const input = document.createElement('input');
             input.setAttribute('type', 'date');
             input.setAttribute('name', 'date-m1[]');
-            m1.appendChild(input);
             const buttonRemove = document.createElement('button');
             buttonRemove.innerHTML = 'Hapus';
             buttonRemove.addEventListener('click', function () {
