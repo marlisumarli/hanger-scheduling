@@ -8,7 +8,7 @@
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" rel="stylesheet">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/a09b11b4b2.js"></script>
-    <!--    <link href="sidebars.css" rel="stylesheet">-->
+    <!--    <link href="custom.css" rel="stylesheet">-->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
@@ -26,128 +26,38 @@
 </head>
 
 <body>
-<div class="d-flex">
-    <aside class="sidebar bg-light border shadow col-3">
-        <header class="px-2 border-bottom p-2 mb-3 ms-2">
-            <button class="btn btn-sm btn-outline-primary border-0 rounded-circle" id="sidebarToggle"
-                    type="button">
-                <svg fill="none" height="30" viewBox="0 0 24 24" width="24"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.25 7.5L16 12L20.25 16.5M3.75 12H12M3.75 17.25H16M3.75 6.75H16"
-                          stroke="currentColor"
-                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                </svg>
+<a aria-controls="offcanvasExample" class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample"
+   role="button">
+    Link with href
+</a>
+<button aria-controls="offcanvasExample" class="btn btn-primary" data-bs-target="#offcanvasExample" data-bs-toggle="offcanvas"
+        type="button">
+    Button with data-bs-target
+</button>
+
+<div aria-labelledby="offcanvasExampleLabel" class="offcanvas offcanvas-start" id="offcanvasExample" tabindex="-1">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div>
+            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists,
+            etc.
+        </div>
+        <div class="dropdown mt-3">
+            <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+                Dropdown button
             </button>
-            <a class="text-decoration-none ms-3 align-items-center" href="/admin">
-                <span class="brand-name fw-bold">
-                    Hanger App
-                </span>
-            </a>
-        </header>
-
-        <nav class="d-flex vh-100 px-2">
-            <ul class="nav flex-column w-100">
-                <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1 active bg-warning text-white"
-                       href=""
-                       style="font-size: 14px;">
-                        <svg class="bi bi-columns-gap" fill="currentColor" height="16" viewBox="0 0 16 16"
-                             width="16" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 1v3H1V1h5zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12v3h-5v-3h5zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8v7H1V8h5zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6v7h-5V1h5zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
-                        </svg>
-                        <span class="ms-4">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1" href=""
-                       style="font-size: 14px;">
-                        <i class="fa-solid fa-trailer"></i>
-                        <span class="ms-4">Supply</span>
-                    </a>
-                </li>
-                <hr class="opacity-25 my-2">
-                <li class="nav-item py-1">
-                    <a aria-controls="collapseList" aria-expanded="false"
-                       class="navbar-collapse text-decoration-none d-flex justify-content-between text-dark"
-                       data-bs-toggle="collapse"
-                       href="#collapseList" id="collapse-link" role="button">
-                        <span class="mx-2">List Item</span>
-                        <i class="fa-solid fa-angle-down"></i>
-                    </a>
-                    <div class="collapse" id="collapseList">
-                        <a class="nav-link d-flex align-items-center text-dark rounded-3 mx-1 py-1" href=""
-                           style="font-size: 14px;">
-                            <i class="fa-solid fa-trailer"></i>
-                            <span class="ms-4">Supply</span>
-                        </a>
-                    </div>
-                </li>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
-        </nav>
-    </aside>
-
-    <div class="vw-100">
-        <header class="content-header d-flex bg-light align-items-center shadow-sm mb-3 sticky-top p-2"
-                id="header">
-            <div class="ms-auto">
-                <div class="container-fluid d-grid gap-3 align-items-center">
-                    <div class="d-flex align-items-center">
-                        <form class="w-100 me-3" role="search">
-                            <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
-                        </form>
-
-                        <div class="flex-shrink-0 dropdown">
-                            <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle"
-                               data-bs-toggle="dropdown" href="#">
-                                <div class="avatar"
-                                     data-label="MS"></div>
-                            </a>
-                            <ul class="dropdown-menu p-2 text-small shadow">
-                                <li><a class="dropdown-item" href="#">Users</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!--        main content-->
-        <div class="container-fluid px-5 py-3">
-            <div class="mb-4">
-                <h1>SUPPLY</h1>
-            </div>
-            <div class="row">
-                <div class="col-xl-4 col-lg-5 col-md-6 mb-3">
-                    <div class="card rounded-3 shadow-lg">
-                        <div class="card-header">
-                            <h5 class="card-title"># K2F</h5>
-                        </div>
-                        <div class="card-body d-flex text-center p-3">
-                            <div class="mx-auto">
-                                sebelumnya
-                                <a class="badge text-bg-success text-decoration-none" href="#">
-                                    <span>12/09/2022</span>
-                                </a>
-                            </div>
-                            <div class="mx-auto">
-                                selanjutnya <span class="badge text-bg-warning">12/09/2022</span>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <a class="small" href="supply.html">
-                                buat laporan
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
-<script src="sidebars.js"></script>
+<script src="script.js"></script>
 <script crossorigin="anonymous"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>

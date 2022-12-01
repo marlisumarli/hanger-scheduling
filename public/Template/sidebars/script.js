@@ -1,3 +1,6 @@
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
 const avatars = document.querySelectorAll(".avatar");
 avatars.forEach(a => {
     const charCodeRed = a.dataset.label.charCodeAt(0);
@@ -65,3 +68,4 @@ navCollapse.addEventListener("click", () => {
     navCollapse.classList.toggle('show');
     localStorage.setItem('collapsedList', navCollapse.classList.contains('show'));
 });
+
