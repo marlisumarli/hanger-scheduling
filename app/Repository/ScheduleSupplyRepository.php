@@ -57,7 +57,7 @@ class ScheduleSupplyRepository
 FROM supply_schedules schedule_supply
          INNER JOIN hanger_types AS type ON type.id = schedule_supply.hanger_type_id
          INNER JOIN periods AS period ON period.id = schedule_supply.period_id
-WHERE type.id = ?";
+WHERE type.id = ? ORDER BY month DESC , period_id DESC";
         $statement = $this->connection->prepare($sql);
         $statement->execute([$type]);
 

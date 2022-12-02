@@ -71,18 +71,26 @@ class HangerRepository
         }
     }
 
+
+    /**
+     * @param string $type
+     * @return array
+     *
+     * Digunakan di file @app\App\Controler\AdminSupplyController.php
+     *
+     */
     public function data(string $type): array
     {
         $sql = "SELECT
-    type.id AS type_id,
-    subjig.id AS subjig_id,
-    type.qty,
-    subjig.order_number,
-    subjig.name,
-    subjig.qty
-FROM hangers AS subjig
-         INNER JOIN hanger_types type ON type.id = subjig.hanger_type_id
-WHERE type.id = ? ORDER BY order_number";
+                type.id AS type_id,
+                subjig.id AS subjig_id,
+                type.qty,
+                subjig.order_number,
+                subjig.name,
+                subjig.qty
+                FROM hangers AS subjig
+                         INNER JOIN hanger_types type ON type.id = subjig.hanger_type_id
+                WHERE type.id = ? ORDER BY order_number";
 
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([$type]);

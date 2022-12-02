@@ -4,11 +4,11 @@
         <h1>SCHEDULE</h1>
     </div>
     <div class="row">
-        @foreach($model['allType'] as $key => $value)
+        @foreach($model['hanger_types'] as $hanger_type)
             <div class="container col-lg-3 col-md-6 col-sm-6 mb-3">
                 <div class="card rounded-3 shadow-lg">
                     <div class="card-header">
-                        <h5 class="card-title"># {{$value->getId()}}</h5>
+                        <h5 class="card-title"># {{$hanger_type->getId()}}</h5>
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a class="small" href="/admin/schedule/{{$value->getId()}}/create">
+                        <a class="small" href="/admin/schedule/{{$hanger_type->getId()}}/create">
                             Buat Schedule
                         </a>
                     </div>

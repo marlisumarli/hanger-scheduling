@@ -35,7 +35,7 @@ class ScheduleWeekRepository
     }
 
 // TODO karena PHP OOP itu cocok untuk desain pattern MVC maka kelompok kami memutuskan untuk menggunakan konsep MVC pada projek ini
-    public function findById(int $id): ?ScheduleWeek
+    public function findById(string $id): ?ScheduleWeek
     {
         $statement = $this->connection
             ->prepare("SELECT id, supply_schedules_id, is_implemented, date, m_id FROM schedule_weeks WHERE id = ? ");
@@ -62,13 +62,14 @@ class ScheduleWeekRepository
      * @param string $id
      * @return array
      *
-     * Data digunakan di AdminScheduleSupplyController.php
+     * Data digunakan di @app\App\Controler\AdminScheduleSupplyController.php, @app\App\Controler\AdminSupplyController.php
      *
      */
     public function data(string $id): array
     {
         $sql = "SELECT
     schedule_w.id AS schedule_week_id,
+    schedule_supply.month,
     schedule_w.date,
     schedule_w.m_id,
     schedule_w.is_implemented,

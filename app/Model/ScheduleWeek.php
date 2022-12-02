@@ -4,24 +4,24 @@ namespace Subjig\Report\Model;
 
 class ScheduleWeek
 {
-    private int $id;
+    private string $id;
     private string $schedule_supply_id;
     private string $date;
     private int $is_implemented;
     private string $m_id;
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * @param string $id
      */
-    public function setId(int $id): void
+    public function setId(string $id): void
     {
         $this->id = $id;
     }

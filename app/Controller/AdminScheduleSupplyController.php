@@ -10,7 +10,6 @@ use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\HangerTypeRepository;
 use Subjig\Report\Repository\PeriodRepository;
-use Subjig\Report\Repository\ScheduleMCategoryRepository;
 use Subjig\Report\Repository\ScheduleSupplyRepository;
 use Subjig\Report\Repository\ScheduleWeekRepository;
 use Subjig\Report\Repository\SessionRepository;
@@ -34,31 +33,30 @@ class AdminScheduleSupplyController
     private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
     private PeriodRepository $periodRepository;
-    private ScheduleMCategoryRepository $scheduleMCategoryRepository;
 
     private string $username;
 
     public function __construct()
     {
-        $userRepository = new UserRepository(Database::getConnection());
-        $sessionRepository = new SessionRepository(Database::getConnection());
+        $connection = Database::getConnection();
+
+        $userRepository = new UserRepository($connection);
+        $sessionRepository = new SessionRepository($connection);
         $this->sessionService = new SessionService($sessionRepository, $userRepository);
 
-        $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
+        $this->userDetailRepository = new UserDetailRepository($connection);
 
-        $this->scheduleMCategoryRepository = new ScheduleMCategoryRepository(Database::getConnection());
-
-        $this->scheduleSupplyRepository = new ScheduleSupplyRepository(Database::getConnection());
+        $this->scheduleSupplyRepository = new ScheduleSupplyRepository($connection);
         $this->scheduleSupplyService = new ScheduleSupplyService($this->scheduleSupplyRepository);
 
-        $this->scheduleWeekRepository = new ScheduleWeekRepository(Database::getConnection());
+        $this->scheduleWeekRepository = new ScheduleWeekRepository($connection);
         $this->scheduleWeekService = new ScheduleWeekService($this->scheduleWeekRepository);
 
-        $this->hangerTypeRepository = new HangerTypeRepository(Database::getConnection());
+        $this->hangerTypeRepository = new HangerTypeRepository($connection);
 
-        $this->periodRepository = new PeriodRepository(Database::getConnection());
+        $this->periodRepository = new PeriodRepository($connection);
 
-        $this->supplyRepository = new SupplyRepository(Database::getConnection());
+        $this->supplyRepository = new SupplyRepository($connection);
         $this->supplyService = new SupplyService($this->supplyRepository);
         $this->username = $this->sessionService->current()->getUsername();
     }
@@ -69,7 +67,7 @@ class AdminScheduleSupplyController
             'fullName' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'Schedule' => 'active bg-warning',
             'title' => 'Admin | Schedule',
-            'allType' => $this->hangerTypeRepository->findAll(),
+            'hanger_types' => $this->hangerTypeRepository->findAll(),
         ];
         View::render('Admin/ScheduleSupply/index', compact('model'));
     }
@@ -82,13 +80,13 @@ class AdminScheduleSupplyController
         }
 
         $model = [
-            'fullName' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'Schedule' => 'active bg-warning',
-            'title' => "Admin | Schedule $type",
-            'allMCategory' => $this->scheduleMCategoryRepository->findAll(),
-            'allPeriod' => $this->periodRepository->findAll(),
-            'allMonth' => $this->scheduleSupplyRepository->findAll($type),
-            'allDate' => $result,
+            'Title' => "Admin | Schedule $type",
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'periods' => $this->periodRepository->findAll(),
+            'schedules' => $this->scheduleSupplyRepository->findAll($type),
+            'schedule_weeks' => $result,
+            'type' => $type
         ];
         View::render('Admin/ScheduleSupply/create', compact('model'));
     }
@@ -136,7 +134,6 @@ class AdminScheduleSupplyController
                 'fullName' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
                 'Schedule' => 'active bg-warning',
                 'title' => "Admin | Schedule $type",
-                'allMCategory' => $this->scheduleMCategoryRepository->findAll(),
                 'allPeriod' => $this->periodRepository->findAll(),
                 'allMonth' => $this->scheduleSupplyRepository->findAll($type),
                 'allDate' => $result,
