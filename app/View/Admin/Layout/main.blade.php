@@ -57,7 +57,7 @@
         }
 
         body {
-            /*background-color: rgb(243 244 246);*/
+            background-color: rgb(243 244 246);
         }
 
         #sidebarToggle-nav {
@@ -67,6 +67,7 @@
         #sidebar {
             width: var(--sidebar-size);
             transition: all ease .3s;
+            z-index: 100;
         }
 
 
@@ -152,9 +153,11 @@
             border-radius: 8px;
         }
 
+
         @media (max-width: 767px) {
-            .card {
-                position: static;
+
+            #header {
+                z-index: 99;
             }
 
             aside header a {
@@ -205,6 +208,7 @@
                 position: fixed;
                 height: 100vh;
                 transition: all ease .3s;
+                z-index: 100;
             }
         }
     </style>
@@ -213,7 +217,13 @@
 
 <body>
 @include('Admin/Layout/navigation')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
 <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
     const avatars = document.querySelectorAll(".avatar");
     avatars.forEach(a => {
         const charCodeRed = a.dataset.label.charCodeAt(0);
@@ -231,26 +241,7 @@
     const toggleSidebar = document.querySelector("#sidebarToggle");
     const toggleSidebarNav = document.querySelector("#sidebarToggle-nav");
     const iconToggle = document.querySelector("#icon-toggle");
-    const header = document.querySelector("#header");
     const sidebarAssistance = document.querySelector("#sidebarAssistance");
-
-    // media query header event listener
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    mediaQuery.addListener(handleMediaQueryChange);
-    const mediaQuery2 = window.matchMedia("(min-width: 768px)");
-    mediaQuery2.addListener(handleMediaQueryChange2);
-
-    function handleMediaQueryChange(e) {
-        if (e.matches) {
-            header.classList.remove("sticky-top");
-        }
-    }
-
-    function handleMediaQueryChange2(e) {
-        if (e.matches) {
-            header.classList.add("sticky-top");
-        }
-    }
 
     toggleSidebar.addEventListener("click", () => {
         page.classList.toggle('hide');
@@ -259,7 +250,6 @@
     });
 
     toggleSidebarNav.addEventListener("click", () => {
-        header.classList.toggle('sticky-top');
         page.classList.toggle('hide');
         sidebar.classList.toggle('hide');
         iconToggle.classList.toggle('fa-arrow-left');
@@ -267,28 +257,7 @@
     sidebarAssistance.addEventListener("click", () => {
         page.classList.toggle('hide');
         sidebar.classList.toggle('hide');
-        header.classList.toggle('sticky-top');
-    });
-
-    const collapse = document.querySelector("#collapseList");
-    const navCollapse = document.querySelector("#collapse-link");
-
-    if (localStorage.getItem('collapsedList') === "true") {
-        navCollapse.classList.add('show');
-        collapse.classList.add('show');
-    }
-    navCollapse.addEventListener("click", () => {
-        navCollapse.classList.toggle('show');
-        localStorage.setItem('collapsedList', navCollapse.classList.contains('show'));
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-        crossorigin="anonymous"></script>
-
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"
-        crossorigin="anonymous"></script>
-
 </body>
 </html>

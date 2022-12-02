@@ -1165,3 +1165,38 @@ CREATE TABLE schedule_m_categories
 (
     id                 VARCHAR(3) PRIMARY KEY
 ) ENGINE = InnoDB;
+
+CREATE TABLE periods(
+    id VARCHAR(11) PRIMARY KEY ,
+    created_at TIMESTAMP NOT NULL
+) ENGINE = InnoDB;
+
+SELECT
+    schedule_supply.id,
+    schedule_supply.month,
+    schedule_supply.period_id
+FROM supply_schedules schedule_supply
+         INNER JOIN hanger_types AS type ON type.id = schedule_supply.hanger_type_id;
+
+SELECT
+    schedule_supply.month,
+    type.id AS type_id,
+    schedule_w.id AS schedule_week_id,
+    schedule_w.date,
+    schedule_w.m_id,
+    schedule_w.is_implemented,
+    supply.id AS supply_id
+FROM schedule_weeks schedule_w
+         INNER JOIN supply_schedules schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id
+         INNER JOIN hanger_types type ON type.id = schedule_supply.hanger_type_id
+         INNER JOIN supplies supply ON supply.schedule_week_id = schedule_w.id;
+
+SELECT
+    schedule_supply.id,
+    schedule_supply.month
+FROM supply_schedules schedule_supply
+         INNER JOIN hanger_types AS type ON type.id = schedule_supply.hanger_type_id
+         INNER JOIN periods AS period ON period.id = schedule_supply.period_id
+WHERE type.id = ? AND period.id = 0;
+
+SELECT * FROM schedule_weeks WHERE m_id = ?;

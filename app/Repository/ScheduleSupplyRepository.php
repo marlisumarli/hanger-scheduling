@@ -2,17 +2,17 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Model\RelationModel\SupplyScheduleHangerTypeScheduleWeek;
+use PDO;
 use Subjig\Report\Model\SupplySchedule;
 
 class ScheduleSupplyRepository
 {
-    private \PDO $connection;
+    private PDO $connection;
 
     /**
-     * @param \PDO $connection
+     * @param PDO $connection
      */
-    public function __construct(\PDO $connection)
+    public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
@@ -20,15 +20,15 @@ class ScheduleSupplyRepository
     public function save(SupplySchedule $scheduleSubjig): SupplySchedule
     {
         $stmt = $this->connection
-            ->prepare("INSERT INTO supply_schedules(id, hanger_type_id, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
-        $stmt->execute([$scheduleSubjig->getId(), $scheduleSubjig->getHangerTypeId()]);
+            ->prepare("INSERT INTO supply_schedules(id, hanger_type_id, period_id, month) VALUES (?,?,?,?)");
+        $stmt->execute([$scheduleSubjig->getId(), $scheduleSubjig->getHangerTypeId(), $scheduleSubjig->getPeriodId(), $scheduleSubjig->getMonth()]);
         return $scheduleSubjig;
     }
 
     public function findById(string $id): ?SupplySchedule
     {
         $statement = $this->connection
-            ->prepare("SELECT id, hanger_type_id, created_at FROM supply_schedules WHERE id = ? ");
+            ->prepare("SELECT id, hanger_type_id, period_id, month FROM supply_schedules WHERE id = ? ");
         $statement->execute([$id]);
 
         try {
@@ -36,7 +36,8 @@ class ScheduleSupplyRepository
                 $scheduleSubjig = new SupplySchedule();
                 $scheduleSubjig->setId($row['id']);
                 $scheduleSubjig->setHangerTypeId($row['hanger_type_id']);
-                $scheduleSubjig->setCreatedAt($row['created_at']);
+                $scheduleSubjig->setPeriodId($row['period_id']);
+                $scheduleSubjig->setMonth($row['month']);
 
                 return $scheduleSubjig;
             } else {
@@ -47,47 +48,16 @@ class ScheduleSupplyRepository
         }
     }
 
-    public function findAll(string $id): array
+    public function findAll(string $type): array
     {
         $sql = "SELECT
+    schedule_supply.period_id,
     schedule_supply.id,
-    schedule_supply.created_at
+    schedule_supply.month
 FROM supply_schedules schedule_supply
          INNER JOIN hanger_types AS type ON type.id = schedule_supply.hanger_type_id
+         INNER JOIN periods AS period ON period.id = schedule_supply.period_id
 WHERE type.id = ?";
-        $statement = $this->connection->prepare($sql);
-        $statement->execute([$id]);
-
-        $result = [];
-
-        $schedulesSubjig = $statement->fetchAll();
-
-        foreach ($schedulesSubjig as $row) {
-            $scheduleSubjig = new SupplySchedule();
-            $scheduleSubjig->setId($row['id']);
-            $scheduleSubjig->setCreatedAt($row['created_at']);
-
-            $result[] = $scheduleSubjig;
-        }
-        return $result;
-    }
-
-    public function data(string $type): array
-    {
-        $sql = "SELECT
-    schedule_supply.created_at AS schedule_supply_created_at,
-    type.id AS type_id,
-    schedule_w.id AS schedule_week_id,
-    schedule_w.date,
-    schedule_w.m_id,
-    schedule_w.is_implemented,
-    supply.id AS supply_id
-FROM schedule_weeks schedule_w
-         INNER JOIN supply_schedules schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id
-         INNER JOIN hanger_types type ON type.id = schedule_supply.hanger_type_id
-         INNER JOIN supplies supply ON supply.schedule_week_id = schedule_w.id
-WHERE schedule_supply.id = ?";
-
         $statement = $this->connection->prepare($sql);
         $statement->execute([$type]);
 
@@ -96,15 +66,11 @@ WHERE schedule_supply.id = ?";
         $schedulesSubjig = $statement->fetchAll();
 
         foreach ($schedulesSubjig as $row) {
+            $scheduleSubjig = new SupplySchedule();
+            $scheduleSubjig->setId($row['id']);
+            $scheduleSubjig->setMonth($row['month']);
+            $scheduleSubjig->setPeriodId($row['period_id']);
 
-            $scheduleSubjig = new SupplyScheduleHangerTypeScheduleWeek();
-            $scheduleSubjig->setCreatedAt($row['schedule_supply_created_at']);
-            $scheduleSubjig->setHangerTypeId($row['type_id']);
-            $scheduleSubjig->setScheduleWeekId($row['schedule_week_id']);
-            $scheduleSubjig->setMId($row['m_id']);
-            $scheduleSubjig->setDate($row['date']);
-            $scheduleSubjig->setIsImplemented($row['is_implemented']);
-            $scheduleSubjig->setSupplyId($row['supply_id']);
             $result[] = $scheduleSubjig;
         }
         return $result;

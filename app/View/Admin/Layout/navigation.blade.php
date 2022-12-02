@@ -18,6 +18,7 @@
             <ul class="nav flex-column w-100">
                 <li class="nav-item py-1">
                     <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['dashboard'] ?? ''}}"
+                       data-bs-placement="left" data-bs-title="Dashboard" data-bs-toggle="tooltip"
                        href="/admin/dashboard">
                         <i class="fa-solid fa-house"></i>
                         <span>Dashboard</span>
@@ -25,13 +26,15 @@
                 </li>
                 <li class="nav-item py-1">
                     <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['supply'] ?? ''}}"
+                       data-bs-placement="left" data-bs-title="Supply" data-bs-toggle="tooltip"
                        href="/admin/supply">
-                        <i class="fa-solid fa-trailer"></i>
+                        <i class="fa-solid fa-check-double"></i>
                         <span>Supply</span>
                     </a>
                 </li>
                 <li class="nav-item py-1">
                     <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['List Item'] ?? ''}}"
+                       data-bs-placement="left" data-bs-title="List Item" data-bs-toggle="tooltip"
                        href="/admin/item">
                         <i class="fa-solid fa-list"></i>
                         <span>List Item</span>
@@ -39,8 +42,9 @@
                 </li>
                 <li class="nav-item py-1">
                     <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['Schedule'] ?? ''}}"
+                       data-bs-placement="left" data-bs-title="Schedule" data-bs-toggle="tooltip"
                        href="/admin/schedule">
-                        <i class="fa-solid fa-list"></i>
+                        <i class="fa-solid fa-calendar-days"></i>
                         <span>Schedule</span>
                     </a>
                 </li>

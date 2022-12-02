@@ -8,25 +8,8 @@ class SupplyScheduleHangerTypeScheduleWeek
     private string $supply_id;
     private string $schedule_week_id;
     private string $date;
-    private string $created_at;
     private string $mId;
     private ?int $is_implemented = null;
-
-    /**
-     * @return string
-     */
-    public function getMId(): string
-    {
-        return $this->mId;
-    }
-
-    /**
-     * @param string $mId
-     */
-    public function setMId(string $mId): void
-    {
-        $this->mId = $mId;
-    }
 
     /**
      * @return string
@@ -95,17 +78,17 @@ class SupplyScheduleHangerTypeScheduleWeek
     /**
      * @return string
      */
-    public function getCreatedAt(): string
+    public function getMId(): string
     {
-        return $this->created_at;
+        return $this->mId;
     }
 
     /**
-     * @param string $created_at
+     * @param string $mId
      */
-    public function setCreatedAt(string $created_at): void
+    public function setMId(string $mId): void
     {
-        $this->created_at = $created_at;
+        $this->mId = $mId;
     }
 
     /**
@@ -123,6 +106,5 @@ class SupplyScheduleHangerTypeScheduleWeek
     {
         $this->is_implemented = $is_implemented;
     }
-
 
 }

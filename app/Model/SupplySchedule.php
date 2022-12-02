@@ -6,7 +6,8 @@ class SupplySchedule
 {
     private string $id;
     private string $hanger_type_id;
-    private string $created_at;
+    private string $month;
+    private string $period_id;
 
     /**
      * @return string
@@ -43,17 +44,33 @@ class SupplySchedule
     /**
      * @return string
      */
-    public function getCreatedAt(): string
+    public function getMonth(): string
     {
-        return $this->created_at;
+        return $this->month;
     }
 
     /**
-     * @param string $created_at
+     * @param string $month
      */
-    public function setCreatedAt(string $created_at): void
+    public function setMonth(string $month): void
     {
-        $this->created_at = $created_at;
+        $this->month = $month;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeriodId(): string
+    {
+        return $this->period_id;
+    }
+
+    /**
+     * @param string $period_id
+     */
+    public function setPeriodId(string $period_id): void
+    {
+        $this->period_id = $period_id;
     }
 
 }

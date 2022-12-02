@@ -3,7 +3,7 @@
 namespace Subjig\Report\Repository;
 
 use PDO;
-use Subjig\Report\Model\RelationModel\SupplyScheduleWeek;
+use Subjig\Report\Model\RelationModel\SupplyScheduleHangerTypeScheduleWeek;
 use Subjig\Report\Model\ScheduleWeek;
 
 class ScheduleWeekRepository
@@ -58,31 +58,43 @@ class ScheduleWeekRepository
         }
     }
 
+    /**
+     * @param string $id
+     * @return array
+     *
+     * Data digunakan di AdminScheduleSupplyController.php
+     *
+     */
     public function data(string $id): array
     {
-        $sql = "SELECT 
-    schedule.id AS schedule_id, 
-    supply.id AS supply_id, 
-    schedule.date, 
-    schedule.is_implemented
-    FROM supplies supply
-    INNER JOIN schedule_weeks AS schedule ON schedule.id = supply.schedule_week_id
-    WHERE supply.hanger_type_id = ?";
+        $sql = "SELECT
+    schedule_w.id AS schedule_week_id,
+    schedule_w.date,
+    schedule_w.m_id,
+    schedule_w.is_implemented,
+    supply.id AS supply_id
+FROM schedule_weeks schedule_w
+         INNER JOIN supply_schedules schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id
+         INNER JOIN hanger_types type ON type.id = schedule_supply.hanger_type_id
+         INNER JOIN supplies supply ON supply.schedule_week_id = schedule_w.id
+WHERE schedule_supply.id = ?";
+
         $statement = $this->connection->prepare($sql);
         $statement->execute([$id]);
 
         $result = [];
 
-        $schedules = $statement->fetchAll();
+        $schedulesSubjig = $statement->fetchAll();
 
-        foreach ($schedules as $row) {
-            $schedule = new SupplyScheduleWeek();
-            $schedule->setScheduleId($row['schedule_id']);
-            $schedule->setSupplyId($row['supply_id']);
-            $schedule->setDate($row['date']);
-            $schedule->setIsImplemented($row['is_implemented']);
+        foreach ($schedulesSubjig as $row) {
 
-            $result[] = $schedule;
+            $scheduleSubjig = new SupplyScheduleHangerTypeScheduleWeek();
+            $scheduleSubjig->setScheduleWeekId($row['schedule_week_id']);
+            $scheduleSubjig->setMId($row['m_id']);
+            $scheduleSubjig->setDate($row['date']);
+            $scheduleSubjig->setIsImplemented($row['is_implemented']);
+            $scheduleSubjig->setSupplyId($row['supply_id']);
+            $result[] = $scheduleSubjig;
         }
         return $result;
     }

@@ -10,79 +10,224 @@
         </script>
         {{$model['success']}}
     @endif
-    <form method="post">
-        <div id="m1">
-            M1
-            <button id="add-m1" type="button">Tambah</button>
-        </div>
 
-        <div id="m2">
-            M2
-            <button id="add-m2" type="button">Tambah</button>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/admin/schedule">Schedule</a></li>
+            <li aria-current="page" class="breadcrumb-item active">Buat</li>
+        </ol>
+    </nav>
 
-        <div id="m3">
-            M3
-            <button id="add-m3" type="button">Tambah</button>
-        </div>
+    <div class="mb-4">
+        <h1>BUAT SCHEDULE K2F</h1>
+    </div>
 
-        <div id="m4">
-            M4
-            <button id="add-m4" type="button">Tambah</button>
+    <form class="row" method="post">
+        <div class="col-lg-3 col-md-5 mb-3">
+            <div class="card rounded-3 shadow-lg">
+                <div class="card-header p-0">
+                    <h5 class="card-title m-2">Minggu #1</h5>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mx-auto text-center">
+                        <div id="m1">
+                        </div>
+                        <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                id="add-m1" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div id="m5">
-            M5
-            <button id="add-m5" type="button">Tambah</button>
+        <div class="col-lg-3 col-md-5 mb-3">
+            <div class="card rounded-3 shadow-lg">
+                <div class="card-header p-0">
+                    <h5 class="card-title m-2">Minggu #2</h5>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mx-auto text-center">
+                        <div id="m2">
+                        </div>
+                        <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                id="add-m2" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div id="submit">
-            <button type="submit" disabled>submit</button>
+        <div class="col-lg-3 col-md-5 mb-3">
+            <div class="card rounded-3 shadow-lg">
+                <div class="card-header p-0">
+                    <h5 class="card-title m-2">Minggu #3</h5>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mx-auto text-center">
+                        <div id="m3">
+                        </div>
+                        <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                id="add-m3" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-5 mb-3">
+            <div class="card rounded-3 shadow-lg">
+                <div class="card-header p-0">
+                    <h5 class="card-title m-2">Minggu #4</h5>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mx-auto text-center">
+                        <div id="m4">
+                        </div>
+                        <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                id="add-m4" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-5 mb-3">
+            <div class="card rounded-3 shadow-lg">
+                <div class="card-header p-0">
+                    <h5 class="card-title m-2">Minggu #5</h5>
+                </div>
+                <div class="card-body p-3">
+                    <div class="mx-auto text-center">
+                        <div id="m5">
+                        </div>
+                        <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                id="add-m5" type="button">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary disabled" id="submit" type="submit">Submit</button>
         </div>
     </form>
-    <hr>
+    <hr class="my-5">
+    <form class="col-3 ms-auto" role="search">
+        <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
+    </form>
 
-    @foreach($model['allMonth'] as $key1 => $value1)
-        @php
-            $date = new DateTime($value1->getCreatedAt(), new DateTimeZone('Asia/Jakarta'));
-        @endphp
-        <span>{{$date->format('F')}}</span>
-        <a href="/admin/schedule/{{$value1->getId()}}/delete" onclick="return confirm('Ingin menghapusnya?')">delete</a>
-        <br>
-        <table>
-            @foreach($model['allDate'][$key1] as $key2 => $value2)
-                <tr>
-                    <td>{{$value2->getMid()}}</td>
-                    <td>{{$value2->getDate()}}</td>
-                    <td>{{$value2->getIsImplemented() == null ? 'belum' : 'sudah'}}</td>
-                    <td>@if($value2->getIsImplemented() != null)
-                            <a href="{{$value2->getSupplyId()}}">Lihat</a></td>
-                    @endif
-                </tr>
-            @endforeach
-        </table>
+    @foreach($model['allPeriod'] as $key3 => $value3)
+        <hr class="my-5">
+        <div class="mb-4">
+            <h1>SCHEDULE K2F {{$value3->getId()}}</h1>
+        </div>
+
+        @foreach($model['allMonth'] as $key1 => $value1)
+            @if($value1->getPeriodId() == $value3->getId())
+                @php
+                    $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
+                        foreach($model['allDate'][$key1] as $key2 => $value2){
+                            if ($value2->getMId() == 'M1'){
+                                $result['m1'][] = $value2->getMId();
+                            }elseif ($value2->getMId() == 'M2'){
+                                $result['m2'][] = $value2->getMId();
+                            }elseif ($value2->getMId() == 'M3'){
+                                $result['m3'][] = $value2->getMId();
+                            }elseif ($value2->getMId() == 'M4'){
+                                $result['m4'][] = $value2->getMId();
+                            }elseif ($value2->getMId() == 'M5'){
+                                $result['m5'][] = $value2->getMId();
+                            }
+                        }
+                @endphp
+                <div class="card mb-2">
+                    <div class="card-header d-flex">
+                        <span class="card-title"># {{DateTime::createFromFormat('!m', $value1->getMonth())->format('F')}}</span>
+                        <button class="btn btn-primary btn-sm py-0 ms-auto"><i class="fa-solid fa-download"></i>
+                            <span>Download Excle</span>
+                        </button>
+                    </div>
+                    <div class="card-body overflow-scroll">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                            <tr>
+                                <th colspan="{{count($result['m1'])}}" scope="col">M1</th>
+                                <th colspan="{{count($result['m2'])}}" scope="col">M2</th>
+                                <th colspan="{{count($result['m3'])}}" scope="col">M3</th>
+                                <th colspan="{{count($result['m4'])}}" scope="col">M4</th>
+                                <th colspan="{{count($result['m5'])}}" scope="col">M5</th>
+                            </tr>
+                            </thead>
+
+                            @php
+                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                            @endphp
+
+                            <tbody class="table-group-divider">
+                            <tr>
+                                @foreach($model['allDate'][$key1] as $key2 => $value2)
+                                    <td>
+                                        <div class="card border-0">
+                                            <div class="card-body p-0">
+                                                <a class="btn-link position-relative"
+                                                   href="{{$value2->getSupplyId()}}">{{$value2->getDate()}}</a>
+                                            </div>
+                                            <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
+                                                @if($dateTime->format('Y-m-d') >= $value2->getDate() && $value2->getIsImplemented() == null)
+                                                    <i class="fa-solid fa-question text-warning"></i>
+                                                @elseif($dateTime->format('Y-m-d') <= $value2->getDate() && $value2->getIsImplemented() == null)
+                                                    <i class="fa-regular fa-clock text-secondary"></i>
+                                                @else
+                                                    <i class="fa-solid fa-check text-success"></i>
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </td>
+                                @endforeach
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex">
+                        <a class="btn btn-danger btn-sm py-0 ms-auto" href="/admin/schedule/{{$value1->getId()}}/delete"
+                           onclick="return confirm('Apakah ingin menghapus data?')"><i class="fa-solid fa-trash"></i>
+                            <span>Hapus</span>
+                        </a>
+                    </div>
+                </div>
+            @endif
+        @endforeach
     @endforeach
-
     <script type="text/javascript">
         const addM1 = document.getElementById('add-m1');
         addM1.addEventListener('click', addMoreFields1);
         addM1.addEventListener('click', countFieldDate);
 
-
         function addMoreFields1() {
             const m1 = document.getElementById('m1');
             const input = document.createElement('input');
-            input.setAttribute('type', 'date');
-            input.setAttribute('name', 'date-m1[]');
+            const div = document.createElement('div');
             const buttonRemove = document.createElement('button');
-            buttonRemove.innerHTML = 'Hapus';
+
+            div.setAttribute('class', 'mt-3 mb-3 input-group');
+            m1.appendChild(div);
+
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('name', 'date-m1[]');
+            input.setAttribute('type', 'date');
+            input.setAttribute('required', 'required');
+            div.appendChild(input);
+            buttonRemove.setAttribute('class', 'btn btn-danger input-group-tex');
+            buttonRemove.setAttribute('type', 'button');
+            buttonRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
             buttonRemove.addEventListener('click', function () {
-                m1.removeChild(input);
-                m1.removeChild(buttonRemove);
+                m1.removeChild(div);
                 countFieldDate();
             });
-            m1.appendChild(input);
-            m1.appendChild(buttonRemove);
+            div.appendChild(buttonRemove);
         }
 
         const addM2 = document.getElementById('add-m2');
@@ -92,18 +237,26 @@
         function addMoreFields2() {
             const m2 = document.getElementById('m2');
             const input = document.createElement('input');
-            input.setAttribute('type', 'date');
-            input.setAttribute('name', 'date-m2[]');
-            m2.appendChild(input);
+            const div = document.createElement('div');
             const buttonRemove = document.createElement('button');
-            buttonRemove.innerHTML = 'Hapus';
+
+            div.setAttribute('class', 'mt-3 mb-3 input-group');
+            m2.appendChild(div);
+
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('name', 'date-m2[]');
+            input.setAttribute('type', 'date')
+            input.setAttribute('required', 'required');
+            div.appendChild(input);
+            buttonRemove.setAttribute('class', 'btn btn-danger input-group-tex');
+            buttonRemove.setAttribute('type', 'button');
+            buttonRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
             buttonRemove.addEventListener('click', function () {
-                m2.removeChild(input);
-                m2.removeChild(buttonRemove);
+                m2.removeChild(div);
                 countFieldDate();
             });
-            m2.appendChild(input);
-            m2.appendChild(buttonRemove);
+            div.appendChild(buttonRemove);
         }
 
         const addM3 = document.getElementById('add-m3');
@@ -113,20 +266,27 @@
         function addMoreFields3() {
             const m3 = document.getElementById('m3');
             const input = document.createElement('input');
-            input.setAttribute('type', 'date');
-            input.setAttribute('name', 'date-m3[]');
-            m3.appendChild(input);
+            const div = document.createElement('div');
             const buttonRemove = document.createElement('button');
-            buttonRemove.innerHTML = 'Hapus';
+
+            div.setAttribute('class', 'mt-3 mb-3 input-group');
+            m3.appendChild(div);
+
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('name', 'date-m3[]');
+            input.setAttribute('type', 'date')
+            input.setAttribute('required', 'required');
+            div.appendChild(input);
+            buttonRemove.setAttribute('class', 'btn btn-danger input-group-tex');
+            buttonRemove.setAttribute('type', 'button');
+            buttonRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
             buttonRemove.addEventListener('click', function () {
-                m3.removeChild(input);
-                m3.removeChild(buttonRemove);
+                m3.removeChild(div);
                 countFieldDate();
             });
-            m3.appendChild(input);
-            m3.appendChild(buttonRemove);
+            div.appendChild(buttonRemove);
         }
-
 
         const addM4 = document.getElementById('add-m4');
         addM4.addEventListener('click', addMoreFields4);
@@ -135,44 +295,59 @@
         function addMoreFields4() {
             const m4 = document.getElementById('m4');
             const input = document.createElement('input');
-            input.setAttribute('type', 'date');
-            input.setAttribute('name', 'date-m4[]');
-            m4.appendChild(input);
+            const div = document.createElement('div');
             const buttonRemove = document.createElement('button');
-            buttonRemove.innerHTML = 'Hapus';
+
+            div.setAttribute('class', 'mt-3 mb-3 input-group');
+            m4.appendChild(div);
+
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('name', 'date-m4[]');
+            input.setAttribute('type', 'date')
+            input.setAttribute('required', 'required');
+            div.appendChild(input);
+            buttonRemove.setAttribute('class', 'btn btn-danger input-group-tex');
+            buttonRemove.setAttribute('type', 'button');
+            buttonRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
             buttonRemove.addEventListener('click', function () {
-                m4.removeChild(input);
-                m4.removeChild(buttonRemove);
+                m4.removeChild(div);
                 countFieldDate();
             });
-            m4.appendChild(input);
-            m4.appendChild(buttonRemove);
+            div.appendChild(buttonRemove);
         }
 
         const addM5 = document.getElementById('add-m5');
         addM5.addEventListener('click', addMoreFields5);
+        addM5.addEventListener('click', countFieldDate);
 
         function addMoreFields5() {
             const m5 = document.getElementById('m5');
             const input = document.createElement('input');
-            input.setAttribute('type', 'date');
-            input.setAttribute('name', 'date-m5[]');
-            m5.appendChild(input);
+            const div = document.createElement('div');
             const buttonRemove = document.createElement('button');
-            buttonRemove.innerHTML = 'Hapus';
+
+            div.setAttribute('class', 'mt-3 mb-3 input-group');
+            m5.appendChild(div);
+
+            input.setAttribute('class', 'form-control');
+            input.setAttribute('name', 'date-m5[]');
+            input.setAttribute('type', 'date')
+            input.setAttribute('required', 'required');
+            div.appendChild(input);
+            buttonRemove.setAttribute('class', 'btn btn-danger input-group-tex');
+            buttonRemove.setAttribute('type', 'button');
+            buttonRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
             buttonRemove.addEventListener('click', function () {
-                m5.removeChild(input);
-                m5.removeChild(buttonRemove);
+                m5.removeChild(div);
+                countFieldDate();
             });
-            m5.appendChild(input);
-            m5.appendChild(buttonRemove);
+            div.appendChild(buttonRemove);
         }
 
-        // enable submit button if field date more than 4
-
         function countFieldDate() {
-            const submit = document.getElementById('submit');
-            const buttonSubmit = submit.querySelector('button');
+            const buttonSubmit = document.getElementById('submit');
             const m1 = document.getElementById('m1');
             const m2 = document.getElementById('m2');
             const m3 = document.getElementById('m3');
@@ -182,9 +357,9 @@
             const countM3 = m3.querySelectorAll('input').length;
             const countM4 = m4.querySelectorAll('input').length;
             if ((countM1 >= 1) && (countM2 >= 1) && (countM3 >= 1) && (countM4 >= 1)) {
-                buttonSubmit.removeAttribute('disabled');
+                buttonSubmit.classList.remove('disabled');
             } else {
-                buttonSubmit.setAttribute('disabled', 'disabled');
+                buttonSubmit.classList.add('disabled');
             }
         }
     </script>

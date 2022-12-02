@@ -27,13 +27,16 @@ class ScheduleSupplyService
         $date = new DateTime('now', new \DateTimeZone('Asia/Jakarta'));
         $year = $date->format('Y');
         $month = $date->format('F');
+        $monthN = $date->format('m');
 
         try {
             Database::beginTransaction();
 
             $scheduleSubjig = new SupplySchedule();
-            $scheduleSubjig->setId($year.strtoupper($month.$request->hangerTypeId));
+            $scheduleSubjig->setId($year . strtoupper($month . $request->hangerTypeId));
             $scheduleSubjig->setHangerTypeId($request->hangerTypeId);
+            $scheduleSubjig->setPeriodId($year);
+            $scheduleSubjig->setMonth($monthN);
             $this->scheduleSubjigRepository->save($scheduleSubjig);
 
             $response = new ResponseSubjigApp();
