@@ -8,7 +8,6 @@ class User
     private string $password;
     private string $created_at;
     private ?string $update_password_at = null;
-    private ?string $last_login = null;
 
     /**
      * @return string
@@ -72,22 +71,6 @@ class User
     public function setUpdatePasswordAt(?string $update_password_at): void
     {
         $this->update_password_at = $update_password_at;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastLogin(): ?string
-    {
-        return $this->last_login;
-    }
-
-    /**
-     * @param string|null $last_login
-     */
-    public function setLastLogin(?string $last_login): void
-    {
-        $this->last_login = $last_login;
     }
 
 }

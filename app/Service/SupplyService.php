@@ -4,7 +4,6 @@ namespace Subjig\Report\Service;
 
 use Exception;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\HTTP\ResponseSubjigApp;
 use Subjig\Report\Model\Supply;
@@ -24,16 +23,10 @@ class SupplyService
         try {
             Database::beginTransaction();
 
-            $supply = $this->supplyRepository->findById($request->supplyId);
-            if ($supply != null) {
-                throw new ValidationException("ID Laporan : [$request->supplyId] sudah ada, coba untuk ganti ke tanggal lain terlebih dahulu");
-            }
-
             $supply = new Supply();
-            $supply->setSupplyId($request->supplyId);
-            $supply->setTypeId($request->typeId);
-            $supply->setSupplyDate($request->supplyDate);
-            $supply->setTargetSet($request->supplyTarget);
+            $supply->setId(substr(uniqid(), -7));
+            $supply->setHangerTypeId($request->hangerTypeId);
+            $supply->setScheduleWeekId($request->scheduleSupplyId);
             $this->supplyRepository->save($supply);
 
             $response = new ResponseSubjigApp();
@@ -53,8 +46,7 @@ class SupplyService
             Database::beginTransaction();
 
             $supply = new Supply();
-            $supply->setSupplyId($request->supplyId);
-            $supply->setSupplyDate($request->supplyDate);
+            $supply->setId($request->supplyId);
             $supply->setTargetSet($request->supplyTarget);
             $this->supplyRepository->update($supply);
 

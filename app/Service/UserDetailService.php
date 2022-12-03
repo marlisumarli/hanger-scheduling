@@ -30,7 +30,7 @@ class UserDetailService
                 throw new ValidationException('User ada');
             } else {
                 $userDetail = new  UserDetail();
-                $userDetail->setUserDetailId(uniqid());
+                $userDetail->setId(uniqid());
                 $userDetail->setUsername($request->username);
                 $userDetail->setFullName(ucwords(strtolower(trim($request->fullName))));
                 $userDetail->setRoleId($request->roleId);

@@ -16,8 +16,22 @@ class PeriodRepository
         $this->connection = $connection;
     }
 
-    public function save(Period $period): Period
+    public function findAll(): array
     {
-        $stmt = $this->connection->prepare("INSERT INTO periods(year_id) VALUES (year_id)");
+        $stmt = $this->connection->prepare("SELECT id, created_at FROM periods");
+        $stmt->execute();
+
+        $result = [];
+
+        $periods = $stmt->fetchAll();
+
+        foreach ($periods as $row) {
+            $period = new Period();
+            $period->setId($row['id']);
+            $period->setCreatedAt($row['created_at']);
+
+            $result[] = $period;
+        }
+        return $result;
     }
 }

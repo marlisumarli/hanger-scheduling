@@ -13,4 +13,10 @@ class Util
 
         return $initials;
     }
+
+    public function getMonth(string $date): string
+    {
+        $dateTime = new \DateTime($date, new \DateTimeZone('Asia/Jakarta'));
+        return $dateTime->format('F');
+    }
 }

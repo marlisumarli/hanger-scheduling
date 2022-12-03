@@ -15,7 +15,7 @@ class UserRoleRepositoryTest extends TestCase
     {
         $userRole = new UserRole();
         $userRole->roleId = 1;
-        $userRole->name = 'Supply Subjig';
+        $userRole->name = 'Supply Hanger';
 
         $this->userRoleRepository->save($userRole);
 
@@ -30,7 +30,7 @@ class UserRoleRepositoryTest extends TestCase
     {
         $userRole = new UserRole();
         $userRole->roleId = 1;
-        $userRole->name = 'Supply Subjig';
+        $userRole->name = 'Supply Hanger';
 
         $this->userRoleRepository->save($userRole);
 
@@ -44,13 +44,13 @@ class UserRoleRepositoryTest extends TestCase
     {
         $userRole = new UserRole();
         $userRole->roleId = 1;
-        $userRole->name = 'Supply Subjig';
+        $userRole->name = 'Supply Hanger';
 
         $this->userRoleRepository->save($userRole);
 
         $userRole = new UserRole();
         $userRole->roleId = 1;
-        $userRole->name = 'Subjig Supply';
+        $userRole->name = 'Hanger Supply';
 
         $this->userRoleRepository->update($userRole);
 
@@ -64,7 +64,7 @@ class UserRoleRepositoryTest extends TestCase
     {
         $kBagian = new UserRole();
         $kBagian->roleId = 1;
-        $kBagian->name = 'Subjig';
+        $kBagian->name = 'Hanger';
 
         $this->userRoleRepository->save($kBagian);
 

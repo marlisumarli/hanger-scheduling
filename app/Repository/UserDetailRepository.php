@@ -17,8 +17,8 @@ class UserDetailRepository
     public function save(UserDetail $userDetail): UserDetail
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO user_details(user_detail_id, username, full_name, role_id ) VALUES (?,?,?,?)");
-        $statement->execute([$userDetail->getUserDetailId(), $userDetail->getUsername(), $userDetail->getFullName(), $userDetail->getRoleId()]);
+            ->prepare("INSERT INTO user_details(id, username, full_name, role_id ) VALUES (?,?,?,?)");
+        $statement->execute([$userDetail->getId(), $userDetail->getUsername(), $userDetail->getFullName(), $userDetail->getRoleId()]);
         return $userDetail;
     }
 
@@ -33,13 +33,13 @@ class UserDetailRepository
     public function findByUsername(string $username): ?UserDetail
     {
         $statement = $this->connection
-            ->prepare("SELECT user_detail_id, username, full_name, role_id, updated_at FROM user_details WHERE username = ?");
+            ->prepare("SELECT id, username, full_name, role_id, updated_at FROM user_details WHERE username = ?");
         $statement->execute([$username]);
 
         try {
             if ($row = $statement->fetch()) {
                 $userDetail = new UserDetail();
-                $userDetail->setUserDetailId($row['user_detail_id']);
+                $userDetail->setId($row['id']);
                 $userDetail->setUsername($row['username']);
                 $userDetail->setFullName($row['full_name']);
                 $userDetail->setRoleId($row['role_id']);

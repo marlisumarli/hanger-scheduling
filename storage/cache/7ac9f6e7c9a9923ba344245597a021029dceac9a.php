@@ -25,11 +25,13 @@
                 <input type="number" name="lnB[]" value="<?php echo e($value->getJumlahLineB()); ?>" min="0">
                 <input type="number" name="lnC[]" value="<?php echo e($value->getJumlahLineC()); ?>" min="0">
                 <br>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endforeach;
+            $__env->popLoop();
+            $loop = $__env->getLastLoop(); ?>
             <button type="submit">submit</button>
         </form>
         <a href="/admin/laporan/<?php echo e($model['back']); ?>/supply">Kembali</a>
 
     <?php endif; ?>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Supply/Subjig/update.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Supply/Hanger/view.blade.php ENDPATH**/ ?>

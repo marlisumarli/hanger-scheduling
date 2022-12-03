@@ -4,7 +4,7 @@ namespace Subjig\Report\Model;
 
 class UserRole
 {
-    private int $user_role_id;
+    private int $id;
     private string $user_role_name;
     private string $created_at;
     private ?string $updated_at = null;
@@ -12,18 +12,19 @@ class UserRole
     /**
      * @return int
      */
-    public function getUserRoleId(): int
+    public function getId(): int
     {
-        return $this->user_role_id;
+        return $this->id;
     }
 
     /**
-     * @param int $user_role_id
+     * @param int $id
      */
-    public function setUserRoleId(int $user_role_id): void
+    public function setId(int $id): void
     {
-        $this->user_role_id = $user_role_id;
+        $this->id = $id;
     }
+
 
     /**
      * @return string

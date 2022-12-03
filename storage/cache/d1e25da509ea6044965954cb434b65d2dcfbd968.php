@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title><?php echo e($model['title'] ?? 'Subjig | Admin'); ?></title>
+    <title><?php echo e($model['title'] ?? 'Hanger | Admin'); ?></title>
 </head>
 
 <body>

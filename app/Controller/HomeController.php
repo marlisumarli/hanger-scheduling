@@ -9,7 +9,7 @@ class HomeController
     public function index(): void
     {
         $model = [
-            'title' => 'Home'
+            'title' => 'Dashboard'
         ];
         View::render('Home/index', compact('model'));
     }

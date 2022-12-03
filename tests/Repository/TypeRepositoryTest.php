@@ -4,15 +4,15 @@ namespace Subjig\Report\Repository;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Model\Type;
+use Subjig\Report\Model\HangerType;
 
 class TypeRepositoryTest extends TestCase
 {
-    private TypeRepository $typeRepository;
+    private HangerTypeRepository $typeRepository;
 
     public function testSave()
     {
-        $type = new Type();
+        $type = new HangerType();
         $type->setTypeId('K2FA');
         $type->setTypeQty(8);
         $this->typeRepository->update($type);
@@ -24,6 +24,6 @@ class TypeRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->typeRepository = new TypeRepository(Database::getConnection());
+        $this->typeRepository = new HangerTypeRepository(Database::getConnection());
     }
 }

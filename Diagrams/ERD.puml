@@ -3,203 +3,71 @@
 hide circle
 !theme plain
 
-entity KARYAWAN{
-* PK | Username : VARCHAR
+entity schedules_supply_subjig {
+*id : VARCHAR(55) <<PK>>
 --
-* Password : VARCHAR
-* Created at : TIMESTAMP
-Update password at : TIMESTAMP
-Status online : BOOLEAN
-Last login : DATE
+*month : DATE
+*created_at : TIMESTAMP
+--
+type_id : VARCHAR(55) <<FK>>
 }
 
-entity KARYAWAN_DETAIL{
-* PK | id : INT
+entity schedule_weeks {
+* id : VARCHAR(55) <<PK>>
 --
-* Username : VARCHAR
-* Name : VARCHAR
-* Bagian id : INT
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
+*tanggal : DATE
+*is_implemented : TINYINT
+*created_at : TIMESTAMP
+--
+*schedule_supply_subjig_id : VARCHAR(55) <<FK>>
 }
 
-entity KARYAWAN_BAGIAN{
-* PK | Bagian id : INT
+entity supplies {
+*id : VARCHAR(55) <<PK>>
 --
-Name : VARCHAR
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
+*target_set : INT
+--
+*schedule_week_id : VARCHAR(55) <<FK>>
+*type_id : VARCHAR(11) <<FK>>
 }
 
-entity SESSIONS{
-* PK | id : VARCHAR
+entity types {
+*id : VARCHAR(11) <<PK>>
 --
-* Username : VARCHAR
+*type_qty : INT
+*created_at : TIMESTAMP
 }
 
-entity LOG{
-* PK | Log id : INT
+entity subjigs {
+*id : VARCHAR(55) <<PK>>
 --
-* PK | Username : VARCHAR
-* Action : VARCHAR
-* Action at : TIMESTAMP
+*order_number : INT
+*subjig_name : VARCHAR(55)
+*subjig_qty : INT
+*created_at : TIMESTAMP
+updated_at : TIMESTAMP
+--
+*type_id : VARCHAR(55) <<FK>>
 }
 
-entity CATEGORY{
-* PK | id : INT
+entity supply_lines {
+*id : INT <<PK>>
 --
-* name : VARCHAR
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
+*jumlah_line_a : INT
+*jumlah_line_b : INT
+*jumlah_line_c : INT
+*total : INT
+*target_set : INT
+--
+*supply_id : VARCHAR(55) <<FK>>
+*subjig_id : VARCHAR(55) <<FK>>
 }
 
-entity K2F{
-* PK | id : INT
---
-* Name : VARCHAR
-* Qty : INT
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
-}
-
-entity K1A{
-* PK | id : INT
---
-* Name : VARCHAR
-* Qty : INT
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
-}
-
-entity MAINJIG{
-* PK | id : INT
---
-* Name : VARCHAR
-* Qty : INT
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
-}
-
-entity MESSBOAT{
-* PK | id : INT
---
-* Name : VARCHAR
-* Qty : INT
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
-}
-
-entity tx_K2F{
-* PK | id : VARCHAR
---
-* Category id : VARCHAR
-* Type : VARCHAR
-* Year : YEAR
-Speedometer A : INT
-Speedometer B : INT
-Ring Speedometer : INT
-Front R : INT
-Front L : INT
-Front Top : INT
-Fender : INT
-Under RL : INT
-Lid Pocket : INT
-Body RL : INT
-Center Upper : INT
-RR Center : INT
-Center : INT
-Inner Upper : INT
-Supply Tanggal : DATE
-Selesai Tanggal : DATE
-Datang Tanggal : DATE
-Perbaikan Tanggal : DATE
-Pic : VARCHAR
-Keterangan : VARCHAR
-Updated At : TIMESTAMP
-}
-
-entity tx_K1A{
-* PK | id : VARCHAR
---
-* Category id : VARCHAR
-* Type : VARCHAR
-* Year : DATE
-CHF : INT
-SPDMT : INT
-Body R : INT
-Body L : INT
-Fender : INT
-Supply Tanggal : DATE
-Selesai Tanggal : DATE
-Datang Tanggal : DATE
-Perbaikan Tanggal : DATE
-Pic : VARCHAR
-Keterangan : VARCHAR
-Updated At : TIMESTAMP
-}
-
-entity tx_MAINJIG{
-* id : INT
---
-* Category id : INT
-* Year : DATE
-* Jumlah : INT
-Supply Tanggal : DATE
-Selesai Tanggal : DATE
-Datang Tanggal : DATE
-Perbaikan Tanggal : DATE
-Pic : VARCHAR
-Keterangan : VARCHAR
-Updated At : TIMESTAMP
-}
-
-entity tx_MESSBOAT{
-* id : INT
---
-* Category id : VARCHAR
-* Year : DATE
-* Jumlah : INT
-Supply Tanggal : DATE
-Selesai Tanggal : DATE
-Datang Tanggal : DATE
-Perbaikan Tanggal : DATE
-Pic : VARCHAR
-Keterangan : VARCHAR
-Updated At : TIMESTAMP
-}
-
-
-
-entity SURAT_JALAN_CATEGORY{
-* id : INT
---
-* name : VARCHAR
-* Created at : TIMESTAMP
-Updated at : TIMESTAMP
-}
-
-entity tx_SURAT_JALAN{
-* id : INT
---
-* Category id : INT
-* Tanggal : DATE
-K2F : INT
-K1A : INT
-Mainjig Line A : INT
-Mainjig Line B : INT
-Mainjig Line C : INT
-Messboat Line A : INT
-Messboat Line B : INT
-Messboat Line C : INT
-}
-
-KARYAWAN_BAGIAN||--|{KARYAWAN_DETAIL
-KARYAWAN||--||KARYAWAN_DETAIL
-KARYAWAN||--||SESSIONS
-CATEGORY||--|{tx_K2F
-CATEGORY||--|{tx_K1A
-CATEGORY||--|{tx_MAINJIG
-CATEGORY||--|{tx_MESSBOAT
-SURAT_JALAN_CATEGORY||--|{tx_SURAT_JALAN
-
+schedules_supply_subjig}|---||types
+schedules_supply_subjig||---|{schedule_weeks
+supplies||---||schedule_weeks
+subjigs}|---||types
+supply_lines}|---||subjigs
+supply_lines}|---||supplies
+supplies}|---||types
 @enduml

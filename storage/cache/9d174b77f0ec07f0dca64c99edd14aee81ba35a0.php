@@ -10,7 +10,7 @@
             document.location.href = '<?php echo e($model["success"]); ?> ';
         </script>
     <?php endif; ?>
-    <form action="" method="post">
+    <form method="post">
         <button type="button" id="generate">Generate</button>
         <?php for($i = 0; $i < $model['typeQty']; $i++): ?>
             <div>
@@ -41,5 +41,24 @@
         <?php endif; ?>
     </form>
 
+    <script>
+        //    Generate sequence number
+        const generate = document.getElementById('generate');
+        const id = document.querySelectorAll('.order');
+        const makeArray = (count, content) => {
+            const result = [];
+            if (typeof content === "function") {
+                for (let i = 0; i < count; i++) {
+                    result.push(content(i));
+                }
+            }
+            return result;
+        }
+        generate.addEventListener('click', () => {
+            makeArray(id.length, (i) => {
+                return id[i].value = i + 1;
+            });
+        });
+    </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Subjig/List.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Hanger/List.blade.php ENDPATH**/ ?>

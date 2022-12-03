@@ -4,11 +4,11 @@ namespace Subjig\Report\Service;
 
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Repository\SubjigRepository;
+use Subjig\Report\Repository\HangerRepository;
 
 class SubjigServiceTest extends TestCase
 {
-    private SubjigService $subjigService;
+    private HangerService $subjigService;
 
     public function testCreate()
     {
@@ -17,7 +17,7 @@ class SubjigServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $subjigRepository = new SubjigRepository(Database::getConnection());
-        $this->subjigService = new SubjigService($subjigRepository);
+        $subjigRepository = new HangerRepository(Database::getConnection());
+        $this->subjigService = new HangerService($subjigRepository);
     }
 }

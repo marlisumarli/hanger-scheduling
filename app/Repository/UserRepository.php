@@ -2,7 +2,7 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Model\JoinUser;
+use Subjig\Report\Model\RelationModel\UserUserDetailUserRole;
 use Subjig\Report\Model\User;
 
 class UserRepository
@@ -33,7 +33,7 @@ class UserRepository
     public function findByUsername(string $username): ?User
     {
         $statement = $this->connection
-            ->prepare("SELECT username, password, created_at, update_password_at, last_login FROM users WHERE username = ? ");
+            ->prepare("SELECT username, password, created_at, update_password_at FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
         try {
@@ -43,7 +43,6 @@ class UserRepository
                 $user->setPassword($row['password']);
                 $user->setCreatedAt($row['created_at']);
                 $user->setUpdatePasswordAt($row['update_password_at']);
-                $user->setLastLogin($row['last_login']);
 
                 return $user;
             } else {
@@ -56,7 +55,7 @@ class UserRepository
 
     public function findAll(): array
     {
-        $sql = "SELECT username, password, created_at, update_password_at, last_login FROM users";
+        $sql = "SELECT username, password, created_at, update_password_at FROM users";
         $statement = $this->connection->prepare($sql);
         $statement->execute();
 
@@ -67,7 +66,6 @@ class UserRepository
         foreach ($user as $row) {
             $user = new User();
             $user->setUsername($row['username']);
-            $user->setLastLogin($row['last_login']);
             $user->setUpdatePasswordAt($row['update_password_at']);
             $user->setCreatedAt($row['create_at']);
 
@@ -82,11 +80,6 @@ class UserRepository
         $statement->execute([$username]);
     }
 
-    public function deleteAll(): void
-    {
-        $this->connection->exec("DELETE from users");
-    }
-
     public function userData(int $role_id): array
     {
         $sql = "SELECT usr.username,
@@ -97,8 +90,8 @@ class UserRepository
        usr.update_password_at
 FROM user_details as usr_d
          INNER JOIN users as usr ON usr.username = usr_d.username
-         INNER JOIN user_roles as usr_r ON usr_r.user_role_id = usr_d.role_id
-WHERE usr_r.user_role_id = ?";
+         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
+WHERE usr_r.id = ?";
 
         $statement = $this->connection->prepare($sql);
         $statement->execute([$role_id]);
@@ -107,7 +100,7 @@ WHERE usr_r.user_role_id = ?";
         $user = $statement->fetchAll();
 
         foreach ($user as $row) {
-            $userData = new JoinUser();
+            $userData = new UserUserDetailUserRole();
             $userData->setUsername($row['username']);
             $userData->setFullName($row['full_name']);
             $userData->setRoleName($row['user_role_name']);

@@ -5,14 +5,14 @@ namespace Subjig\Report\Service;
 use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
 use Subjig\Report\HTTP\Request\SupplyRequest;
-use Subjig\Report\Repository\LineRepository;
+use Subjig\Report\Repository\SupplyLineRepository;
 use Subjig\Report\Repository\SupplyRepository;
 use function PHPUnit\Framework\assertNotNull;
 
 class SupplyServiceTest extends TestCase
 {
     private SupplyService $supplyService;
-    private LineService $lineService;
+    private SupplyLineService $lineService;
 
     public function testRequestCreate()
     {
@@ -40,10 +40,10 @@ class SupplyServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $lineRep = new LineRepository(Database::getConnection('prod'));
+        $lineRep = new SupplyLineRepository(Database::getConnection('prod'));
         $supplyRep = new SupplyRepository(Database::getConnection('prod'));
 
-        $this->lineService = new LineService($lineRep);
+        $this->lineService = new SupplyLineService($lineRep);
         $this->supplyService = new SupplyService($supplyRep);
     }
 }

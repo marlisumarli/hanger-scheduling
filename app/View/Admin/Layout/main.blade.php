@@ -3,14 +3,42 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>{{$model['title'] ?? 'Subjig | Admin'}}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script crossorigin="anonymous" src="https://kit.fontawesome.com/a09b11b4b2.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+          rel="stylesheet">
+    <title>{{$model['Title'] ?? 'Hanger | Admin'}}</title>
     <style>
+        :root {
+            --sidebar-size: 250px;
+            --sidebar-size-hide: 70px;
+        }
+
+        /** Custom Bootstrap
+        */
+
+        .bg-warning {
+            background: #F59E0B !important;
+        }
+
+        /** Custom Bootstrap
+         */
+
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            display: none;
+        }
+
         .avatar {
             font-size: 14px;
-            font-weight: 550;
+            font-weight: 400;
             width: 2.5em;
             height: 2.5em;
             border-radius: 50%;
@@ -29,84 +57,94 @@
         }
 
         body {
-            background-color: #e6e6e6;
+            background-color: rgb(243 244 246);
         }
 
-        body.active .page .sidebar {
-            left: 0;
+        #sidebarToggle-nav {
+            display: none;
         }
 
-        body.active .page .content {
-            margin-left: 200px;
+        #sidebar {
+            width: var(--sidebar-size);
+            transition: all ease .3s;
+            z-index: 100;
         }
 
-        .page .sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 200px;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
+
+        #page.hide #sidebar {
+            width: var(--sidebar-size-hide);
             transition: all ease .3s;
         }
 
-        .page .content {
-            margin-left: 0;
+        #page.hide .content {
+            margin-left: var(--sidebar-size-hide);
             transition: all ease .3s;
         }
 
-        .sidebarToggle {
-            color: #F59E0B;
-            margin-left: 10px;
+        .content {
+            margin-left: var(--sidebar-size);
+            transition: all ease .3s;
         }
 
-        .sidebarToggle.active {
-            margin-left: -5px;
+        aside header i {
+            font-size: 20px;
+            margin-top: 3px;
         }
 
-        .brand-name {
+        aside header a span {
+            margin-left: .3rem;
             color: #111827;
+            font-size: 16px;
+            transition: all ease .3s;
         }
 
-        .navigation-list {
-            list-style-type: none;
-            padding: 0 10px;
-            margin-top: 20px;
+        aside.hide header a span {
+            margin-left: -300px;
+            transition: all ease .3s;
         }
 
-        .navigation-list-item {
-            margin: 5px 0;
-            border-radius: 8px;
+        aside nav ul li a span {
+            margin-left: 1.5rem;
+            transition: all ease .3s;
         }
 
-        .navigation-list-item:hover {
+        aside.hide nav ul li a span {
+            margin-left: -300px;
+            transition: all ease .3s;
+        }
+
+        nav ul li a.active span {
+            color: #FFFFFF;
+        }
+
+        nav ul li a.active svg {
+            color: #FFFFFF;
+        }
+
+        nav ul li a.active i {
+            color: #FFFFFF;
+        }
+
+        .nav-link:hover {
             background: rgb(0, 0, 0, 0.05);
             cursor: pointer;
         }
 
-        .navigation-list-item.active {
-            background: #F59E0B;
-        }
-
-        .navigation-link {
-            color: #111827;
-            letter-spacing: 1px;
-            text-decoration: none;
+        .nav-link {
             font-size: 14px;
         }
 
-        .navigation-link i {
-            font-size: 14px;
+        .navbar-collapse i {
+            font-size: small;
+            margin-top: 5px;
+            transition: all ease .2s;
         }
 
-        .navigation-list-item:hover .navigation-link {
-            color: #111827;
-        }
-
-        .navigation-list-item.active .navigation-link {
-            color: #FFFFFF;
-            font-weight: 540
+        .navbar-collapse.show i {
+            font-size: small;
+            margin-bottom: 5px;
+            rotate: -180deg;
+            transition: all ease .2s;
         }
 
         .dropdown-item:hover {
@@ -115,131 +153,119 @@
             border-radius: 8px;
         }
 
-        .hamburger {
-            padding: 5px 15px;
-            display: inline-block;
-            cursor: pointer;
-            transition-property: opacity, filter;
-            transition-duration: 0.15s;
-            transition-timing-function: linear;
-            font: inherit;
-            color: inherit;
-            text-transform: none;
-            background-color: transparent;
-            border: 0;
-            margin: 0;
-            overflow: visible;
+
+        table.table-subjig thead tr.c-border th {
+            border: 1px solid #dee2e6 !important;
         }
 
-        .hamburger:hover {
-            opacity: 0.7;
+        table.table-subjig tbody tr.c-border td {
+            border: 1px solid #dee2e6 !important;
         }
 
-        .hamburger.active:hover {
-            opacity: 0.7;
-        }
+        @media (max-width: 767px) {
 
-        .hamburger.active .hamburger-inner,
-        .hamburger.active .hamburger-inner::before,
-        .hamburger.active .hamburger-inner::after {
-            background-color: #0d6efd;
-        }
+            #header {
+                z-index: 99;
+            }
 
-        .hamburger-box {
-            width: 15px;
-            height: 5px;
-            display: inline-block;
-            position: relative;
-        }
+            aside header a {
+                font-size: 23px;
+            }
 
-        .hamburger-inner {
-            display: block;
-            top: 50%;
-            margin-top: -2px;
-        }
+            #sidebar {
+                width: 250px;
+                left: 0;
+                transition: all ease 0.3s;
+            }
 
-        .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-            width: 15px;
-            height: 2px;
-            background-color: #F59E0B;
-            border-radius: 4px;
-            position: absolute;
-            transition-property: transform;
-            transition-duration: 0.15s;
-            transition-timing-function: ease;
-        }
+            #page.hide #sidebar {
+                width: 250px;
+                left: -300px;
+                transition: all ease .3s;
+            }
 
-        .hamburger-inner::before, .hamburger-inner::after {
-            content: "";
-            display: block;
-        }
+            #page.hide .content {
+                margin-left: 0;
+            }
 
-        .hamburger-inner::before {
-            top: -5px;
-        }
+            .content {
+                margin-left: 0;
+                transition: all ease .3s;
+            }
 
-        .hamburger-inner::after {
-            bottom: -5px;
-        }
+            #sidebarToggle {
+                display: none;
+            }
 
-        .hamburger--spin .hamburger-inner {
-            transition-duration: 0.22s;
-            transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-        }
+            #sidebarToggle-nav {
+                display: block;
+                font-size: 18px;
+            }
 
-        .hamburger--spin .hamburger-inner::before {
-            transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in;
-        }
+            #page.hide #sidebarAssistance {
+                background: rgba(0, 0, 0, 0.2);
+                margin-left: -900px;
+                height: 100vh;
+                transition: all ease .3s;
+            }
 
-        .hamburger--spin .hamburger-inner::after {
-            transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-        }
-
-        .hamburger--spin.active .hamburger-inner {
-            transform: rotate(225deg);
-            transition-delay: 0.12s;
-            transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
-
-        .hamburger--spin.active .hamburger-inner::before {
-            top: 0;
-            opacity: 0;
-            transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out;
-        }
-
-        .hamburger--spin.active .hamburger-inner::after {
-            bottom: 0;
-            transform: rotate(-90deg);
-            transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+            #sidebarAssistance {
+                background: rgba(0, 0, 0, 0.2);
+                margin-left: auto;
+                width: 800px;
+                position: fixed;
+                height: 100vh;
+                transition: all ease .3s;
+                z-index: 100;
+            }
         }
     </style>
 
 </head>
 
 <body>
-@include('Admin/Partial/navbar')
-
-<script>
-    const active = "active";
-    const lsKey = "sidebar";
-    const body = document.querySelector("body");
-    const toggleSidebar = document.querySelector("#sidebarToggle");
-    if (localStorage.getItem(lsKey) === "true") {
-        body.classList.add(active);
-        toggleSidebar.classList.add(active);
-    }
-    toggleSidebar.addEventListener("click", () => {
-        body.classList.toggle(active);
-        toggleSidebar.classList.toggle(active);
-        localStorage.setItem(lsKey, body.classList.contains(active));
-    });
-</script>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"
-        crossorigin="anonymous"></script>
+@include('Admin/Layout/navigation')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+    const avatars = document.querySelectorAll(".avatar");
+    avatars.forEach(a => {
+        const charCodeRed = a.dataset.label.charCodeAt(0);
+        const charCodeGreen = a.dataset.label.charCodeAt(1) || charCodeRed;
+
+        const red = Math.pow(charCodeRed, 7) % 200;
+        const green = Math.pow(charCodeGreen, 7) % 200;
+        const blue = (red + green) % 200;
+
+        a.style.background = `rgb(${red}, ${green}, ${blue})`;
+    });
+
+    const sidebar = document.querySelector("#sidebar");
+    const page = document.querySelector("#page");
+    const toggleSidebar = document.querySelector("#sidebarToggle");
+    const toggleSidebarNav = document.querySelector("#sidebarToggle-nav");
+    const iconToggle = document.querySelector("#icon-toggle");
+    const sidebarAssistance = document.querySelector("#sidebarAssistance");
+
+    toggleSidebar.addEventListener("click", () => {
+        page.classList.toggle('hide');
+        sidebar.classList.toggle('hide');
+        iconToggle.classList.toggle('fa-arrow-left');
+    });
+
+    toggleSidebarNav.addEventListener("click", () => {
+        page.classList.toggle('hide');
+        sidebar.classList.toggle('hide');
+        iconToggle.classList.toggle('fa-arrow-left');
+    });
+    sidebarAssistance.addEventListener("click", () => {
+        page.classList.toggle('hide');
+        sidebar.classList.toggle('hide');
+    });
+</script>
 </body>
 </html>

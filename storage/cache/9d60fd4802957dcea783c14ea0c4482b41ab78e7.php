@@ -33,13 +33,13 @@
         <a href="/admin/user">kembali</a>
     </form>
 
-    <?php if(isset($model['success'])): ?>
-        <script>
-            alert('<?php echo e($model['success']); ?>');
-            document.location.href = '/admin/user-create';
-        </script>
-    <?php endif; ?>
+<?php if (isset($model['success'])): ?>
+    <script>
+        alert('<?php echo e($model['success']); ?>');
+        document.location.href = '/admin/user-create';
+    </script>
+<?php endif; ?>
 <?php $__env->stopSection(); ?>
 
 
-<?php echo $__env->make('Admin/Layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/User/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/User/index.blade.php ENDPATH**/ ?>

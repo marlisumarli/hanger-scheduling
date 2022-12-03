@@ -4,23 +4,23 @@ namespace Subjig\Report\Model;
 
 class Session
 {
-    private string $session_id;
+    private string $id;
     private string $username;
 
     /**
      * @return string
      */
-    public function getSessionId(): string
+    public function getId(): string
     {
-        return $this->session_id;
+        return $this->id;
     }
 
     /**
-     * @param string $session_id
+     * @param string $id
      */
-    public function setSessionId(string $session_id): void
+    public function setId(string $id): void
     {
-        $this->session_id = $session_id;
+        $this->id = $id;
     }
 
     /**

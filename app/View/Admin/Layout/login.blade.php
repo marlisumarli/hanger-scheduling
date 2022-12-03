@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>{{$model['title'] ?? 'Subjig | Admin'}}</title>
+    <title>{{$model['title'] ?? 'Hanger | Admin'}}</title>
 </head>
 
 <body>
-@include('Admin/Partial/navlogin')
+@include('Admin/Layout/navlogin')
 @yield('content-login')
-<script src="/src/js/index.js"></script>
 </body>
 </html>
