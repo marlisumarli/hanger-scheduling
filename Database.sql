@@ -1200,3 +1200,32 @@ FROM supply_schedules schedule_supply
 WHERE type.id = ? AND period.id = 0;
 
 SELECT * FROM schedule_weeks WHERE m_id = ?;
+
+
+
+SELECT
+    supply.id AS supply_id,
+    supply.target_set,
+    hanger.order_number,
+    name AS hanger_name,
+    hanger.qty AS hanger_qty,
+    line.id AS line_id,
+    line.line_a,
+    line.line_b,
+    line.line_c,
+    line.total
+FROM supplies supply
+         INNER JOIN supply_lines line ON line.supply_id = supply.id
+         INNER JOIN hangers hanger ON hanger.id = line.hanger_id
+         INNER JOIN hanger_types type ON type.id = supply.hanger_type_id;
+
+SELECT
+    sl.hanger_id AS hanger_id,
+    supply.id AS supply_id,
+    sl.line_a,
+    sl.line_b,
+    sl.line_c,
+    sl.total
+FROM supply_lines AS sl
+INNER JOIN supplies AS supply ON supply.id = sl.supply_id
+INNER JOIN hangers AS hanger ON hanger.id = sl.hanger_id;

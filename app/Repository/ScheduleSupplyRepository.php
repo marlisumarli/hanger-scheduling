@@ -50,14 +50,7 @@ class ScheduleSupplyRepository
 
     public function findAll(string $type): array
     {
-        $sql = "SELECT
-    schedule_supply.period_id,
-    schedule_supply.id,
-    schedule_supply.month
-FROM supply_schedules schedule_supply
-         INNER JOIN hanger_types AS type ON type.id = schedule_supply.hanger_type_id
-         INNER JOIN periods AS period ON period.id = schedule_supply.period_id
-WHERE type.id = ? ORDER BY month DESC , period_id DESC";
+        $sql = "SELECT period_id, id, month FROM supply_schedules WHERE hanger_type_id = ?";
         $statement = $this->connection->prepare($sql);
         $statement->execute([$type]);
 

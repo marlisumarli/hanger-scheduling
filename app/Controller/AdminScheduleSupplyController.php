@@ -5,7 +5,6 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\HangerTypeRepository;
@@ -64,9 +63,9 @@ class AdminScheduleSupplyController
     public function index()
     {
         $model = [
-            'fullName' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'Schedule' => 'active bg-warning',
-            'title' => 'Admin | Schedule',
+            'Title' => 'Admin | Schedule',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
         ];
         View::render('Admin/ScheduleSupply/index', compact('model'));
@@ -74,18 +73,13 @@ class AdminScheduleSupplyController
 
     public function create(string $type)
     {
-        $result = [];
-        foreach ($this->scheduleSupplyRepository->findAll($type) as $key => $value) {
-            $result[] = $this->scheduleWeekRepository->data($value->getId());
-        }
-
         $model = [
             'Schedule' => 'active bg-warning',
             'Title' => "Admin | Schedule $type",
             'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'periods' => $this->periodRepository->findAll(),
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
-            'schedule_weeks' => $result,
+            'schedule_weeks' => $this->scheduleWeekRepository,
             'type' => $type
         ];
         View::render('Admin/ScheduleSupply/create', compact('model'));
@@ -93,53 +87,35 @@ class AdminScheduleSupplyController
 
     public function postCreate(string $type)
     {
-        $result = [];
-        foreach ($this->scheduleSupplyRepository->findAll($type) as $key => $value) {
-            $result[] = $this->scheduleWeekRepository->data($value->getId());
-        }
+        $requestSSS = new ScheduleRequest();
+        $requestSSS->hangerTypeId = $type;
+        $responseSSS = $this->scheduleSupplyService->requestCreate($requestSSS);
 
-        try {
-            $requestSSS = new ScheduleRequest();
-            $requestSSS->hangerTypeId = $type;
-            $responseSSS = $this->scheduleSupplyService->requestCreate($requestSSS);
+        $i = 1;
+        while ($i <= count($_POST)) {
+            if ($_POST["date-m$i"]) {
+                for ($j = 0; $j < count($_POST["date-m$i"]); $j++) {
+                    $requestSSW = new ScheduleRequest();
+                    $requestSSW->supplyScheduleId = $responseSSS->supplySchedule->getId();
+                    $requestSSW->scheduleDate = $_POST["date-m$i"][ $j ];
+                    $requestSSW->isImplemented = 0;
+                    $requestSSW->hangerTypeId = $type;
+                    $requestSSW->mId = "M$i";
+                    $responseSSW = $this->scheduleWeekService->requestCreate($requestSSW);
 
-            $i = 1;
-            while ($i <= count($_POST)) {
-                if ($_POST["date-m$i"]) {
-                    for ($j = 0; $j < count($_POST["date-m$i"]); $j++) {
-                        $requestSSW = new ScheduleRequest();
-                        $requestSSW->supplyScheduleId = $responseSSS->supplySchedule->getId();
-                        $requestSSW->scheduleDate = $_POST["date-m$i"][ $j ];
-                        $requestSSW->isImplemented = 0;
-                        $requestSSW->mId = "M$i";
-                        $responseSSW = $this->scheduleWeekService->requestCreate($requestSSW);
-
-                        $requestS = new SupplyRequest();
-                        $requestS->hangerTypeId = $type;
-                        $requestS->scheduleSupplyId = $responseSSW->scheduleWeek->getId();
-                        $this->supplyService->requestCreate($requestS);
-                    }
+                    $requestS = new SupplyRequest();
+                    $requestS->hangerTypeId = $type;
+                    $requestS->scheduleSupplyId = $responseSSW->scheduleWeek->getId();
+                    $this->supplyService->requestCreate($requestS);
                 }
-                $i++;
             }
-
-            $model = [
-                'success' => "/admin/schedule/$type/create"
-            ];
-            View::render('Admin/ScheduleSupply/create', compact('model'));
-
-        } catch (ValidationException $exception) {
-            $model = [
-                'error' => $exception->getMessage(),
-                'fullName' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
-                'Schedule' => 'active bg-warning',
-                'title' => "Admin | Schedule $type",
-                'allPeriod' => $this->periodRepository->findAll(),
-                'allMonth' => $this->scheduleSupplyRepository->findAll($type),
-                'allDate' => $result,
-            ];
-            View::render('Admin/ScheduleSupply/create', compact('model'));
+            $i++;
         }
+
+        $model = [
+            'success' => "/admin/schedule/$type/create"
+        ];
+        View::render('Admin/ScheduleSupply/create', compact('model'));
     }
 
     public function delete(string $id)

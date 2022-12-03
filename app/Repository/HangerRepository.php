@@ -21,7 +21,7 @@ class HangerRepository
     public function save(Hanger $subjig): Hanger
     {
         $stmt = $this->connection
-            ->prepare("INSERT INTO hangers(id, hanger_type_id, order_number, name, qty, created_at) VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)");
+            ->prepare("INSERT INTO hangers(id, hanger_type_id, order_number, name, qty) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$subjig->getId(), $subjig->getHangerTypeId(), $subjig->getOrderNumber(), $subjig->getName(), $subjig->getQty()]);
 
         return $subjig;
@@ -50,7 +50,7 @@ class HangerRepository
 
     public function findById(string $id): ?Hanger
     {
-        $stmt = $this->connection->prepare("SELECT id, order_number, name, qty, created_at FROM hangers WHERE id = ?");
+        $stmt = $this->connection->prepare("SELECT id, order_number, name, qty FROM hangers WHERE id = ?");
         $stmt->execute([$id]);
 
         try {
@@ -60,7 +60,6 @@ class HangerRepository
                 $subjig->setOrderNumber($row['order_number']);
                 $subjig->setName($row['name']);
                 $subjig->setQty($row['qty']);
-                $subjig->setCreatedAt($row['created_at']);
 
                 return $subjig;
             } else {
@@ -69,6 +68,30 @@ class HangerRepository
         } finally {
             $stmt->closeCursor();
         }
+    }
+
+    public function findHangerTypeId(string $hangerTypeId): array
+    {
+        $sql = "SELECT id, hanger_type_id, order_number, name, qty FROM hangers WHERE hanger_type_id = ? ORDER BY order_number";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute([$hangerTypeId]);
+
+        $result = [];
+
+        $hangers = $statement->fetchAll();
+
+        foreach ($hangers as $row) {
+            $supplyLine = new Hanger();
+            $supplyLine->setId($row['id']);
+            $supplyLine->setHangerTypeId($row['hanger_type_id']);
+            $supplyLine->setOrderNumber($row['order_number']);
+            $supplyLine->setName($row['name']);
+            $supplyLine->setQty($row['qty']);
+
+            $result[] = $supplyLine;
+        }
+        return $result;
     }
 
 

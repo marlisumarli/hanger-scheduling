@@ -154,6 +154,14 @@
         }
 
 
+        table.table-subjig thead tr.c-border th {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        table.table-subjig tbody tr.c-border td {
+            border: 1px solid #dee2e6 !important;
+        }
+
         @media (max-width: 767px) {
 
             #header {

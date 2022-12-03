@@ -1,8 +1,5 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @if(isset($model['error']))
-        {{$model['error']}}
-    @endif
     @if (isset($model['success']))
         <script>
             alert('success');
@@ -46,15 +43,15 @@
                             <div class="row g-1">
                                 <div class="col-4">
                                     <label for="1">Line A</label>
-                                    <input class="form-control" id="1" name="lnA" type="number">
+                                    <input class="form-control" id="1" name="lnA[]" type="number" min="0">
                                 </div>
                                 <div class="col-4">
                                     <label for="2">Line B</label>
-                                    <input class="form-control" id="2" name="lnB" type="number">
+                                    <input class="form-control" id="2" name="lnB[]" type="number" min="0">
                                 </div>
                                 <div class="col-4">
                                     <label for="3">Line C</label>
-                                    <input class="form-control" id="3" name="lnC" type="number">
+                                    <input class="form-control" id="3" name="lnC[]" type="number" min="0">
                                 </div>
                             </div>
                         </div>

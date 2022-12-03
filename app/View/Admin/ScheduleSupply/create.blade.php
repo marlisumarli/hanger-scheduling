@@ -1,8 +1,6 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @if (isset($model['error']))
-        {{$model['error']}}
-    @endif
+
     @if (isset($model['success']))
         <script>
             alert('success');
@@ -20,7 +18,7 @@
     </nav>
 
     <div class="mb-4">
-        <h1>BUAT SCHEDULE {{$model['type']}}</h1>
+        <h1>BUAT SCHEDULE {{strtoupper($model['type'])}}</h1>
     </div>
 
     <form class="row" method="post">
@@ -119,32 +117,35 @@
     </form>
 
     @foreach($model['periods'] as $period)
-        <hr class="my-5">
-        <div class="mb-4">
-            <h1>SCHEDULE {{$model['type']}} {{$period->getId()}}</h1>
-        </div>
-
-        @foreach($model['schedules'] as $data => $schedule)
+        @foreach($model['schedules'] as $schedule)
             @if($schedule->getPeriodId() == $period->getId())
+                <hr class="my-5">
+                <div class="mb-4">
+                    <h1>SCHEDULE {{strtoupper($model['type'])}} {{$period->getId()}}</h1>
+                </div>
                 @php
                     $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
-                        foreach($model['schedule_weeks'][$data] as $sch_week){
-                            if ($sch_week->getMId() == 'M1'){
-                                $result['m1'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M2'){
-                                $result['m2'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M3'){
-                                $result['m3'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M4'){
-                                $result['m4'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M5'){
-                                $result['m5'][] = $sch_week->getMId();
-                            }
-                        }
+
+                       foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week){
+                           if ($sch_week->getMId() == 'M1'){
+                               $result['m1'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M2'){
+                               $result['m2'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M3'){
+                               $result['m3'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M4'){
+                               $result['m4'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M5'){
+                               $result['m5'][] = $sch_week->getMId();
+                           }
+                       }
                 @endphp
                 <div class="card mb-2">
                     <div class="card-header d-flex">
-                        <span class="card-title"># {{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</span>
+                        <a class="card-title" href="/admin/supply/{{$model['type']}}/{{$schedule->getId()}}">#
+                            <span>{{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
                         <button class="btn btn-primary btn-sm py-0 ms-auto"><i class="fa-solid fa-download"></i>
                             <span>Download Excle</span>
                         </button>
@@ -167,12 +168,14 @@
 
                             <tbody class="table-group-divider">
                             <tr>
-                                @foreach($model['schedule_weeks'][$data] as $sch_week)
+                                @foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week)
+                                    @php
+                                        $dateTime = new DateTime($sch_week->getDate());
+                                    @endphp
                                     <td>
                                         <div class="card border-0">
                                             <div class="card-body p-0">
-                                                <a class="btn-link position-relative"
-                                                   href="{{$sch_week->getSupplyId()}}">{{$sch_week->getDate()}}</a>
+                                                <span>{{$dateTime->format('d/m/Y')}}</span>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
                                                 @if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null)

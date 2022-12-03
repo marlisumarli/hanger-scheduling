@@ -19,7 +19,7 @@ class HangerTypeRepository
 
     public function save(HangerType $type): HangerType
     {
-        $stmt = $this->connection->prepare("INSERT INTO hanger_types(id, qty, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)");
+        $stmt = $this->connection->prepare("INSERT INTO hanger_types(id, qty) VALUES (?, ?)");
         $stmt->execute([$type->getId(), $type->getQty()]);
 
         return $type;
@@ -41,7 +41,7 @@ class HangerTypeRepository
 
     public function findById(string $id): ?HangerType
     {
-        $stmt = $this->connection->prepare("SELECT id, qty, created_at FROM hanger_types WHERE id = ?");
+        $stmt = $this->connection->prepare("SELECT id, qty FROM hanger_types WHERE id = ?");
         $stmt->execute([$id]);
 
         try {
@@ -49,7 +49,6 @@ class HangerTypeRepository
                 $type = new HangerType();
                 $type->setId($row['id']);
                 $type->setQty($row['qty']);
-                $type->setCreatedAt($row['created_at']);
 
                 return $type;
             } else {
@@ -62,7 +61,7 @@ class HangerTypeRepository
 
     public function findAll(): array
     {
-        $stmt = $this->connection->prepare("SELECT id, qty, created_at FROM hanger_types");
+        $stmt = $this->connection->prepare("SELECT id, qty FROM hanger_types");
         $stmt->execute();
 
         $result = [];
@@ -73,7 +72,6 @@ class HangerTypeRepository
             $type = new HangerType();
             $type->setId($row['id']);
             $type->setQty($row['qty']);
-            $type->setCreatedAt($row['created_at']);
 
             $result[] = $type;
         }

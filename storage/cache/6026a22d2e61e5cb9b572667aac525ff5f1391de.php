@@ -1,9 +1,6 @@
 
 <?php $__env->startSection('content'); ?>
-    <?php if(isset($model['error'])): ?>
-        <?php echo e($model['error']); ?>
 
-    <?php endif; ?>
     <?php if(isset($model['success'])): ?>
         <script>
             alert('success');
@@ -22,7 +19,7 @@
     </nav>
 
     <div class="mb-4">
-        <h1>BUAT SCHEDULE <?php echo e($model['type']); ?></h1>
+        <h1>BUAT SCHEDULE <?php echo e(strtoupper($model['type'])); ?></h1>
     </div>
 
     <form class="row" method="post">
@@ -121,32 +118,35 @@
     </form>
 
     <?php $__currentLoopData = $model['periods']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <hr class="my-5">
-        <div class="mb-4">
-            <h1>SCHEDULE <?php echo e($model['type']); ?> <?php echo e($period->getId()); ?></h1>
-        </div>
-
-        <?php $__currentLoopData = $model['schedules']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data => $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $model['schedules']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if($schedule->getPeriodId() == $period->getId()): ?>
+                <hr class="my-5">
+                <div class="mb-4">
+                    <h1>SCHEDULE <?php echo e(strtoupper($model['type'])); ?> <?php echo e($period->getId()); ?></h1>
+                </div>
                 <?php
                     $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
-                        foreach($model['schedule_weeks'][$data] as $sch_week){
-                            if ($sch_week->getMId() == 'M1'){
-                                $result['m1'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M2'){
-                                $result['m2'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M3'){
-                                $result['m3'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M4'){
-                                $result['m4'][] = $sch_week->getMId();
-                            }elseif ($sch_week->getMId() == 'M5'){
-                                $result['m5'][] = $sch_week->getMId();
-                            }
-                        }
+
+                       foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week){
+                           if ($sch_week->getMId() == 'M1'){
+                               $result['m1'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M2'){
+                               $result['m2'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M3'){
+                               $result['m3'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M4'){
+                               $result['m4'][] = $sch_week->getMId();
+                           }elseif ($sch_week->getMId() == 'M5'){
+                               $result['m5'][] = $sch_week->getMId();
+                           }
+                       }
                 ?>
                 <div class="card mb-2">
                     <div class="card-header d-flex">
-                        <span class="card-title"># <?php echo e(DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')); ?></span>
+                        <a class="card-title" href="/admin/supply/<?php echo e($model['type']); ?>/<?php echo e($schedule->getId()); ?>">#
+                            <span><?php echo e(DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')); ?></span>
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
                         <button class="btn btn-primary btn-sm py-0 ms-auto"><i class="fa-solid fa-download"></i>
                             <span>Download Excle</span>
                         </button>
@@ -169,12 +169,14 @@
 
                             <tbody class="table-group-divider">
                             <tr>
-                                <?php $__currentLoopData = $model['schedule_weeks'][$data]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch_week): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php $__currentLoopData = $model['schedule_weeks']->findScheduleSupplyId($schedule->getId()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch_week): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        $dateTime = new DateTime($sch_week->getDate());
+                                    ?>
                                     <td>
                                         <div class="card border-0">
                                             <div class="card-body p-0">
-                                                <a class="btn-link position-relative"
-                                                   href="<?php echo e($sch_week->getSupplyId()); ?>"><?php echo e($sch_week->getDate()); ?></a>
+                                                <span><?php echo e($dateTime->format('d/m/Y')); ?></span>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
                                                 <?php if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>

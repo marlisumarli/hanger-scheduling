@@ -2,4 +2,5 @@
 @section('content')
     Dashboard
 
+    <a href="/admin/laporan">Laporan</a>
 @endsection

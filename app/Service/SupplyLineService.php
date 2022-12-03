@@ -50,16 +50,15 @@ class SupplyLineService
             Database::beginTransaction();
 
             $line = new SupplyLine();
-            $line->id = $request->lineId;
-            $line->jumlah_line_a = $request->jumlahLineA;
-            $line->jumlah_line_b = $request->jumlahLineB;
-            $line->jumlah_line_c = $request->jumlahLineC;
-            $line->target_set = $request->supplyTarget;
-            $line->total = $request->jumlahLineA + $request->jumlahLineB + $request->jumlahLineC;
+            $line->setId($request->supplyLineId);
+            $line->setLineA($request->lineA);
+            $line->setLineB($request->lineB);
+            $line->setLineC($request->lineC);
+            $line->setTotal($request->lineA + $request->lineB + $request->lineC);
             $this->lineRepository->update($line);
 
             $response = new ResponseSubjigApp();
-            $response->line = $line;
+            $response->supplyLine = $line;
 
             Database::commitTransaction();
             return $response;

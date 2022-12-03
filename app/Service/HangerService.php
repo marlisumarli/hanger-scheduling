@@ -31,7 +31,7 @@ class HangerService
             Database::beginTransaction();
 
             $hanger = new Hanger();
-            $hanger->setId($request->hangerTypeId . strtoupper(substr(uniqid(), -2)));
+            $hanger->setId($request->hangerTypeId . '-' . substr(uniqid(), -2));
             $hanger->setHangerTypeId($request->hangerTypeId);
             $hanger->setOrderNumber(count($this->subjigRepository->data($hanger->getHangerTypeId())) + 1);
             $hanger->setName(ucwords(trim($request->name)));

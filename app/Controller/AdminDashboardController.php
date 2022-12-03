@@ -30,10 +30,9 @@ class AdminDashboardController
         $userDetail = $this->userDetailRepository->findByUsername($username);
 
         $model = [
-            'title' => 'Admin | Dashboard',
-            'fullName' => Util::nameSplitter($userDetail->getFullName()),
-            'roleId' => $userDetail->getRoleId(),
-            'dashboard' => 'active bg-warning'
+            'Title' => 'Admin | Dashboard',
+            'full_name' => Util::nameSplitter($userDetail->getFullName()),
+            'Dashboard' => 'active bg-warning',
         ];
         View::render('Admin/Dashboard/index', compact('model'));
     }

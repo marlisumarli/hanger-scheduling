@@ -2,7 +2,7 @@
 @section('content')
     <form action="" method="post">
         <label for="id">Id</label>
-        <input type="text" name="id" id="id" title="Huruf kapital" pattern="[A-Z0-9]{1,}" required="required">
+        <input type="text" name="id" id="id" required="required">
         <br>
         <label for="qty">Quantity</label>
         <input type="number" name="qty" id="qty" min="1" required="required">

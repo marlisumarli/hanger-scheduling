@@ -50,4 +50,30 @@ class SupplyLineRepository
             $statement->closeCursor();
         }
     }
+
+    public function findSupplyId(string $supplyId): array
+    {
+        $sql = "SELECT id, supply_id, hanger_id, line_a, line_b, line_c, total FROM supply_lines WHERE supply_id = ?";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->execute([$supplyId]);
+
+        $result = [];
+
+        $supplyLines = $statement->fetchAll();
+
+        foreach ($supplyLines as $row) {
+            $supplyLine = new SupplyLine();
+            $supplyLine->setId($row['id']);
+            $supplyLine->setSupplyId($row['supply_id']);
+            $supplyLine->setHangerId($row['hanger_id']);
+            $supplyLine->setLineA($row['line_a']);
+            $supplyLine->setLineB($row['line_b']);
+            $supplyLine->setLineC($row['line_c']);
+            $supplyLine->setTotal($row['total']);
+
+            $result[] = $supplyLine;
+        }
+        return $result;
+    }
 }

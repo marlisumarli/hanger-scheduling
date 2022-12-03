@@ -4,39 +4,47 @@ namespace Subjig\Report\Controller;
 
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Repository\SupplyRepository;
 use Subjig\Report\Repository\HangerTypeRepository;
+use Subjig\Report\Repository\ScheduleWeekRepository;
+use Subjig\Report\Repository\SupplyLineRepository;
+use Subjig\Report\Repository\SupplyRepository;
 
 class AdminDataReportController
 {
     private SupplyRepository $supplyRepository;
-    private HangerTypeRepository $typeRepository;
+    private HangerTypeRepository $hangerTypeRepository;
+    private ScheduleWeekRepository $scheduleWeekRepository;
+    private SupplyLineRepository $supplyLineRepository;
 
     public function __construct()
     {
-        $this->supplyRepository = new SupplyRepository(Database::getConnection());
-        $this->typeRepository = new HangerTypeRepository(Database::getConnection());
+        $connection = Database::getConnection();
+        $this->supplyLineRepository = new SupplyLineRepository($connection);
+        $this->scheduleWeekRepository = new ScheduleWeekRepository($connection);
+        $this->supplyRepository = new SupplyRepository($connection);
+        $this->hangerTypeRepository = new HangerTypeRepository($connection);
     }
 
     public function index()
     {
         $model = [
             'title' => 'Admin | DataReport',
-            'allType' => $this->typeRepository->findAll()
+            'hanger_types' => $this->hangerTypeRepository->findAll()
         ];
         View::render('Admin/DataReport/index', compact('model'));
     }
 
-    public function supply(string $id)
+    public function supply(string $type)
     {
         $result = [];
-        foreach ($this->supplyRepository->findAll($id) as $item => $value) {
-            $result[] = $this->supplyRepository->allSupplyLine($value->getSupplyId());
+        foreach ($this->supplyRepository->findAll($type) as $item => $value) {
+            $result[] = $this->supplyLineRepository->data($value->getId());
         }
         $model = [
-            'title' => "Admin | DataReport Supply $id",
-            'allSupplyDate' => $this->supplyRepository->findAll($id),
-            'allSupplyLine' => $result,
+            'Title' => "Admin | DataReport Supply $type",
+            'supplies' => $this->supplyRepository->findAll($type),
+            'supply_lines' => $result,
+            'type' => $type,
         ];
         View::render('Admin/DataReport/supply', compact('model'));
     }

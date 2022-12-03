@@ -101,57 +101,68 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="schedule.html">Supply</a></li>
-                    <li class="breadcrumb-item"><a href="schedule.html">Schedule</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">Buat Laporan</li>
+                    <li aria-current="page" class="breadcrumb-item active">Laporan K2F</li>
                 </ol>
             </nav>
             <div class="mb-4">
-                <h1>Buat Laporan Supply K2F</h1>
+                <h1>Laporan Supply <u>K2F</u> Bulan <u>December</u>
+                </h1>
             </div>
-
-            <form class="d-flex justify-content-center">
-                <div class="row">
-                    <div class="col-md-4 order-md-last mb-3">
-                        <div class="card rounded-3 shadow-lg">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <span>Tanggal dibuat</span><span class="badge text-bg-warning">12/09/2022</span>
-                                </div>
-                                <label class="form-label card-title " for="targetSet">Target Set</label>
-                                <input class="form-control" id="targetSet" min="100" name="" required type="number">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md">
-                        <div class="card shadow-lg rounded-3 mb-2">
-                            <div class="card-header border-bottom-0">
-                                <span class="card-title"># Speedometer A</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row g-1">
-                                    <div class="col-4">
-                                        <label for="1">Line A</label>
-                                        <input class="form-control" id="1" name="" type="number">
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="2">Line B</label>
-                                        <input class="form-control" id="2" name="" type="number">
-                                    </div>
-                                    <div class="col-4">
-                                        <label for="3">Line C</label>
-                                        <input class="form-control" id="3" name="" type="number">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary rounded-3 mt-3 px mx-2 shadow-lg">Submit</button>
-                            <button class="btn btn-secondary rounded-3 mt-3 shadow-lg">Kembali</button>
-                        </div>
+            <div class="card mb-2">
+                <div class="card-header">
+                    <span class="card-title"># 28 January 2022</span>
+                </div>
+                <div class="card-body overflow-scroll">
+                    <table class="table table-borderless text-center table-subjig">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th class="border" colspan="3">Line</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr class="c-border border-bottom border-dark border-2">
+                            <th scope="col">No</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">QTY</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Target</th>
+                            <th scope="col">A</th>
+                            <th scope="col">B</th>
+                            <th scope="col">C</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Keterangan</th>
+                        </tr>
+                        </thead>
+                        <tbody class="border">
+                        <tr class="c-border">
+                            <td>1</td>
+                            <td>Speedo</td>
+                            <td>4</td>
+                            <td>K2F</td>
+                            <td>500</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>6</td>
+                            <td>Close</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer d-flex">
+                    <div class="ms-auto">
+                        <a class="btn btn-warning btn-sm py-0" href="">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <span>Ubah</span>
+                        </a>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

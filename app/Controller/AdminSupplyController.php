@@ -5,7 +5,6 @@ namespace Subjig\Report\Controller;
 use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
-use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Model\ScheduleWeek;
 use Subjig\Report\Repository\HangerRepository;
@@ -34,7 +33,6 @@ class AdminSupplyController
     private SupplyLineService $supplyLineService;
     private SupplyLineRepository $supplyLineRepository;
     private ScheduleWeekRepository $scheduleWeekRepository;
-    private ScheduleWeekService $scheduleWeekService;
     private ScheduleMCategoryRepository $scheduleMCategoryRepository;
     private PeriodRepository $periodRepository;
     private ScheduleSupplyRepository $scheduleSupplyRepository;
@@ -74,7 +72,6 @@ class AdminSupplyController
         $this->username = $this->sessionService->current()->getUsername();
     }
 
-
     public function index()
     {
         $model = [
@@ -88,12 +85,6 @@ class AdminSupplyController
 
     public function schedule(string $type)
     {
-
-        $result = [];
-        foreach ($this->scheduleSupplyRepository->findAll($type) as $key => $value) {
-            $result[] = $this->scheduleWeekRepository->data($value->getId());
-        }
-
         $model = [
             'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'Supply' => 'active bg-warning',
@@ -101,115 +92,151 @@ class AdminSupplyController
             'schedule_m_categories' => $this->scheduleMCategoryRepository->findAll(),
             'periods' => $this->periodRepository->findAll(),
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
-            'schedule_weeks' => ($result),
+            'schedule_weeks' => $this->scheduleWeekRepository,
+            'supplies' => $this->supplyRepository,
             'type' => $type
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/index', compact('model'));
     }
 
-    public function create(string $type, string $supplyId)
+    public function dataReport(string $type, string $scheduleId)
+    {
+        $schedule = $this->scheduleSupplyRepository->findById($scheduleId);
+
+        $model = [
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'Supply' => 'active bg-warning',
+            'Title' => "Admin | Supply $type",
+            'schedule' => $schedule,
+            'schedule_weeks' => $this->scheduleWeekRepository->findScheduleSupplyId($schedule->getId()),
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'supplies' => $this->supplyRepository,
+            'supply_lines' => $this->supplyLineRepository,
+            'type' => $type,
+        ];
+        View::render('Admin/ScheduleSupply/Supply/data-report', compact('model'));
+    }
+
+    public function create(string $type, string $scheduleWeekId, string $supplyId,)
     {
         $model = [
             'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
-            'schedule_week' => $this->scheduleWeekRepository->findById($this->supplyRepository->findById($supplyId)->getScheduleWeekId()),
+            'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
             'hangers' => $this->hangerRepository->data($type),
             'type' => $type,
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
     }
 
-    public function postCreate(string $type, string $supplyId)
+    public function postCreate(string $type, string $scheduleWeekId, string $supplyId)
     {
-        $hangers = $this->hangerRepository->data($type);
-        $supply = $this->supplyRepository->findById($supplyId);
+        $hangers = $this->hangerRepository->findHangerTypeId($type);
+
         $requestUpdateSupply = new SupplyRequest();
-        $requestUpdateSupply->supplyId = $supply->getId();
+        $requestUpdateSupply->supplyId = $supplyId;
         $requestUpdateSupply->supplyTarget = $_POST['target'];
         $this->supplyService->requestUpdate($requestUpdateSupply);
 
         foreach ($hangers as $key => $hanger) {
             $createLine = new SupplyRequest();
-            $createLine->supplyId = $supply->getId();
-            $createLine->hangerId = $hanger->getHangerId();
-            $createLine->lineA = $_POST['lnA'][ $key ];
-            $createLine->lineB = $_POST['lnB'][ $key ];
-            $createLine->lineC = $_POST['lnC'][ $key ];
+            $createLine->supplyId = $supplyId;
+            $createLine->hangerId = $hanger->getId();
+            $createLine->lineA = ($_POST['lnA'][ $key ] != '' ? $_POST['lnA'][ $key ] : 0);
+            $createLine->lineB = ($_POST['lnB'][ $key ] != '' ? $_POST['lnB'][ $key ] : 0);
+            $createLine->lineC = ($_POST['lnC'][ $key ] != '' ? $_POST['lnC'][ $key ] : 0);
             $this->supplyLineService->requestCreate($createLine);
         }
 
         $updateSW = new ScheduleWeek();
-        $updateSW->setId($supply->getScheduleWeekId());
+        $updateSW->setId($scheduleWeekId);
         $updateSW->setIsImplemented(1);
         $this->scheduleWeekRepository->update($updateSW);
 
         $model = [
             'Title' => "Admin | Supply $type",
-            'schedule_week' => $this->scheduleWeekRepository->findById($this->supplyRepository->findById($supplyId)->getScheduleWeekId()),
+            'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
             'success' => "/admin/supply/$type"
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
+
+        exit();
     }
 
-    public function update(string $type, string $id)
+    public function view(string $type, string $scheduleWeekId, string $supplyId)
     {
+
         $model = [
-            'title' => "Admin | Update Supply $id",
-            'idSupply' => $this->supplyRepository->findById($id),
-            'allSupply' => $this->supplyRepository->allSupplyLine($id),
-            'back' => $type
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'Supply' => 'active bg-warning',
+            'Title' => "Admin | Supply $type",
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'supply' => $this->supplyRepository->findById($supplyId),
+            'supply_lines' => $this->supplyLineRepository->findSupplyId($supplyId),
+            'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId)->getDate(),
+            'type' => $type,
+            'schedule' => $scheduleWeekId,
+            'supplyId' => $supplyId,
+        ];
+        View::render('Admin/ScheduleSupply/Supply/Hanger/view', compact('model'));
+    }
+
+    public function update(string $type, string $scheduleWeekId, string $supplyId)
+    {
+
+        $model = [
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'Supply' => 'active bg-warning',
+            'Title' => "Admin | Supply $type",
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'supply' => $this->supplyRepository->findById($supplyId),
+            'supply_lines' => $this->supplyLineRepository->findSupplyId($supplyId),
+            'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId)->getDate(),
+            'type' => $type,
+            'schedule' => $scheduleWeekId,
+            'supplyId' => $supplyId,
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
     }
 
-    public function postUpdate(string $type, string $id)
+    public function postUpdate(string $type, string $scheduleWeekId, string $supplyId)
     {
-        $allSupply = $this->supplyRepository->allSupplyLine($id);
-        $date = $_POST['dateUpdate'];
+        $supply_lines = $this->supplyLineRepository->findSupplyId($supplyId);
+        $hangers = $this->hangerRepository->findHangerTypeId($type);
+        $supply = $this->supplyRepository->findById($supplyId);
 
-        try {
-            $updateSup = new SupplyRequest();
-            $updateSup->supplyId = $id;
-            $updateSup->supplyDate = $date;
-            $updateSup->supplyTarget = $_POST['target'];
-            $this->supplyService->requestUpdate($updateSup);
-
-            foreach ($allSupply as $key => $value) {
-                $createLine = new SupplyRequest();
-                $createLine->lineId = $value->getSupplyLineId();
-                $createLine->jumlahLineA = $_POST['lnA'][ $key ];
-                $createLine->jumlahLineB = $_POST['lnB'][ $key ];
-                $createLine->jumlahLineC = $_POST['lnC'][ $key ];
-                $createLine->supplyTarget = $updateSup->supplyTarget;
-                $this->lineService->requestUpdate($createLine);
-            }
-            $model = [
-                'title' => "Admin | Update Supply $id",
-                'success' => "/admin/supply/$type/$id/update",
-                'idSupply' => $this->supplyRepository->findById($id),
-                'allSupply' => $this->supplyRepository->allSupplyLine($id)
-            ];
-            View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
-
-        } catch (ValidationException $exception) {
-            $model = [
-                'error' => $exception->getMessage(),
-                'title' => "Admin | $id",
-            ];
-            View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
-        }
-    }
-
-    public function delete(string $type, string $id)
-    {
         $request = new SupplyRequest();
-        $request->supplyId = $id;
-        $this->supplyService->requestDelete($request);
+        $request->supplyId = $supply->getId();
+        $request->supplyTarget = $_POST['target'];
+        $this->supplyService->requestUpdate($request);
 
+        foreach ($hangers as $hanger) {
+            foreach ($supply_lines as $supplyLine) {
+                if ($supplyLine->gethangerId() == $hanger->getId() && $supplyLine->getSupplyId() == $supply->getId()) {
+                    $request = new SupplyRequest();
+                    $request->supplyLineId = $supplyLine->getId();
+                    $request->lineA = $_POST[ "lnA_" . $supplyLine->getId() ];
+                    $request->lineB = $_POST[ "lnB_" . $supplyLine->getId() ];
+                    $request->lineC = $_POST[ "lnC_" . $supplyLine->getId() ];
+                    $this->supplyLineService->requestUpdate($request);
+                }
+            }
+        }
         $model = [
-            'success' => "/admin/laporan/$type/supply"
+            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'Supply' => 'active bg-warning',
+            'Title' => "Admin | Supply $type",
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'supply' => $this->supplyRepository->findById($supplyId),
+            'supply_lines' => $this->supplyLineRepository->findSupplyId($supplyId),
+            'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId)->getDate(),
+            'type' => $type,
+            'schedule' => $scheduleWeekId,
+            'supplyId' => $supplyId,
+            'success' => 'Berhasil Diubah'
         ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/delete', compact('model'));
+        View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
+
     }
 }

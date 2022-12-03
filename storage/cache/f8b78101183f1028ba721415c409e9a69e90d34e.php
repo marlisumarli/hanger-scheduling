@@ -12,11 +12,11 @@
             <button type="submit" disabled>submit</button>
         </div>
     </form>
-    <hr>
+<hr>
 
-    <script type="text/javascript">
-    </script>
+<script type="text/javascript">
+</script>
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/ScheduleSupply/update.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout/main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/ScheduleSupply/view.blade.php ENDPATH**/ ?>

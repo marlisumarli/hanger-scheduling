@@ -27,7 +27,7 @@ class ScheduleWeekService
             Database::beginTransaction();
 
             $schedule = new ScheduleWeek();
-            $schedule->setId(str_replace(array('/', '-'), '', $request->scheduleDate) . $request->supplyScheduleId);
+            $schedule->setId(substr(uniqid(), -7));
             $schedule->setScheduleSupplyId($request->supplyScheduleId);
             $schedule->setDate($request->scheduleDate);
             $schedule->setMId($request->mId);

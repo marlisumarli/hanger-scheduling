@@ -35,7 +35,7 @@ class HangerTypeService
             }
 
             $type = new HangerType();
-            $type->setId(strtoupper(trim($request->id)));
+            $type->setId(strtolower(trim($request->id)));
             $type->setQty($request->qty);
             $this->typeRepository->save($type);
 

@@ -24,7 +24,7 @@ class SupplyService
             Database::beginTransaction();
 
             $supply = new Supply();
-            $supply->setId($request->scheduleSupplyId . $request->hangerTypeId);
+            $supply->setId(substr(uniqid(), -7));
             $supply->setHangerTypeId($request->hangerTypeId);
             $supply->setScheduleWeekId($request->scheduleSupplyId);
             $this->supplyRepository->save($supply);

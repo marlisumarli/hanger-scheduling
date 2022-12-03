@@ -1,8 +1,8 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @foreach($model['allSupplyDate'] as $index => $value)
-        <h1 id="{{$value->getSupplyId()}}">Tanggal : {{$value->getSupplyDate()}}</h1>
-        <table border="1">
+    @foreach($model['supplies'] as $key => $supply)
+        <h1 id="{{$supply->getId()}}">Tanggal : 12</h1>
+        <table>
             <thead>
             <tr>
                 <th scope="col">NO</th>
@@ -18,28 +18,28 @@
             </tr>
             </thead>
             <tbody>
-            {{$value->getTargetSet()}} Set
+            {{$supply->getTargetSet()}} Set
 
-            @foreach($model['allSupplyLine'][$index] as $key => $value2)
+            @foreach($model['supply_lines'][$index] as $supply_line)
                 <tr>
-                    <th scope="row">{{$value2->getOrderId()}}</th>
-                    <th>{{$value2->getSubjigName()}}</th>
-                    <th>{{$value2->getSubjigQty()}}</th>
-                    <th>{{ceil($value2->getLineTarget()/$value2->getSubjigQty())}}</th>
-                    <th>{{$value2->getJumlahLineA()}}</th>
-                    <th>{{$value2->getJumlahLineB()}}</th>
-                    <th>{{$value2->getJumlahLineC()}}</th>
-                    <th>{{$value2->getTotal()}}</th>
-                    <th>{{$value2->getTotal()*$value2->getSubjigQty()}}</th>
+                    <th scope="row">{{$supply_line->getOrderId()}}</th>
+                    <th>{{$supply_line->getSubjigName()}}</th>
+                    <th>{{$supply_line->getSubjigQty()}}</th>
+                    <th>{{ceil($supply_line->getLineTarget()/$supply_line->getSubjigQty())}}</th>
+                    <th>{{$supply_line->getJumlahLineA()}}</th>
+                    <th>{{$supply_line->getJumlahLineB()}}</th>
+                    <th>{{$supply_line->getJumlahLineC()}}</th>
+                    <th>{{$supply_line->getTotal()}}</th>
+                    <th>{{$supply_line->getTotal()*$supply_line->getSubjigQty()}}</th>
                     <th>
-                        {{(($value2->getTotal()*$value2->getSubjigQty()) < $value2->getLineTarget()) ? "OPEN" : "CLOSE"}}
+                        {{(($supply_line->getTotal()*$supply_line->getSubjigQty()) < $supply_line->getLineTarget()) ? "OPEN" : "CLOSE"}}
                     </th>
                 </tr>
             @endforeach
             </tbody>
         </table>
-        <a href="/admin/supply/{{$value->getTypeId()}}/{{$value->getSupplyId()}}/update">Ubah</a>
-        <a href="/admin/supply/{{$value->getTypeId()}}/{{$value->getSupplyId()}}/delete"
+        <a href="/admin/supply/{{$model['type']}}/{{$supply->getId()}}/update">Ubah</a>
+        <a href="/admin/supply/{{$model['type']}}/{{$supply->getId()}}/delete"
            onclick="return confirm('Ingin menghapus?');">Hapus</a>
     @endforeach
 @endsection

@@ -54,11 +54,13 @@ Router::get('GET', '/admin/item/([0-9a-zA-Z|-]*)/hanger/([0-9a-zA-Z|-]*)/delete'
 // Supply
 Router::get('GET', '/admin/supply', AdminSupplyController::class, 'index', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)', AdminSupplyController::class, 'schedule', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/create', AdminSupplyController::class, 'create', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/create', AdminSupplyController::class, 'postCreate', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', AdminSupplyController::class, 'update', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', AdminSupplyController::class, 'postUpdate', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/delete', AdminSupplyController::class, 'delete', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)', AdminSupplyController::class, 'dataReport', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/create', AdminSupplyController::class, 'create', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/create', AdminSupplyController::class, 'postCreate', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/view', AdminSupplyController::class, 'view', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', AdminSupplyController::class, 'update', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/update', AdminSupplyController::class, 'postUpdate', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/supply/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/delete', AdminSupplyController::class, 'delete', [MandatoryLoginMiddleware::class]);
 
 // laporan
 Router::get('GET', '/admin/laporan', AdminDataReportController::class, 'index', [MandatoryLoginMiddleware::class]);

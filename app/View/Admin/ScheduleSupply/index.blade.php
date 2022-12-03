@@ -8,7 +8,7 @@
             <div class="container col-lg-3 col-md-6 col-sm-6 mb-3">
                 <div class="card rounded-3 shadow-lg">
                     <div class="card-header">
-                        <h5 class="card-title"># {{$hanger_type->getId()}}</h5>
+                        <h5 class="card-title"># {{strtoupper($hanger_type->getId())}}</h5>
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">

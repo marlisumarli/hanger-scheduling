@@ -33,7 +33,7 @@ class ScheduleSupplyService
             Database::beginTransaction();
 
             $scheduleSubjig = new SupplySchedule();
-            $scheduleSubjig->setId($year . strtoupper($month . $request->hangerTypeId));
+            $scheduleSubjig->setId($year . strtolower($month . '-' . $request->hangerTypeId));
             $scheduleSubjig->setHangerTypeId($request->hangerTypeId);
             $scheduleSubjig->setPeriodId($year);
             $scheduleSubjig->setMonth($monthN);

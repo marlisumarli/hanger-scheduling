@@ -33,13 +33,13 @@
         <button type="submit">submit</button>
         <a href="/admin/user">kembali</a>
     </form>
-    <?php if(isset($model['success'])): ?>
+<?php if (isset($model['success'])): ?>
 
-        <script>
-            alert('<?php echo e($model['success']); ?>');
-            document.location.href = '/admin/user-update?username=<?php echo e($model['username']); ?>';
-        </script>
-    <?php endif; ?>
+    <script>
+        alert('<?php echo e($model['success']); ?>');
+        document.location.href = '/admin/user-update?username=<?php echo e($model['username']); ?>';
+    </script>
+<?php endif; ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('Admin/Layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/User/update.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('Admin/Layout.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/User/view.blade.php ENDPATH**/ ?>
