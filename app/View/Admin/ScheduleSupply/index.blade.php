@@ -1,5 +1,3 @@
-{{--TODO BULAN SEKARANG BELUM DIBUAT--}}
-{{--TODO HAPUS DISABLE--}}
 @extends('Admin/Layout/main')
 @section('content')
     <div class="mb-4">
