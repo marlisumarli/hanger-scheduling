@@ -2,16 +2,16 @@
 <?php $__env->startSection('content'); ?>
     <form action="" method="post">
         <label for="id">Id</label>
-        <input type="text" name="id" id="id" title="Huruf kapital" pattern="[A-Z0-9]{1,}" required="required">
+        <input type="text" name="id" id="id" required="required">
         <br>
         <label for="qty">Quantity</label>
         <input type="number" name="qty" id="qty" min="1" required="required">
         <button name="generateQty" type="submit">OK</button>
     </form>
     <ul>
-        <?php $__currentLoopData = $model['allHangerType']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key1 => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php $__currentLoopData = $model['hanger_types']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hangerType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <li>
-                <a href="/admin/item/<?php echo e($value->getId()); ?>/hanger/update"><?php echo e($value->getId()); ?></a>
+                <a href="/admin/item/<?php echo e($hangerType->getId()); ?>/hanger/update"><?php echo e(strtoupper($hangerType->getId())); ?></a>
 
                 <table border="1">
                     <thead>
@@ -22,11 +22,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $__currentLoopData = $model['allHanger'][$key1]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key2 => $value2): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $model['hangers']->findHangerTypeId($hangerType->getId()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hanger): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <th scope="row"><?php echo e($value2->getOrderNumber()); ?></th>
-                            <td><?php echo e($value2->getHangerName()); ?></td>
-                            <td><?php echo e($value2->getHangerQty()); ?></td>
+                            <?php if($hanger->getHangerTypeId() == $hangerType->getId()): ?>
+
+                                <th scope="row"><?php echo e($hanger->getOrderNumber()); ?></th>
+                                <td><?php echo e($hanger->getName()); ?></td>
+                                <td><?php echo e($hanger->getQty()); ?></td>
+
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>

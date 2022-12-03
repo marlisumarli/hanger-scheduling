@@ -22,29 +22,29 @@
                     <div class="card-body p-3">
                         <div class="row text-center">
                             <?php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             ?>
-                            <?php $__currentLoopData = $model['schedule_weeks']->findScheduleSupplyId((strtolower($dateTime->format('YF').'-'.$model['type']))); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch_week): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $model['schedule_weeks']->findScheduleSupplyId((strtolower($dateNow->format('YF').'-'.$model['type']))); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch_week): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                                 <?php $__currentLoopData = $model['supplies']->findScheduleWeekId($sch_week->getId()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $supply): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                                     <?php
-                                        $dateTimeFormat = new DateTime($sch_week->getDate());
+                                        $date = new DateTime($sch_week->getDate());
                                     ?>
 
                                     <?php if($sch_week->getMId() == $category->getId()): ?>
                                         <div class="col-5">
-                                            <span class="small"><?php echo e($dateTimeFormat->format('d/m/Y')); ?></span>
+                                            <span class="small"><?php echo e($date->format('d/m/Y')); ?></span>
                                         </div>
 
-                                        <?php if($dateTime->format('Y-m-d') == $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                        <?php if($dateNow->format('Y-m-d') == $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                             <div class="col-6">
                                                 <a href="/admin/supply/<?php echo e($model['type']); ?>/<?php echo e($sch_week->getId()); ?>/<?php echo e($supply->getId()); ?>/create">
                                                     <span class="small">Buat Laporan</span>
                                                 </a>
                                             </div>
 
-                                        <?php elseif($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                        <?php elseif($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                             <div class="col-6">
                                                 <svg class="bi bi-question-circle text-warning" fill="currentColor"
                                                      height="16"
@@ -54,7 +54,7 @@
                                                 </svg>
                                             </div>
 
-                                        <?php elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                        <?php elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                             <div class="col-6">
                                                 <i class="fa-regular fa-clock text-secondary"></i>
                                             </div>
@@ -127,25 +127,25 @@
                             </thead>
 
                             <?php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             ?>
 
                             <tbody class="table-group-divider">
                             <tr>
                                 <?php $__currentLoopData = $model['schedule_weeks']->findScheduleSupplyId($schedule->getId()); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch_week): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php
-                                        $dateTime = new DateTime($sch_week->getDate());
+                                        $date = new DateTime($sch_week->getDate());
                                     ?>
                                     <td>
                                         <div class="card border-0">
                                             <div class="card-body p-0">
                                                 <a class="btn-link position-relative"
-                                                   href="/admin/supply/<?php echo e($model['type']); ?>/<?php echo e($sch_week->getId()); ?>/<?php echo e($supply->getId()); ?>/view"><?php echo e($dateTime->format('d/m/Y')); ?></a>
+                                                   href="/admin/supply/<?php echo e($model['type']); ?>/<?php echo e($sch_week->getId()); ?>/<?php echo e($supply->getId()); ?>/view"><?php echo e($date->format('d/m/Y')); ?></a>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
-                                                <?php if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                                <?php if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                                     <i class="fa-solid fa-question text-warning"></i>
-                                                <?php elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                                <?php elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                                     <i class="fa-regular fa-clock text-secondary"></i>
                                                 <?php else: ?>
                                                     <i class="fa-solid fa-check text-success"></i>

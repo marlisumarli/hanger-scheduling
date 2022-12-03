@@ -164,7 +164,7 @@
                             </thead>
 
                             <?php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             ?>
 
                             <tbody class="table-group-divider">
@@ -179,9 +179,9 @@
                                                 <span><?php echo e($dateTime->format('d/m/Y')); ?></span>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
-                                                <?php if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                                <?php if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                                     <i class="fa-solid fa-question text-warning"></i>
-                                                <?php elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null): ?>
+                                                <?php elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null): ?>
                                                     <i class="fa-regular fa-clock text-secondary"></i>
                                                 <?php else: ?>
                                                     <i class="fa-solid fa-check text-success"></i>
@@ -195,7 +195,7 @@
                         </table>
                     </div>
                     <div class="card-footer d-flex">
-                        <a class="btn btn-danger btn-sm py-0 ms-auto"
+                        <a class="btn btn-danger btn-sm py-0 ms-auto <?php echo e($schedule->getIsDone() != null ? 'disabled' : ''); ?>"
                            href="/admin/schedule/<?php echo e($schedule->getId()); ?>/delete"
                            onclick="return confirm('Apakah ingin menghapus data?')"><i class="fa-solid fa-trash"></i>
                             <span>Hapus</span>

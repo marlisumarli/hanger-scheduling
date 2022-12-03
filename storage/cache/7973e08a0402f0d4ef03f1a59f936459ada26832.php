@@ -5,10 +5,10 @@
     </div>
     <div class="row">
         <?php $__currentLoopData = $model['hanger_types']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hanger_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="col-md-3 mb-3">
+            <div class="container col-md-3 mb-3">
                 <div class="card rounded-3 shadow-lg">
                     <div class="card-header">
-                        <h5 class="card-title"># <?php echo e($hanger_type->getId()); ?></h5>
+                        <h5 class="card-title"># <?php echo e(strtoupper($hanger_type->getId())); ?></h5>
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">

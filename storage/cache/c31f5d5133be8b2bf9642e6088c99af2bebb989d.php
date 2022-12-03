@@ -37,7 +37,7 @@
                 <?php $__currentLoopData = $model['hangers']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hanger): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="card shadow-lg rounded-3 mb-2">
                         <div class="card-header border-bottom-0">
-                            <span class="card-title"># <?php echo e($hanger->getHangerName()); ?></span>
+                            <span class="card-title"># <?php echo e($hanger->getName()); ?></span>
                         </div>
                         <div class="card-body">
                             <div class="row g-1">
