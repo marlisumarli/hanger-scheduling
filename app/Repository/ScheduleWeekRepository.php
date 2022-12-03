@@ -21,16 +21,16 @@ class ScheduleWeekRepository
     public function save(ScheduleWeek $schedule): ScheduleWeek
     {
         $stmt = $this->connection
-            ->prepare("INSERT INTO schedule_weeks(id, supply_schedules_id, date, is_implemented, m_id) VALUES (?,?,?,?,?)");
-        $stmt->execute([$schedule->getId(), $schedule->getScheduleSupplyId(), $schedule->getDate(), $schedule->getIsImplemented(), $schedule->getMId()]);
+            ->prepare("INSERT INTO schedule_weeks(id, supply_schedules_id, date, is_done, m_id) VALUES (?,?,?,?,?)");
+        $stmt->execute([$schedule->getId(), $schedule->getScheduleSupplyId(), $schedule->getDate(), $schedule->getIsDone(), $schedule->getMId()]);
         return $schedule;
     }
 
     public function update(ScheduleWeek $schedule): ScheduleWeek
     {
         $statement = $this->connection
-            ->prepare("UPDATE schedule_weeks SET is_implemented = ? WHERE  id = ?");
-        $statement->execute([$schedule->getIsImplemented(), $schedule->getId()]);
+            ->prepare("UPDATE schedule_weeks SET is_done = ? WHERE  id = ?");
+        $statement->execute([$schedule->getIsDone(), $schedule->getId()]);
         return $schedule;
     }
 
@@ -38,7 +38,7 @@ class ScheduleWeekRepository
     public function findById(string $id): ?ScheduleWeek
     {
         $statement = $this->connection
-            ->prepare("SELECT id, supply_schedules_id, is_implemented, date, m_id FROM schedule_weeks WHERE id = ? ");
+            ->prepare("SELECT id, supply_schedules_id, is_done, date, m_id FROM schedule_weeks WHERE id = ? ");
         $statement->execute([$id]);
 
         try {
@@ -47,7 +47,7 @@ class ScheduleWeekRepository
                 $schedule->setId($row['id']);
                 $schedule->setScheduleSupplyId($row['supply_schedules_id']);
                 $schedule->setDate($row['date']);
-                $schedule->setIsImplemented($row['is_implemented']);
+                $schedule->setIsDone($row['is_done']);
 
                 return $schedule;
             } else {
@@ -60,7 +60,7 @@ class ScheduleWeekRepository
 
     public function findScheduleSupplyId(string $scheduleSupplyId): array
     {
-        $sql = "SELECT id, supply_schedules_id, is_implemented, date, m_id FROM schedule_weeks WHERE supply_schedules_id = ?";
+        $sql = "SELECT id, supply_schedules_id, is_done, date, m_id FROM schedule_weeks WHERE supply_schedules_id = ? ORDER BY date";
 
         $statement = $this->connection->prepare($sql);
         $statement->execute([$scheduleSupplyId]);
@@ -73,7 +73,7 @@ class ScheduleWeekRepository
             $scheduleWeek = new ScheduleWeek();
             $scheduleWeek->setId($row['id']);
             $scheduleWeek->setScheduleSupplyId($row['supply_schedules_id']);
-            $scheduleWeek->setIsImplemented($row['is_implemented']);
+            $scheduleWeek->setIsDone($row['is_done']);
             $scheduleWeek->setDate($row['date']);
             $scheduleWeek->setMId($row['m_id']);
 

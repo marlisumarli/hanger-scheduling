@@ -9,9 +9,9 @@
         <button name="generateQty" type="submit">OK</button>
     </form>
     <ul>
-        @foreach($model['allHangerType'] as $key1 => $value)
+        @foreach($model['hanger_types'] as $hangerType)
             <li>
-                <a href="/admin/item/{{$value->getId()}}/hanger/update">{{$value->getId()}}</a>
+                <a href="/admin/item/{{$hangerType->getId()}}/hanger/update">{{strtoupper($hangerType->getId())}}</a>
 
                 <table border="1">
                     <thead>
@@ -22,11 +22,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($model['allHanger'][$key1] as $key2 => $value2)
+                    @foreach ($model['hangers']->findHangerTypeId($hangerType->getId()) as $hanger)
                         <tr>
-                            <th scope="row">{{$value2->getOrderNumber()}}</th>
-                            <td>{{$value2->getHangerName()}}</td>
-                            <td>{{$value2->getHangerQty()}}</td>
+                            @if($hanger->getHangerTypeId() == $hangerType->getId())
+
+                                <th scope="row">{{$hanger->getOrderNumber()}}</th>
+                                <td>{{$hanger->getName()}}</td>
+                                <td>{{$hanger->getQty()}}</td>
+
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

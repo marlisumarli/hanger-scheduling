@@ -13,7 +13,7 @@
         </ol>
     </nav>
     <div class="mb-4">
-        <h1>Laporan Supply <u>{{$model["type"]}}</u> Bulan
+        <h1>Laporan Supply <u>{{strtoupper($model["type"])}}</u> Bulan
             <u>{{DateTime::createFromFormat('!m', $model['schedule']->getMonth())->format('F')}}</u>
         </h1>
     </div>
@@ -22,7 +22,7 @@
         @php
             $dateTime = new DateTime($scheduleWeek->getDate());
         @endphp
-        @if((INT)$scheduleWeek->getIsImplemented() != 0)
+        @if((INT)$scheduleWeek->getIsDone() != 0)
             @foreach($model['supplies']->findScheduleWeekId($scheduleWeek->getId()) as $supply)
 
                 <div class="card mb-2">
@@ -65,16 +65,17 @@
                                 <tr class="c-border">
                                     @foreach($model['supply_lines']->findSupplyId($supply->getId()) as $supply_line)
                                         @if($supply_line->getHangerId() == $hanger->getId())
+                                            @php($total = $supply_line->getTotal())
                                             <td>{{$hanger->getOrderNumber()}}</td>
                                             <td>{{$hanger->getName()}}</td>
                                             <td>{{$hanger->getQty()}}</td>
-                                            <td>{{$hanger->getHangerTypeId()}}</td>
+                                            <td>{{strtoupper($hanger->getHangerTypeId())}}</td>
                                             <td>{{ceil($supply->getTargetSet()/$hanger->getQty())}}</td>
                                             <td>{{$supply_line->getLineA()}}</td>
                                             <td>{{$supply_line->getLineB()}}</td>
                                             <td>{{$supply_line->getLineC()}}</td>
-                                            <td>{{$supply_line->getTotal()}}</td>
-                                            <td>Close</td>
+                                            <td>{{$total}}</td>
+                                            <td>{{($total*$hanger->getQty()) <= $supply->getTargetSet() ? 'Open' : 'Close'}}</td>
                                         @endif
                                     @endforeach
                                 </tr>

@@ -31,7 +31,7 @@ class ScheduleWeekService
             $schedule->setScheduleSupplyId($request->supplyScheduleId);
             $schedule->setDate($request->scheduleDate);
             $schedule->setMId($request->mId);
-            $schedule->setIsImplemented($request->isImplemented);
+            $schedule->setIsDone(0);
             $this->scheduleRepository->save($schedule);
 
             $response = new ResponseSubjigApp();

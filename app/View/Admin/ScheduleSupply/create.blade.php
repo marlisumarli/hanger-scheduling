@@ -163,7 +163,7 @@
                             </thead>
 
                             @php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             @endphp
 
                             <tbody class="table-group-divider">
@@ -178,9 +178,9 @@
                                                 <span>{{$dateTime->format('d/m/Y')}}</span>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
-                                                @if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                                @if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                                     <i class="fa-solid fa-question text-warning"></i>
-                                                @elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                                @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                                     <i class="fa-regular fa-clock text-secondary"></i>
                                                 @else
                                                     <i class="fa-solid fa-check text-success"></i>
@@ -194,7 +194,7 @@
                         </table>
                     </div>
                     <div class="card-footer d-flex">
-                        <a class="btn btn-danger btn-sm py-0 ms-auto"
+                        <a class="btn btn-danger btn-sm py-0 ms-auto {{$schedule->getIsDone() != null ? 'disabled' : ''}}"
                            href="/admin/schedule/{{$schedule->getId()}}/delete"
                            onclick="return confirm('Apakah ingin menghapus data?')"><i class="fa-solid fa-trash"></i>
                             <span>Hapus</span>

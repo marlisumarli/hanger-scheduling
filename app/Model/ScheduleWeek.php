@@ -7,7 +7,7 @@ class ScheduleWeek
     private string $id;
     private string $schedule_supply_id;
     private string $date;
-    private int $is_implemented;
+    private int $is_done;
     private string $m_id;
 
     /**
@@ -61,17 +61,17 @@ class ScheduleWeek
     /**
      * @return int
      */
-    public function getIsImplemented(): int
+    public function getIsDone(): int
     {
-        return $this->is_implemented;
+        return $this->is_done;
     }
 
     /**
-     * @param int $is_implemented
+     * @param int $is_done
      */
-    public function setIsImplemented(int $is_implemented): void
+    public function setIsDone(int $is_done): void
     {
-        $this->is_implemented = $is_implemented;
+        $this->is_done = $is_done;
     }
 
     /**

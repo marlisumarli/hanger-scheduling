@@ -8,16 +8,16 @@ use Subjig\Report\Config\Database;
 use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\HTTP\ResponseSubjigApp;
 use Subjig\Report\Model\SupplySchedule;
-use Subjig\Report\Repository\ScheduleSupplyRepository;
+use Subjig\Report\Repository\SupplyScheduleRepository;
 
-class ScheduleSupplyService
+class SupplyScheduleService
 {
-    private ScheduleSupplyRepository $scheduleSubjigRepository;
+    private SupplyScheduleRepository $scheduleSubjigRepository;
 
     /**
-     * @param ScheduleSupplyRepository $scheduleSubjigRepository
+     * @param SupplyScheduleRepository $scheduleSubjigRepository
      */
-    public function __construct(ScheduleSupplyRepository $scheduleSubjigRepository)
+    public function __construct(SupplyScheduleRepository $scheduleSubjigRepository)
     {
         $this->scheduleSubjigRepository = $scheduleSubjigRepository;
     }
@@ -27,7 +27,7 @@ class ScheduleSupplyService
         $date = new DateTime('now', new \DateTimeZone('Asia/Jakarta'));
         $year = $date->format('Y');
         $month = $date->format('F');
-        $monthN = $date->format('m');
+        $monthName = $date->format('m');
 
         try {
             Database::beginTransaction();
@@ -36,7 +36,8 @@ class ScheduleSupplyService
             $scheduleSubjig->setId($year . strtolower($month . '-' . $request->hangerTypeId));
             $scheduleSubjig->setHangerTypeId($request->hangerTypeId);
             $scheduleSubjig->setPeriodId($year);
-            $scheduleSubjig->setMonth($monthN);
+            $scheduleSubjig->setMonth($monthName);
+            $scheduleSubjig->setIsDone(0);
             $this->scheduleSubjigRepository->save($scheduleSubjig);
 
             $response = new ResponseSubjigApp();

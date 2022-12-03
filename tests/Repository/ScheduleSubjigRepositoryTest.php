@@ -16,7 +16,7 @@ class ScheduleSubjigRepositoryTest extends TestCase
     private \PDO $connection;
     private HangerTypeRepository $typeRepository;
     private HangerRepository $subjigRepository;
-    private ScheduleSupplyRepository $scheduleSubjigRepository;
+    private SupplyScheduleRepository $scheduleSubjigRepository;
     private ScheduleWeekRepository $scheduleWeekRepository;
     private SupplyRepository $supplyRepository;
     private SupplyLineRepository $lineRepository;
@@ -73,7 +73,7 @@ class ScheduleSubjigRepositoryTest extends TestCase
         $this->connection = Database::getConnection('prod');
         $this->typeRepository = new HangerTypeRepository($this->connection);
         $this->subjigRepository = new HangerRepository($this->connection);
-        $this->scheduleSubjigRepository = new ScheduleSupplyRepository($this->connection);
+        $this->scheduleSubjigRepository = new SupplyScheduleRepository($this->connection);
         $this->scheduleWeekRepository = new ScheduleWeekRepository($this->connection);
         $this->supplyRepository = new SupplyRepository($this->connection);
         $this->lineRepository = new SupplyLineRepository($this->connection);

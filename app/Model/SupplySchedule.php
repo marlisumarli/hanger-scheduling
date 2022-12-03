@@ -8,6 +8,23 @@ class SupplySchedule
     private string $hanger_type_id;
     private string $month;
     private string $period_id;
+    private int $is_done;
+
+    /**
+     * @return int
+     */
+    public function getIsDone(): int
+    {
+        return $this->is_done;
+    }
+
+    /**
+     * @param int $is_done
+     */
+    public function setIsDone(int $is_done): void
+    {
+        $this->is_done = $is_done;
+    }
 
     /**
      * @return string

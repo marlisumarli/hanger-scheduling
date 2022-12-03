@@ -1093,7 +1093,7 @@ SELECT subjig.id,
        schedule_subjig.hanger_type_id,
        schedule_week.id,
        schedule_week.tanggal,
-       schedule_week.is_implemented,
+       schedule_week.is_done,
        schedule_week.supply_schedules_id,
        supply.id,
        supply.target_set,
@@ -1129,7 +1129,7 @@ SELECT
     type.id AS type_id,
     schedule_w.id AS schedule_week_id,
     schedule_w.tanggal,
-    schedule_w.is_implemented
+    schedule_w.is_done
 FROM schedule_weeks schedule_w
          INNER JOIN supply_schedules AS schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id
          INNER JOIN hanger_types type ON type.id = schedule_supply.hanger_type_id
@@ -1139,7 +1139,7 @@ WHERE type.id = ?;
 SELECT schedule.id AS schedule_id,
     supply.id AS supply_id,
     schedule.tanggal,
-    schedule.is_implemented
+    schedule.is_done
 FROM supplies supply
          INNER JOIN schedule_weeks AS schedule ON schedule.id = supply.schedule_week_id
 WHERE supply.hanger_type_id = ?;
@@ -1184,7 +1184,7 @@ SELECT
     schedule_w.id AS schedule_week_id,
     schedule_w.date,
     schedule_w.m_id,
-    schedule_w.is_implemented,
+    schedule_w.is_done,
     supply.id AS supply_id
 FROM schedule_weeks schedule_w
          INNER JOIN supply_schedules schedule_supply ON schedule_supply.id = schedule_w.supply_schedules_id

@@ -25,7 +25,9 @@ class HangerTypeService
 
     public function requestCreate(HangerTypeRequest $request): ResponseSubjigApp
     {
+
         $this->validateColumnCreateRequest($request);
+
         try {
             Database::beginTransaction();
 
@@ -43,8 +45,8 @@ class HangerTypeService
             $response->hangerType = $type;
 
             Database::commitTransaction();
-            return $response;
 
+            return $response;
         } catch (Exception $exception) {
             Database::rollBackTransaction();
             throw $exception;
@@ -63,8 +65,11 @@ class HangerTypeService
     public function requestUpdate(HangerTypeRequest $request): ResponseSubjigApp
     {
         $response = new ResponseSubjigApp();
+
         if (isset($request->newId)) {
+
             $this->validateColumnUpdateRequest($request);
+
             try {
                 Database::beginTransaction();
 
@@ -79,20 +84,23 @@ class HangerTypeService
                 $this->typeRepository->update($hangerType);
 
                 $response->hangerType = $hangerType;
-                Database::commitTransaction();
 
+                Database::commitTransaction();
             } catch (Exception $exception) {
                 Database::rollBackTransaction();
                 throw $exception;
             }
         } elseif (isset($request->qty)) {
+
+            $hangerTypeId = $request->id;
+
             try {
                 Database::beginTransaction();
 
-                $subjigs = new HangerRepository(Database::getConnection());
-                $allSubjig = count($subjigs->data($request->id));
+                $hangerRepository = new HangerRepository(Database::getConnection());
+                $hangers = count($hangerRepository->findHangerTypeId($hangerTypeId));
 
-                if ($request->qty < $allSubjig) {
+                if ($request->qty < $hangers) {
                     throw new ValidationException("HangerType Quantity tidak dapat diubah: Kurang dari jumlah Hanger saat ini");
                 }
 
@@ -102,8 +110,8 @@ class HangerTypeService
                 $this->typeRepository->update($hangerType);
 
                 $response->hangerType = $hangerType;
-                Database::commitTransaction();
 
+                Database::commitTransaction();
             } catch (Exception $exception) {
                 Database::rollBackTransaction();
                 throw $exception;

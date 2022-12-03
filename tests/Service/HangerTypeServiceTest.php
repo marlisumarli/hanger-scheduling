@@ -9,17 +9,17 @@ use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\HangerRepository;
 use Subjig\Report\Repository\HangerTypeRepository;
-use Subjig\Report\Repository\ScheduleSupplyRepository;
 use Subjig\Report\Repository\ScheduleWeekRepository;
 use Subjig\Report\Repository\SupplyLineRepository;
 use Subjig\Report\Repository\SupplyRepository;
+use Subjig\Report\Repository\SupplyScheduleRepository;
 
 class HangerTypeServiceTest extends TestCase
 {
     private \PDO $connection;
     private HangerTypeService $hangerTypeService;
     private HangerService $hangerService;
-    private ScheduleSupplyService $supplyScheduleService;
+    private SupplyScheduleService $supplyScheduleService;
     private ScheduleWeekService $scheduleWeekService;
     private SupplyService $supplyService;
     private SupplyLineService $supplyLineService;
@@ -71,14 +71,14 @@ class HangerTypeServiceTest extends TestCase
         $this->connection = Database::getConnection('prod');
         $hangerTypeRepository = new HangerTypeRepository($this->connection);
         $hangerRepository = new HangerRepository($this->connection);
-        $supplyScheduleRepository = new ScheduleSupplyRepository($this->connection);
+        $supplyScheduleRepository = new SupplyScheduleRepository($this->connection);
         $scheduleWeekRepository = new ScheduleWeekRepository($this->connection);
         $supplyRepository = new SupplyRepository($this->connection);
         $supplyLineRepository = new SupplyLineRepository($this->connection);
 
         $this->hangerTypeService = new HangerTypeService($hangerTypeRepository);
         $this->hangerService = new HangerService($hangerRepository);
-        $this->supplyScheduleService = new ScheduleSupplyService($supplyScheduleRepository);
+        $this->supplyScheduleService = new SupplyScheduleService($supplyScheduleRepository);
         $this->scheduleWeekService = new ScheduleWeekService($scheduleWeekRepository);
         $this->supplyService = new SupplyService($supplyRepository);
         $this->supplyLineService = new SupplyLineService($supplyLineRepository);

@@ -7,18 +7,18 @@ use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Model\ScheduleWeek;
+use Subjig\Report\Model\SupplySchedule;
 use Subjig\Report\Repository\HangerRepository;
 use Subjig\Report\Repository\HangerTypeRepository;
 use Subjig\Report\Repository\PeriodRepository;
 use Subjig\Report\Repository\ScheduleMCategoryRepository;
-use Subjig\Report\Repository\ScheduleSupplyRepository;
 use Subjig\Report\Repository\ScheduleWeekRepository;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\SupplyLineRepository;
 use Subjig\Report\Repository\SupplyRepository;
+use Subjig\Report\Repository\SupplyScheduleRepository;
 use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
-use Subjig\Report\Service\ScheduleWeekService;
 use Subjig\Report\Service\SessionService;
 use Subjig\Report\Service\SupplyLineService;
 use Subjig\Report\Service\SupplyService;
@@ -35,7 +35,7 @@ class AdminSupplyController
     private ScheduleWeekRepository $scheduleWeekRepository;
     private ScheduleMCategoryRepository $scheduleMCategoryRepository;
     private PeriodRepository $periodRepository;
-    private ScheduleSupplyRepository $scheduleSupplyRepository;
+    private SupplyScheduleRepository $scheduleSupplyRepository;
     private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
     private string $username;
@@ -56,13 +56,12 @@ class AdminSupplyController
         $this->supplyLineService = new SupplyLineService($this->supplyLineRepository);
 
         $this->scheduleWeekRepository = new ScheduleWeekRepository($connection);
-        $this->scheduleWeekService = new ScheduleWeekService($this->scheduleWeekRepository);
 
         $this->scheduleMCategoryRepository = new ScheduleMCategoryRepository($connection);
 
         $this->periodRepository = new PeriodRepository(Database::getConnection());
 
-        $this->scheduleSupplyRepository = new ScheduleSupplyRepository($connection);
+        $this->scheduleSupplyRepository = new SupplyScheduleRepository($connection);
 
         $this->userDetailRepository = new UserDetailRepository($connection);
 
@@ -124,7 +123,7 @@ class AdminSupplyController
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
-            'hangers' => $this->hangerRepository->data($type),
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
             'type' => $type,
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
@@ -149,10 +148,14 @@ class AdminSupplyController
             $this->supplyLineService->requestCreate($createLine);
         }
 
-        $updateSW = new ScheduleWeek();
-        $updateSW->setId($scheduleWeekId);
-        $updateSW->setIsImplemented(1);
-        $this->scheduleWeekRepository->update($updateSW);
+        $schWeek = new ScheduleWeek();
+        $schWeek->setId($scheduleWeekId);
+        $schWeek->setIsDone(1);
+        $updateSchW = $this->scheduleWeekRepository->findById($this->scheduleWeekRepository->update($schWeek)->getId());
+
+        $supplySch = new SupplySchedule();
+        $supplySch->setId($updateSchW->getScheduleSupplyId());
+        $this->scheduleSupplyRepository->update($supplySch);
 
         $model = [
             'Title' => "Admin | Supply $type",
@@ -238,5 +241,6 @@ class AdminSupplyController
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
 
+        exit();
     }
 }

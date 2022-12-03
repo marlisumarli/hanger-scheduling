@@ -14,36 +14,38 @@ use Subjig\Report\Repository\HangerTypeRepository;
 
 class HangerService
 {
-    private HangerRepository $subjigRepository;
+    private HangerRepository $hangerRepository;
 
     /**
-     * @param HangerRepository $subjigRepository
+     * @param HangerRepository $hangerRepository
      */
-    public function __construct(HangerRepository $subjigRepository)
+    public function __construct(HangerRepository $hangerRepository)
     {
-        $this->subjigRepository = $subjigRepository;
+        $this->hangerRepository = $hangerRepository;
     }
 
     public function requestCreate(HangerRequest $request): ResponseSubjigApp
     {
+
         $this->validateColumnCreateRequest($request);
+
         try {
             Database::beginTransaction();
 
             $hanger = new Hanger();
             $hanger->setId($request->hangerTypeId . '-' . substr(uniqid(), -2));
             $hanger->setHangerTypeId($request->hangerTypeId);
-            $hanger->setOrderNumber(count($this->subjigRepository->data($hanger->getHangerTypeId())) + 1);
+            $hanger->setOrderNumber(count($this->hangerRepository->findHangerTypeId($hanger->getHangerTypeId())) + 1);
             $hanger->setName(ucwords(trim($request->name)));
             $hanger->setQty($request->qty);
-            $this->subjigRepository->save($hanger);
+            $this->hangerRepository->save($hanger);
 
             $response = new ResponseSubjigApp();
             $response->hanger = $hanger;
 
             Database::commitTransaction();
-            return $response;
 
+            return $response;
         } catch (Exception $exception) {
             Database::rollBackTransaction();
             throw $exception;
@@ -62,6 +64,7 @@ class HangerService
     public function requestUpdate(HangerRequest $request): ResponseSubjigApp
     {
         $this->validateColumnCreateRequest($request);
+
         try {
             Database::beginTransaction();
 
@@ -71,48 +74,50 @@ class HangerService
             $hanger->setHangerTypeId($request->hangerTypeId);
             $hanger->setName(ucwords(trim($request->name)));
             $hanger->setQty($request->qty);
-            $this->subjigRepository->update($hanger);
+            $this->hangerRepository->update($hanger);
 
             $response = new ResponseSubjigApp();
             $response->hanger = $hanger;
 
             Database::commitTransaction();
-            return $response;
 
+            return $response;
         } catch (Exception $exception) {
             Database::rollBackTransaction();
             throw $exception;
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function requestDelete(HangerRequest $request): ResponseSubjigApp
     {
         $response = new ResponseSubjigApp();
+        $typeRepository = new HangerTypeRepository(Database::getConnection());
+
         try {
             Database::beginTransaction();
 
-            $hanger = new Hanger();
-            $hanger->setId($request->hangerId);
-            $this->subjigRepository->deleteById($hanger->getId());
-
-            $typeRepository = new HangerTypeRepository(Database::getConnection());
+            $hangerModel = new Hanger();
+            $hangerModel->setId($request->hangerId);
+            $this->hangerRepository->deleteById($hangerModel->getId());
 
             $type = new HangerType();
             $type->setId($request->hangerTypeId);
             $type->setQty($typeRepository->findById($request->hangerTypeId)->getQty() - 1);
             $typeRepository->update($type);
 
-            foreach ($this->subjigRepository->data($request->hangerTypeId) as $key => $value) {
-                $hanger = new Hanger();
-                $hanger->setId($value->getHangerId());
-                $hanger->setName(null);
-                $hanger->setOrderNumber($key + 1);
-                $this->subjigRepository->update($hanger);
+            $hangers = $this->hangerRepository->findHangerTypeId($request->hangerTypeId);
+
+            foreach ($hangers as $key => $hanger) {
+
+                $hangerModel = new Hanger();
+                $hangerModel->setId($hanger->getId());
+                $hangerModel->setName(null);
+                $hangerModel->setOrderNumber($key + 1);
+                $this->hangerRepository->update($hangerModel);
+
             }
-            $response->hanger = $hanger;
+            $response->hanger = $hangerModel;
+
             Database::commitTransaction();
 
         } catch (Exception) {

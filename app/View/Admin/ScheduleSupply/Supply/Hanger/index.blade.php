@@ -22,29 +22,29 @@
                     <div class="card-body p-3">
                         <div class="row text-center">
                             @php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             @endphp
-                            @foreach($model['schedule_weeks']->findScheduleSupplyId((strtolower($dateTime->format('YF').'-'.$model['type']))) as $sch_week)
+                            @foreach($model['schedule_weeks']->findScheduleSupplyId((strtolower($dateNow->format('YF').'-'.$model['type']))) as $sch_week)
 
                                 @foreach($model['supplies']->findScheduleWeekId($sch_week->getId()) as $supply)
 
                                     @php
-                                        $dateTimeFormat = new DateTime($sch_week->getDate());
+                                        $date = new DateTime($sch_week->getDate());
                                     @endphp
 
                                     @if($sch_week->getMId() == $category->getId())
                                         <div class="col-5">
-                                            <span class="small">{{$dateTimeFormat->format('d/m/Y')}}</span>
+                                            <span class="small">{{$date->format('d/m/Y')}}</span>
                                         </div>
 
-                                        @if($dateTime->format('Y-m-d') == $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                        @if($dateNow->format('Y-m-d') == $sch_week->getDate() && $sch_week->getIsDone() == null)
                                             <div class="col-6">
                                                 <a href="/admin/supply/{{$model['type']}}/{{$sch_week->getId()}}/{{$supply->getId()}}/create">
                                                     <span class="small">Buat Laporan</span>
                                                 </a>
                                             </div>
 
-                                        @elseif($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                        @elseif($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                             <div class="col-6">
                                                 <svg class="bi bi-question-circle text-warning" fill="currentColor"
                                                      height="16"
@@ -54,7 +54,7 @@
                                                 </svg>
                                             </div>
 
-                                        @elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                        @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                             <div class="col-6">
                                                 <i class="fa-regular fa-clock text-secondary"></i>
                                             </div>
@@ -127,25 +127,25 @@
                             </thead>
 
                             @php
-                                $dateTime = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+                                $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
                             @endphp
 
                             <tbody class="table-group-divider">
                             <tr>
                                 @foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week)
                                     @php
-                                        $dateTime = new DateTime($sch_week->getDate());
+                                        $date = new DateTime($sch_week->getDate());
                                     @endphp
                                     <td>
                                         <div class="card border-0">
                                             <div class="card-body p-0">
                                                 <a class="btn-link position-relative"
-                                                   href="/admin/supply/{{$model['type']}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$dateTime->format('d/m/Y')}}</a>
+                                                   href="/admin/supply/{{$model['type']}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$date->format('d/m/Y')}}</a>
                                             </div>
                                             <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
-                                                @if($dateTime->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                                @if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                                     <i class="fa-solid fa-question text-warning"></i>
-                                                @elseif($dateTime->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsImplemented() == null)
+                                                @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
                                                     <i class="fa-regular fa-clock text-secondary"></i>
                                                 @else
                                                     <i class="fa-solid fa-check text-success"></i>

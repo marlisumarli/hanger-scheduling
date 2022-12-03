@@ -9,23 +9,23 @@ use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\HTTP\Request\SupplyRequest;
 use Subjig\Report\Repository\HangerTypeRepository;
 use Subjig\Report\Repository\PeriodRepository;
-use Subjig\Report\Repository\ScheduleSupplyRepository;
 use Subjig\Report\Repository\ScheduleWeekRepository;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\SupplyRepository;
+use Subjig\Report\Repository\SupplyScheduleRepository;
 use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
-use Subjig\Report\Service\ScheduleSupplyService;
 use Subjig\Report\Service\ScheduleWeekService;
 use Subjig\Report\Service\SessionService;
+use Subjig\Report\Service\SupplyScheduleService;
 use Subjig\Report\Service\SupplyService;
 
 class AdminScheduleSupplyController
 {
     private ScheduleWeekService $scheduleWeekService;
-    private ScheduleSupplyService $scheduleSupplyService;
+    private SupplyScheduleService $scheduleSupplyService;
     private ScheduleWeekRepository $scheduleWeekRepository;
-    private ScheduleSupplyRepository $scheduleSupplyRepository;
+    private SupplyScheduleRepository $scheduleSupplyRepository;
     private HangerTypeRepository $hangerTypeRepository;
     private SupplyRepository $supplyRepository;
     private SupplyService $supplyService;
@@ -45,8 +45,8 @@ class AdminScheduleSupplyController
 
         $this->userDetailRepository = new UserDetailRepository($connection);
 
-        $this->scheduleSupplyRepository = new ScheduleSupplyRepository($connection);
-        $this->scheduleSupplyService = new ScheduleSupplyService($this->scheduleSupplyRepository);
+        $this->scheduleSupplyRepository = new SupplyScheduleRepository($connection);
+        $this->scheduleSupplyService = new SupplyScheduleService($this->scheduleSupplyRepository);
 
         $this->scheduleWeekRepository = new ScheduleWeekRepository($connection);
         $this->scheduleWeekService = new ScheduleWeekService($this->scheduleWeekRepository);
@@ -67,6 +67,7 @@ class AdminScheduleSupplyController
             'Schedule' => 'active bg-warning',
             'Title' => 'Admin | Schedule',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
+            'supply_schedule' => $this->scheduleSupplyRepository,
         ];
         View::render('Admin/ScheduleSupply/index', compact('model'));
     }
@@ -98,7 +99,6 @@ class AdminScheduleSupplyController
                     $requestSSW = new ScheduleRequest();
                     $requestSSW->supplyScheduleId = $responseSSS->supplySchedule->getId();
                     $requestSSW->scheduleDate = $_POST["date-m$i"][ $j ];
-                    $requestSSW->isImplemented = 0;
                     $requestSSW->hangerTypeId = $type;
                     $requestSSW->mId = "M$i";
                     $responseSSW = $this->scheduleWeekService->requestCreate($requestSSW);

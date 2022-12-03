@@ -30,15 +30,10 @@ class AdminItemController
 
     public function index()
     {
-        $result = [];
-        foreach ($this->hangerTypeRepository->findAll() as $key => $value) {
-            $result[] = $this->hangerRepository->data($value->getId());
-        }
-
         $model = [
-            'title' => 'Admin | Daftar Hanger',
-            'allHangerType' => $this->hangerTypeRepository->findAll(),
-            'allHanger' => $result
+            'Title' => 'Admin | Daftar Hanger',
+            'hanger_types' => $this->hangerTypeRepository->findAll(),
+            'hangers' => $this->hangerRepository
         ];
         View::render('Admin/Item/HangerType/index', compact('model'));
     }
@@ -52,47 +47,52 @@ class AdminItemController
         $request->id = $id;
         $request->qty = $qty;
         try {
-            $this->typeService->requestCreate($request);
-            View::redirect("/admin/item/$id/hanger/update");
+            $response = $this->typeService->requestCreate($request)->hangerType->getId();
+
+            View::redirect("/admin/item/$response/hanger/update");
+
         } catch (ValidationException $exception) {
             $model = [
-                'title' => 'Admin | Daftar Hanger',
+                'Title' => 'Admin | Daftar Hanger',
                 'error' => $exception->getMessage(),
-                'allType' => $this->hangerTypeRepository->findAll(),
+                'hanger_types' => $this->hangerTypeRepository->findAll(),
+                'hangers' => $this->hangerRepository
             ];
             View::render('Admin/Item/HangerType/index', compact('model'));
         }
     }
 
-    public function update(string $id)
+    public function update(string $type)
     {
         $model = [
-            'findType' => $this->hangerTypeRepository->findById($id),
-            'allHanger' => $this->hangerRepository->data($id)
+            'find_id' => $this->hangerTypeRepository->findById($type),
+            'hangers' => $this->hangerRepository->findHangerTypeId($type)
         ];
         View::render('Admin/Item/HangerType/update', compact('model'));
     }
 
-    public function postTmp(string $id)
+    public function postTmp(string $type)
     {
         if (isset($_POST['updateId'])) {
             $newId = $_POST['newId'];
             try {
                 $request = new HangerTypeRequest();
+                $request->id = $type;
                 $request->newId = $newId;
-                $request->id = $id;
                 $this->typeService->requestUpdate($request);
 
                 $model = [
                     'success' => "/admin/item/$newId/hanger/update",
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
             } catch (ValidationException $exception) {
                 $model = [
                     'error' => $exception->getMessage(),
-                    'findType' => $this->hangerTypeRepository->findById($id),
-                    'allHanger' => $this->hangerRepository->data($id)
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
             }
@@ -100,102 +100,102 @@ class AdminItemController
             $qty = $_POST['qty'];
             try {
                 $request = new HangerTypeRequest();
-                $request->id = $id;
+                $request->id = $type;
                 $request->qty = $qty;
                 $this->typeService->requestUpdate($request);
 
                 $model = [
-                    'success' => "/admin/item/$id/hanger/update",
+                    'success' => "/admin/item/$type/hanger/update",
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
             } catch (ValidationException $exception) {
                 $model = [
                     'error' => $exception->getMessage(),
-                    'findType' => $this->hangerTypeRepository->findById($id),
-                    'allHanger' => $this->hangerRepository->data($id)
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
             }
         }
     }
 
-    public function postHangerRegister(string $id)
+    public function postHangerRegister(string $type)
     {
         if (isset($_POST['register'])) {
             try {
                 for ($i = 0; $i < count($_POST['orderNumber']); $i++) {
-                    $hangerName = $_POST['hangerName'][ $i ];
+                    $name = $_POST['hangerName'][ $i ];
                     $qty = $_POST['qty'][ $i ];
 
                     $request = new HangerRequest();
-                    $request->hangerTypeId = $id;
-                    $request->name = $hangerName;
+                    $request->hangerTypeId = $type;
+                    $request->name = $name;
                     $request->qty = $qty;
                     $this->hangerService->requestCreate($request);
                 }
                 $model = [
-                    'success' => "/admin/item/$id/hanger/update"
+                    'success' => "/admin/item/$type/hanger/update"
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
             } catch (ValidationException $exception) {
                 $model = [
-                    'title' => "Admin | Hanger $id",
                     'error' => $exception->getMessage(),
-                    'findType' => $this->hangerTypeRepository->findById($id),
-                    'allHanger' => $this->hangerRepository->data($id)
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/update', compact('model'));
             }
         } elseif (isset($_POST['update'])) {
             try {
-                foreach ($this->hangerRepository->data($id) as $key => $value) {
+                foreach ($this->hangerRepository->findHangerTypeId($type) as $key => $hanger) {
                     $orderNumber = $_POST['updateOrderNumber'][ $key ];
-                    $hangerName = $_POST['updateName'][ $key ];
+                    $hanger = $_POST['updateName'][ $key ];
                     $qty = $_POST['updateQty'][ $key ];
 
                     $request = new HangerRequest();
-                    $request->hangerId = $value->getHangerId();
+                    $request->hangerId = $hanger->getId();
                     $request->orderNumber = $orderNumber;
-                    $request->name = $hangerName;
-                    $request->hangerTypeId = $id;
+                    $request->name = $hanger;
+                    $request->hangerTypeId = $type;
                     $request->qty = $qty;
                     $this->hangerService->requestUpdate($request);
                 }
                 $model = [
-                    'success' => "/admin/item/$id/hanger/update",
+                    'success' => "/admin/item/$type/hanger/update",
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
             } catch (ValidationException $exception) {
                 $model = [
-                    'title' => "Admin | Hanger $id",
                     'error' => $exception->getMessage(),
-                    'findType' => $this->hangerTypeRepository->findById($id),
-                    'allHanger' => $this->hangerRepository->data($id)
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
                 ];
                 View::render('Admin/Item/HangerType/update', compact('model'));
             }
         }
     }
 
-    public function delete(string $idHT, string $id)
+    public function delete(string $type, string $hanger)
     {
         $request = new HangerRequest();
-        $request->hangerId = $id;
-        $request->hangerTypeId = $idHT;
+        $request->hangerId = $hanger;
+        $request->hangerTypeId = $type;
         try {
             $this->hangerService->requestDelete($request);
 
             $model = [
-                'success' => "/admin/item/$idHT/hanger/update"
+                'success' => "/admin/item/$type/hanger/update"
             ];
             View::render('Admin/Item/HangerType/Temp/update', compact('model'));
         } catch (\Exception $exception) {
             $model = [
                 'error' => $exception->getMessage(),
-                'findType' => $this->hangerTypeRepository->findById($idHT),
-                'allHanger' => $this->hangerRepository->data($idHT)
+                'find_id' => $this->hangerTypeRepository->findById($type),
+                'hangers' => $this->hangerRepository->findHangerTypeId($type)
             ];
             View::render('Admin/Item/HangerType/update', compact('model'));
         }

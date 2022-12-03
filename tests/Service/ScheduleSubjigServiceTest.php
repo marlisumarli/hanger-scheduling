@@ -7,11 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Subjig\Report\Config\Database;
 use Subjig\Report\HTTP\Request\ScheduleRequest;
 use Subjig\Report\Repository\ScheduleWeekRepository;
-use Subjig\Report\Repository\ScheduleSupplyRepository;
+use Subjig\Report\Repository\SupplyScheduleRepository;
 
 class ScheduleSubjigServiceTest extends TestCase
 {
-    private ScheduleSupplyService $scheduleSubjigService;
+    private SupplyScheduleService $scheduleSubjigService;
     private ScheduleWeekService $scheduleService;
     private \PDO $connection;
 
@@ -42,10 +42,10 @@ class ScheduleSubjigServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $scheduleSubjigRepo = new ScheduleSupplyRepository(Database::getConnection('prod'));
+        $scheduleSubjigRepo = new SupplyScheduleRepository(Database::getConnection('prod'));
         $scheduleRepo = new ScheduleWeekRepository(Database::getConnection());
         $this->scheduleService = new ScheduleWeekService($scheduleRepo);
-        $this->scheduleSubjigService = new ScheduleSupplyService($scheduleSubjigRepo);
+        $this->scheduleSubjigService = new SupplyScheduleService($scheduleSubjigRepo);
         $this->connection = Database::getConnection('prod');
 
         $this->deleteAll();

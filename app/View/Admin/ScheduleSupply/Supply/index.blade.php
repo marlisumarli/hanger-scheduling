@@ -5,7 +5,7 @@
     </div>
     <div class="row">
         @foreach($model['hanger_types'] as $hanger_type)
-            <div class="col-md-3 mb-3">
+            <div class="container col-md-3 mb-3">
                 <div class="card rounded-3 shadow-lg">
                     <div class="card-header">
                         <h5 class="card-title"># {{strtoupper($hanger_type->getId())}}</h5>
