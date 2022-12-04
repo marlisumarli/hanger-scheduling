@@ -57,6 +57,7 @@
                     <tr class="c-border">
                         @foreach($model['supply_lines'] as $supply_line)
                             @if($supply_line->getHangerId() == $hanger->getId())
+                                @php($total = $supply_line->getTotal())
                                 <td>{{$hanger->getOrderNumber()}}</td>
                                 <td>{{$hanger->getName()}}</td>
                                 <td>{{$hanger->getQty()}}</td>
@@ -66,7 +67,7 @@
                                 <td>{{$supply_line->getLineB()}}</td>
                                 <td>{{$supply_line->getLineC()}}</td>
                                 <td>{{$supply_line->getTotal()}}</td>
-                                <td>Close</td>
+                                <td>{{($total*$hanger->getQty()) <= $model['supply']->getTargetSet() ? 'Open' : 'Close'}}</td>
                             @endif
                         @endforeach
                     </tr>

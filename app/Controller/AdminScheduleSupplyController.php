@@ -57,6 +57,7 @@ class AdminScheduleSupplyController
 
         $this->supplyRepository = new SupplyRepository($connection);
         $this->supplyService = new SupplyService($this->supplyRepository);
+
         $this->username = $this->sessionService->current()->getUsername();
     }
 

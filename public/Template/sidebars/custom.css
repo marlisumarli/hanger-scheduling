@@ -10,6 +10,10 @@
     background: #F59E0B !important;
 }
 
+.list-group-item-secondary {
+    background: rgba(100, 95, 95, 0.04) !important;
+}
+
 /** Custom Bootstrap
  */
 

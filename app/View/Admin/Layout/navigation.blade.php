@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['List Item'] ?? ''}}"
+                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['List_Item'] ?? ''}}"
                        data-bs-placement="left" data-bs-title="List Item" data-bs-toggle="tooltip"
                        href="/admin/item">
                         <i class="fa-solid fa-list"></i>

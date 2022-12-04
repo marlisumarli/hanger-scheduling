@@ -46,10 +46,10 @@ Router::get('GET', '/admin/user-delete', AdminUserController::class, 'delete', [
 Router::get('GET', '/admin/item', AdminItemController::class, 'index', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/item', AdminItemController::class, 'postRegister', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/item/([0-9a-zA-Z|-]*)/update', AdminItemController::class, 'postTmp', [MandatoryLoginMiddleware::class]);
+Router::get('POST', '/admin/item/([0-9a-zA-Z|-]*)/hanger/register', AdminItemController::class, 'postHangerRegister', [MandatoryLoginMiddleware::class]);
 Router::get('GET', '/admin/item/([0-9a-zA-Z|-]*)/hanger/update', AdminItemController::class, 'update', [MandatoryLoginMiddleware::class]);
 Router::get('POST', '/admin/item/([0-9a-zA-Z|-]*)/hanger/update', AdminItemController::class, 'postUpdate', [MandatoryLoginMiddleware::class]);
-Router::get('POST', '/admin/item/([0-9a-zA-Z|-]*)/hanger/hanger/update', AdminItemController::class, 'postHangerRegister', [MandatoryLoginMiddleware::class]);
-Router::get('GET', '/admin/item/([0-9a-zA-Z|-]*)/hanger/([0-9a-zA-Z|-]*)/delete', AdminItemController::class, 'delete', [MandatoryLoginMiddleware::class]);
+Router::get('GET', '/admin/item/([0-9a-zA-Z|-]*)/([0-9a-zA-Z|-]*)/delete', AdminItemController::class, 'delete', [MandatoryLoginMiddleware::class]);
 
 // Supply
 Router::get('GET', '/admin/supply', AdminSupplyController::class, 'index', [MandatoryLoginMiddleware::class]);

@@ -79,7 +79,7 @@ class HangerTypeService
                 }
 
                 $hangerType = new HangerType();
-                $hangerType->setNewId(strtoupper(trim($request->newId)));
+                $hangerType->setNewId(strtolower(trim($request->newId)));
                 $hangerType->setId($request->id);
                 $this->typeRepository->update($hangerType);
 
