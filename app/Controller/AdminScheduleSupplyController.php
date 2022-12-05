@@ -13,7 +13,6 @@ use Subjig\Report\Repository\ScheduleWeekRepository;
 use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\SupplyRepository;
 use Subjig\Report\Repository\SupplyScheduleRepository;
-use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\ScheduleWeekService;
 use Subjig\Report\Service\SessionService;
@@ -29,11 +28,8 @@ class AdminScheduleSupplyController
     private HangerTypeRepository $hangerTypeRepository;
     private SupplyRepository $supplyRepository;
     private SupplyService $supplyService;
-    private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
     private PeriodRepository $periodRepository;
-
-    private string $username;
 
     public function __construct()
     {
@@ -42,8 +38,6 @@ class AdminScheduleSupplyController
         $userRepository = new UserRepository($connection);
         $sessionRepository = new SessionRepository($connection);
         $this->sessionService = new SessionService($sessionRepository, $userRepository);
-
-        $this->userDetailRepository = new UserDetailRepository($connection);
 
         $this->scheduleSupplyRepository = new SupplyScheduleRepository($connection);
         $this->scheduleSupplyService = new SupplyScheduleService($this->scheduleSupplyRepository);
@@ -58,13 +52,12 @@ class AdminScheduleSupplyController
         $this->supplyRepository = new SupplyRepository($connection);
         $this->supplyService = new SupplyService($this->supplyRepository);
 
-        $this->username = $this->sessionService->current()->getUsername();
     }
 
     public function index()
     {
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Schedule' => 'active bg-warning',
             'Title' => 'Admin | Schedule',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
@@ -78,53 +71,57 @@ class AdminScheduleSupplyController
         $model = [
             'Schedule' => 'active bg-warning',
             'Title' => "Admin | Schedule $type",
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'periods' => $this->periodRepository->findAll(),
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
             'schedule_weeks' => $this->scheduleWeekRepository,
-            'type' => $type
+            'type' => $type,
+            'search' => $_GET['search'] ?? ''
         ];
         View::render('Admin/ScheduleSupply/create', compact('model'));
+
     }
 
     public function postCreate(string $type)
     {
-        $requestSSS = new ScheduleRequest();
-        $requestSSS->hangerTypeId = $type;
-        $responseSSS = $this->scheduleSupplyService->requestCreate($requestSSS);
+        if (isset($_POST['submit'])) {
+            $requestSSS = new ScheduleRequest();
+            $requestSSS->hangerTypeId = $type;
+            $responseSSS = $this->scheduleSupplyService->requestCreate($requestSSS);
 
-        $i = 1;
-        while ($i <= count($_POST)) {
-            if ($_POST["date-m$i"]) {
-                for ($j = 0; $j < count($_POST["date-m$i"]); $j++) {
-                    $requestSSW = new ScheduleRequest();
-                    $requestSSW->supplyScheduleId = $responseSSS->supplySchedule->getId();
-                    $requestSSW->scheduleDate = $_POST["date-m$i"][ $j ];
-                    $requestSSW->hangerTypeId = $type;
-                    $requestSSW->mId = "M$i";
-                    $responseSSW = $this->scheduleWeekService->requestCreate($requestSSW);
+            $i = 1;
+            while ($i <= count($_POST)) {
+                if (isset($_POST["date-m$i"])) {
+                    for ($j = 0; $j < count($_POST["date-m$i"]); $j++) {
+                        $requestSSW = new ScheduleRequest();
+                        $requestSSW->supplyScheduleId = $responseSSS->supplySchedule->getId();
+                        $requestSSW->scheduleDate = $_POST["date-m$i"][ $j ];
+                        $requestSSW->hangerTypeId = $type;
+                        $requestSSW->mId = "M$i";
+                        $responseSSW = $this->scheduleWeekService->requestCreate($requestSSW);
 
-                    $requestS = new SupplyRequest();
-                    $requestS->hangerTypeId = $type;
-                    $requestS->scheduleSupplyId = $responseSSW->scheduleWeek->getId();
-                    $this->supplyService->requestCreate($requestS);
+                        $requestS = new SupplyRequest();
+                        $requestS->hangerTypeId = $type;
+                        $requestS->scheduleSupplyId = $responseSSW->scheduleWeek->getId();
+                        $this->supplyService->requestCreate($requestS);
+                    }
                 }
+                $i++;
             }
-            $i++;
-        }
 
-        $model = [
-            'success' => "/admin/schedule/$type/create"
-        ];
-        View::render('Admin/ScheduleSupply/create', compact('model'));
+            $model = [
+                'success' => "/admin/schedule/$type/create"
+            ];
+            View::render('Admin/ScheduleSupply/create', compact('model'));
+        }
     }
 
     public function delete(string $id)
     {
-        $hTI = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
+        $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
         $model = [
-            'success' => "/admin/schedule/$hTI/create"
+            'success' => "/admin/schedule/$type/create"
         ];
         View::render('Admin/ScheduleSupply/delete', compact('model'));
     }

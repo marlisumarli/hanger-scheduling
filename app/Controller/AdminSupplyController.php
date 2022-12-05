@@ -17,7 +17,6 @@ use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\SupplyLineRepository;
 use Subjig\Report\Repository\SupplyRepository;
 use Subjig\Report\Repository\SupplyScheduleRepository;
-use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\SessionService;
 use Subjig\Report\Service\SupplyLineService;
@@ -36,7 +35,6 @@ class AdminSupplyController
     private ScheduleMCategoryRepository $scheduleMCategoryRepository;
     private PeriodRepository $periodRepository;
     private SupplyScheduleRepository $scheduleSupplyRepository;
-    private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
     private string $username;
 
@@ -44,6 +42,10 @@ class AdminSupplyController
     public function __construct()
     {
         $connection = Database::getConnection();
+
+        $userRepository = new UserRepository($connection);
+        $sessionRepository = new SessionRepository($connection);
+        $this->sessionService = new SessionService($sessionRepository, $userRepository);
 
         $this->hangerTypeRepository = new HangerTypeRepository($connection);
 
@@ -63,12 +65,6 @@ class AdminSupplyController
 
         $this->scheduleSupplyRepository = new SupplyScheduleRepository($connection);
 
-        $this->userDetailRepository = new UserDetailRepository($connection);
-
-        $userRepository = new UserRepository(Database::getConnection());
-        $sessionRepository = new SessionRepository(Database::getConnection());
-        $this->sessionService = new SessionService($sessionRepository, $userRepository);
-        $this->username = $this->sessionService->current()->getUsername();
     }
 
     public function index()
@@ -76,7 +72,7 @@ class AdminSupplyController
         $model = [
             'Supply' => 'active bg-warning',
             'Title' => 'Admin | Supply',
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'hanger_types' => $this->hangerTypeRepository->findAll(),
         ];
         View::render('Admin/ScheduleSupply/Supply/index', compact('model'));
@@ -85,7 +81,7 @@ class AdminSupplyController
     public function schedule(string $type)
     {
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'schedule_m_categories' => $this->scheduleMCategoryRepository->findAll(),
@@ -103,7 +99,7 @@ class AdminSupplyController
         $schedule = $this->scheduleSupplyRepository->findById($scheduleId);
 
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'schedule' => $schedule,
@@ -119,7 +115,7 @@ class AdminSupplyController
     public function create(string $type, string $scheduleWeekId, string $supplyId,)
     {
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
@@ -171,7 +167,7 @@ class AdminSupplyController
     {
 
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'hangers' => $this->hangerRepository->findHangerTypeId($type),
@@ -189,7 +185,7 @@ class AdminSupplyController
     {
 
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'hangers' => $this->hangerRepository->findHangerTypeId($type),
@@ -227,7 +223,7 @@ class AdminSupplyController
             }
         }
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
             'hangers' => $this->hangerRepository->findHangerTypeId($type),

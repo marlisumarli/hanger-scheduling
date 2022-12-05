@@ -30,9 +30,11 @@ class UserService
                 throw new ValidationException("Akun sudah ada, username : $request->username");
             }
 
-            $user = new  User();
+            $user = new User();
             $user->setUsername(strtolower(trim($request->username)));
             $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
+            $user->setFullName(ucwords(trim($request->fullName)));
+            $user->setRoleId($request->role);
             $this->userRepository->save($user);
 
             $response = new ResponseSubjigApp();
@@ -78,12 +80,10 @@ class UserService
         try {
             Database::beginTransaction();
 
-            if ($request->repeatPassword != $request->password) {
-                throw new ValidationException('Password tidak sama');
-            }
-
             $user = new  User();
             $user->setUsername($request->username);
+            $user->setFullName($request->fullName);
+            $user->setRoleId($request->role);
             $user->setPassword(password_hash($request->password, PASSWORD_BCRYPT));
             $this->userRepository->update($user);
 
@@ -102,13 +102,9 @@ class UserService
     public function requestDeleteUser(UserRequest $request): ResponseSubjigApp
     {
         $user = $this->userRepository->findByUsername($request->username);
-        if ($user == null) {
-            throw new ValidationException('Hapus gagal');
-        } else {
-            $user = new  User();
-            $user->setUsername($request->username);
-            $this->userRepository->deleteByUsername($user->getUsername());
-        }
+        $user = new  User();
+        $user->setUsername($request->username);
+        $this->userRepository->deleteByUsername($user->getUsername());
         $response = new ResponseSubjigApp();
         $response->user = $user;
         return $response;

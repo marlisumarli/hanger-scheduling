@@ -1,6 +1,5 @@
 @extends('Admin/Layout/main')
 @section('content')
-    Dashboard
-
-    <a href="/admin/laporan">Laporan</a>
+    Hallo
+    {{$model['session']->getUsername()}} !
 @endsection

@@ -10,7 +10,7 @@ use Subjig\Report\Repository\UserRepository;
 
 class SessionService
 {
-    public const COOKIE_NAME = 'LOGIN';
+    public const COOKIE_NAME = 'Hanger_App';
     private SessionRepository $sessionRepository;
     private UserRepository $userRepository;
 
@@ -22,11 +22,16 @@ class SessionService
 
     public function create(string $username): Session
     {
+        $dateTime = new \DateTime('now', new \DateTimeZone('Asia/Jakarta'));
+
         $session = new Session();
         $session->setId(uniqid());
         $session->setUsername($username);
 
-        $this->sessionRepository->save($session);
+        $user = new User();
+        $user->setUsername($this->sessionRepository->save($session)->getUsername());
+        $user->setLastLogin($dateTime->format('Y-m-d H:i:s'));
+        $this->userRepository->update($user);
 
         setcookie(self::COOKIE_NAME, $session->getId(), time() + (60 * 60 * 24 * 30), '/');
         return $session;

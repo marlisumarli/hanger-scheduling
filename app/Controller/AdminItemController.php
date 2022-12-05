@@ -11,7 +11,6 @@ use Subjig\Report\HTTP\Request\HangerTypeRequest;
 use Subjig\Report\Repository\HangerRepository;
 use Subjig\Report\Repository\HangerTypeRepository;
 use Subjig\Report\Repository\SessionRepository;
-use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\HangerService;
 use Subjig\Report\Service\HangerTypeService;
@@ -23,10 +22,7 @@ class AdminItemController
     private HangerTypeRepository $hangerTypeRepository;
     private HangerRepository $hangerRepository;
     private HangerService $hangerService;
-    private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
-
-    private string $username;
 
     public function __construct()
     {
@@ -36,25 +32,23 @@ class AdminItemController
         $sessionRepository = new SessionRepository($connection);
         $this->sessionService = new SessionService($sessionRepository, $userRepository);
 
-        $this->userDetailRepository = new UserDetailRepository($connection);
-
         $this->hangerTypeRepository = new HangerTypeRepository($connection);
         $this->typeService = new HangerTypeService($this->hangerTypeRepository);
 
         $this->hangerRepository = new HangerRepository($connection);
         $this->hangerService = new HangerService($this->hangerRepository);
 
-        $this->username = $this->sessionService->current()->getUsername();
     }
 
     public function index()
     {
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'List_Item' => 'active bg-warning',
             'Title' => 'Admin | Item',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
-            'hangers' => $this->hangerRepository
+            'hangers' => $this->hangerRepository,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/Item/HangerType/index', compact('model'));
     }
@@ -86,7 +80,7 @@ class AdminItemController
     public function update(string $type)
     {
         $model = [
-            'full_name' => Util::nameSplitter($this->userDetailRepository->findByUsername($this->username)->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'List_Item' => 'active bg-warning',
             'Title' => 'Admin | Item',
             'find_id' => $this->hangerTypeRepository->findById($type),

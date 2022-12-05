@@ -6,33 +6,30 @@ use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
 use Subjig\Report\Repository\SessionRepository;
-use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\SessionService;
 
 class AdminDashboardController
 {
-    private UserDetailRepository $userDetailRepository;
     private SessionService $sessionService;
 
     public function __construct()
     {
-        $userRepository = new UserRepository(Database::getConnection());
-        $sessionRepository = new SessionRepository(Database::getConnection());
-        $this->sessionService = new SessionService($sessionRepository, $userRepository);
+        $connection = Database::getConnection();
 
-        $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
+        $userRepository = new UserRepository($connection);
+
+        $sessionRepository = new SessionRepository($connection);
+        $this->sessionService = new SessionService($sessionRepository, $userRepository);
     }
 
     public function index()
     {
-        $username = $this->sessionService->current()->getUsername();
-        $userDetail = $this->userDetailRepository->findByUsername($username);
-
         $model = [
             'Title' => 'Admin | Dashboard',
-            'full_name' => Util::nameSplitter($userDetail->getFullName()),
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Dashboard' => 'active bg-warning',
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/Dashboard/index', compact('model'));
     }

@@ -5,9 +5,7 @@ namespace Subjig\Report\Model;
 class UserRole
 {
     private int $id;
-    private string $user_role_name;
-    private string $created_at;
-    private ?string $updated_at = null;
+    private string $role_name;
 
     /**
      * @return int
@@ -25,53 +23,20 @@ class UserRole
         $this->id = $id;
     }
 
-
     /**
      * @return string
      */
-    public function getUserRoleName(): string
+    public function getRoleName(): string
     {
-        return $this->user_role_name;
+        return $this->role_name;
     }
 
     /**
-     * @param string $user_role_name
+     * @param string $role_name
      */
-    public function setUserRoleName(string $user_role_name): void
+    public function setRoleName(string $role_name): void
     {
-        $this->user_role_name = $user_role_name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt(): string
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param string $created_at
-     */
-    public function setCreatedAt(string $created_at): void
-    {
-        $this->created_at = $created_at;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUpdatedAt(): ?string
-    {
-        return $this->updated_at;
-    }
-
-    /**
-     * @param string|null $updated_at
-     */
-    public function setUpdatedAt(?string $updated_at): void
-    {
-        $this->updated_at = $updated_at;
+        $this->role_name = $role_name;
     }
 
 }

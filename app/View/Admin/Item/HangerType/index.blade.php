@@ -2,15 +2,17 @@
 @section('content')
     <div class="px-lg-5 px-sm-3 mb-4">
         <h1>LIST ITEM</h1>
+        @if($model['session']->getRoleId() == 1)
+            <div class="d-flex">
+                <button class="btn btn-sm bg-warning py-1 ms-auto shadow-lg" data-bs-placement="top"
+                        data-bs-target="#staticBackdrop"
+                        data-bs-title="Registrasi Type Baru" data-bs-toggle="tooltip"
+                        onclick="modalPopUp()">
+                    <span>Registrasi</span>
+                </button>
+            </div>
+        @endif
 
-        <div class="d-flex">
-            <button class="btn btn-sm bg-warning py-1 ms-auto shadow-lg" data-bs-placement="top"
-                    data-bs-target="#staticBackdrop"
-                    data-bs-title="Registrasi Type Baru" data-bs-toggle="tooltip"
-                    onclick="modalPopUp()">
-                <span>Registrasi</span>
-            </button>
-        </div>
     </div>
 
     <div class="row">
@@ -34,6 +36,7 @@
                             @endforeach
                         </ol>
                     </div>
+                    @if($model['session']->getRoleId() == 1)
                     <div class="card-footer d-flex">
                         <div class="ms-auto">
                             <a class="small" href="/admin/item/{{$hangerType->getId()}}/hanger/update">
@@ -41,6 +44,7 @@
                             </a>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         @endforeach

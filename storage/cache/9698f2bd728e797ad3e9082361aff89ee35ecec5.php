@@ -33,59 +33,69 @@
                     </a>
                 </li>
                 <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 <?php echo e($model['List Item'] ?? ''); ?>"
+                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 <?php echo e($model['List_Item'] ?? ''); ?>"
                        data-bs-placement="left" data-bs-title="List Item" data-bs-toggle="tooltip"
                        href="/admin/item">
                         <i class="fa-solid fa-list"></i>
                         <span>List Item</span>
                     </a>
                 </li>
-                <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 <?php echo e($model['Schedule'] ?? ''); ?>"
-                       data-bs-placement="left" data-bs-title="Schedule" data-bs-toggle="tooltip"
-                       href="/admin/schedule">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <span>Schedule</span>
-                    </a>
-                </li>
+                <?php if($model['session']->getRoleId() == 1): ?>
+                    <li class="nav-item py-1">
+                        <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 <?php echo e($model['Schedule'] ?? ''); ?>"
+                           data-bs-placement="left" data-bs-title="Schedule" data-bs-toggle="tooltip"
+                           href="/admin/schedule">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Schedule</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
                 <hr class="opacity-25 my-2 mx-2">
             </ul>
         </nav>
     </aside>
 
     <div class="content vw-100">
-        <header class="sticky-top d-flex bg-light align-items-center shadow-sm mb-3" id="header"
-                style="height: 51px">
-            <button class="btn btn-sm btn-outline-primary border-0 rounded-circle mx-2"
-                    id="sidebarToggle-nav"
-                    type="button">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            <div class="ms-auto">
-                <div class="container-fluid d-grid gap-3 align-items-center">
-                    <div class="d-flex align-items-center">
-                        <form class="w-100 me-3" role="search">
-                            <input aria-label="Search" class="form-control" placeholder="Search..." type="search">
-                        </form>
+        <?php if(!isset($model['Users'])): ?>
+            <header class="sticky-top d-flex bg-light align-items-center shadow-sm mb-3" id="header"
+                    style="height: 51px">
+                <?php endif; ?>
+                <button class="btn btn-sm btn-outline-primary border-0 rounded-circle mx-2"
+                        id="sidebarToggle-nav"
+                        type="button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <?php if(!isset($model['Users'])): ?>
+                    <div class="ms-auto">
+                        <div class="container-fluid d-grid gap-3 align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <a aria-expanded="false"
+                                       class="d-block link-dark text-decoration-none dropdown-toggle"
+                                       data-bs-toggle="dropdown" href="#">
+                                        <div class="avatar"
+                                             data-label="<?php echo e($model['full_name'] ?? 'HA'); ?>"></div>
+                                    </a>
+                                    <ul class="dropdown-menu p-2 text-small shadow">
+                                        <?php if($model['session']->getRoleId() != 1): ?>
+                                            <li><a class="dropdown-item" href="/admin/user/logout">Logout</a></li>
 
-                        <div class="flex-shrink-0">
-                            <a aria-expanded="false" class="d-block link-dark text-decoration-none dropdown-toggle"
-                               data-bs-toggle="dropdown" href="#">
-                                <div class="avatar"
-                                     data-label="<?php echo e($model['full_name'] ?? 'HA'); ?>"></div>
-                            </a>
-                            <ul class="dropdown-menu p-2 text-small shadow">
-                                <li><a class="dropdown-item" href="/admin/user">Users</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="/admin/user/logout">Logout</a></li>
-                            </ul>
+                                        <?php else: ?>
+                                            <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                        <?php endif; ?>
+
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </header>
+            </header>
+        <?php endif; ?>
+
         <div class="container-fluid px-5 py-3">
             <?php echo $__env->yieldContent('content'); ?>
         </div>

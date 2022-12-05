@@ -4,73 +4,90 @@ namespace Subjig\Report\Model;
 
 class User
 {
-    private string $username;
-    private string $password;
-    private string $created_at;
-    private ?string $update_password_at = null;
+    private ?string $username = null;
+    private ?string $password = null;
+    private ?string $full_name = null;
+    private ?int $role_id = null;
+    private ?string $last_login = null;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
     /**
-     * @param string $username
+     * @param string|null $username
      */
-    public function setUsername(string $username): void
+    public function setUsername(?string $username): void
     {
         $this->username = $username;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
     /**
-     * @param string $password
+     * @param string|null $password
      */
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedAt(): string
+    public function getFullName(): ?string
     {
-        return $this->created_at;
+        return $this->full_name;
     }
 
     /**
-     * @param string $created_at
+     * @param string|null $full_name
      */
-    public function setCreatedAt(string $created_at): void
+    public function setFullName(?string $full_name): void
     {
-        $this->created_at = $created_at;
+        $this->full_name = $full_name;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRoleId(): ?int
+    {
+        return $this->role_id;
+    }
+
+    /**
+     * @param int|null $role_id
+     */
+    public function setRoleId(?int $role_id): void
+    {
+        $this->role_id = $role_id;
     }
 
     /**
      * @return string|null
      */
-    public function getUpdatePasswordAt(): ?string
+    public function getLastLogin(): ?string
     {
-        return $this->update_password_at;
+        return $this->last_login;
     }
 
     /**
-     * @param string|null $update_password_at
+     * @param string|null $last_login
      */
-    public function setUpdatePasswordAt(?string $update_password_at): void
+    public function setLastLogin(?string $last_login): void
     {
-        $this->update_password_at = $update_password_at;
+        $this->last_login = $last_login;
     }
 
 }

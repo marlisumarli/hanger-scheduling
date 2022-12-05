@@ -4,9 +4,8 @@ namespace Subjig\Report\HTTP\Request;
 
 class UserRequest
 {
-    public string $username;
-    public string $fullName;
-    public int $roleId;
-    public string $password;
-    public string $repeatPassword;
+    public ?string $username = null;
+    public ?string $fullName = null;
+    public ?string $password = null;
+    public ?int $role = null;
 }

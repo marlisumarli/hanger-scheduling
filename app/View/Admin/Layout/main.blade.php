@@ -254,13 +254,13 @@
     toggleSidebar.addEventListener("click", () => {
         page.classList.toggle('hide');
         sidebar.classList.toggle('hide');
-        iconToggle.classList.toggle('fa-arrow-left');
+        iconToggle.classList.toggle('fa-outdent');
     });
 
     toggleSidebarNav.addEventListener("click", () => {
         page.classList.toggle('hide');
         sidebar.classList.toggle('hide');
-        iconToggle.classList.toggle('fa-arrow-left');
+        iconToggle.classList.toggle('fa-outdent');
     });
     sidebarAssistance.addEventListener("click", () => {
         page.classList.toggle('hide');

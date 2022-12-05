@@ -57,6 +57,7 @@
                     <tr class="c-border">
                         <?php $__currentLoopData = $model['supply_lines']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $supply_line): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php if($supply_line->getHangerId() == $hanger->getId()): ?>
+                                <?php ($total = $supply_line->getTotal()); ?>
                                 <td><?php echo e($hanger->getOrderNumber()); ?></td>
                                 <td><?php echo e($hanger->getName()); ?></td>
                                 <td><?php echo e($hanger->getQty()); ?></td>
@@ -66,7 +67,7 @@
                                 <td><?php echo e($supply_line->getLineB()); ?></td>
                                 <td><?php echo e($supply_line->getLineC()); ?></td>
                                 <td><?php echo e($supply_line->getTotal()); ?></td>
-                                <td>Close</td>
+                                <td><?php echo e(($total*$hanger->getQty()) <= $model['supply']->getTargetSet() ? 'Open' : 'Close'); ?></td>
                             <?php endif; ?>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tr>

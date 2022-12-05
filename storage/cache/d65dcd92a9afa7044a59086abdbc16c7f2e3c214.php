@@ -1,13 +1,13 @@
 
-
-
 <?php $__env->startSection('content'); ?>
     <div class="mb-4">
         <h1>SCHEDULE</h1>
     </div>
     <div class="row">
         <?php $__currentLoopData = $model['hanger_types']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hanger_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
             <?php ($dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'))); ?>
+
 
             <div class="container col-lg-3 col-md-6 col-sm-6 mb-3">
                 <div class="card rounded-3 shadow-lg">
@@ -16,13 +16,13 @@
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">
-                            <?php ($schedule = $model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth()); ?>
-                            <?php if($schedule != $dateNow->format('m')): ?>
-                                Bulan sekarang belum dibuat
-                                <span class="badge text-bg-warning"><?php echo e($dateNow->format('F')); ?></span>
-                            <?php else: ?>
+                            <?php if($model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null): ?>
+                                <?php ($schedule = $model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth()); ?>
                                 <span>Schedule saat ini</span><br>
                                 <span class="badge text-bg-success"><?php echo e(DateTime::createFromFormat('!m', $schedule)->format('F')); ?></span>
+                            <?php else: ?>
+                                Bulan sekarang belum dibuat
+                                <span class="badge text-bg-warning"><?php echo e($dateNow->format('F')); ?></span>
                             <?php endif; ?>
                         </div>
                     </div>

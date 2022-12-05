@@ -7,29 +7,22 @@ use Subjig\Report\Config\Database;
 use Subjig\Report\Exception\ValidationException;
 use Subjig\Report\HTTP\Request\UserRequest;
 use Subjig\Report\Repository\SessionRepository;
-use Subjig\Report\Repository\UserDetailRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Repository\UserRoleRepository;
 use Subjig\Report\Service\SessionService;
-use Subjig\Report\Service\UserDetailService;
 use Subjig\Report\Service\UserService;
 
 class AdminUserController
 {
     private UserService $userService;
-    private UserDetailService $userDetailService;
     private SessionService $sessionService;
     private UserRoleRepository $userRoleRepository;
     private UserRepository $userRepository;
-    private UserDetailRepository $userDetailRepository;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository(Database::getConnection());
         $this->userService = new UserService($this->userRepository);
-
-        $this->userDetailRepository = new UserDetailRepository(Database::getConnection());
-        $this->userDetailService = new UserDetailService($this->userDetailRepository);
 
         $sessionRepository = new SessionRepository(Database::getConnection());
         $this->sessionService = new SessionService($sessionRepository, $this->userRepository);
@@ -37,120 +30,90 @@ class AdminUserController
         $this->userRoleRepository = new UserRoleRepository(Database::getConnection());
     }
 
-    public function postCreate()
+    public function index()
     {
-        $request = new UserRequest();
-        $request->username = $_POST['username'];
-        $request->password = $_POST['password'];
+        $model = [
+            'Title' => 'Admin | User',
+            'Users' => '',
+            'user_role' => $this->userRoleRepository->findAll(),
+            'users' => $this->userRepository
+        ];
+        View::render('Admin/User/index', compact('model'));
+    }
 
-        $reqUserDetail = new UserRequest();
-        $reqUserDetail->username = $_POST['username'];
-        $reqUserDetail->fullName = $_POST['name'];
-        $reqUserDetail->roleId = $_POST['roleId'];
+    public function postRegister()
+    {
+        $fullName = $_POST['fullName'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $role = $_POST['role'];
+
+        $request = new UserRequest();
+        $request->fullName = $fullName;
+        $request->username = $username;
+        $request->password = $password;
+        $request->role = $role;
 
         try {
             $this->userService->requestCreateUser($request);
-            $this->userDetailService->requestCreateUserDetail($reqUserDetail);
             $model = [
-                'title' => 'Admin | User Baru',
-                'success' => 'Berhasil dibuat',
+                'success' => '/admin/users'
             ];
-            View::render('Admin/User/create', compact('model'));
-
-        } catch (ValidationException $exception) {
-            $model = [
-                'title' => 'Admin | User Baru',
-                'error' => $exception->getMessage(),
-                'allRole' => $this->userRoleRepository->findAll()
-            ];
-            View::render('Admin/User/create', compact('model'));
+            View::render('Admin/User/tmp/tmp', compact('model'));
+        } finally {
+            exit();
         }
     }
 
-    public function updateUserDetail()
+    public function update(string $username)
     {
-        $username = $_GET['username'];
-        $result = $this->userDetailRepository->findByUsername($username);
-
         $model = [
-            'title' => 'Admin | User Update',
-            'allRole' => $this->userRoleRepository->findAll(),
-            'username' => $username ?? View::redirect('/'),
-            'fullName' => $result->getFullName() ?? View::redirect('/'),
-            'userRole' => $result->getRoleId()
+            'Title' => 'Admin | User',
+            'Users' => '',
+            'user' => $this->userRepository->findByUsername($username),
+            'roles' => $this->userRoleRepository->findAll()
         ];
         View::render('Admin/User/update', compact('model'));
     }
 
-    public function postUpdateUserDetail()
+    public function postUpdate(string $username)
     {
-        $username = $_GET['username'];
-        $result = $this->userDetailRepository->findByUsername($username);
-
-        $requestUserDetail = new UserRequest();
-        $requestUserDetail->username = $username;
-        $requestUserDetail->fullName = $_POST['name'];
-        $requestUserDetail->roleId = $_POST['roleId'] ?? View::redirect('/');
-
-        try {
-            $this->userDetailService->requestUpdateUserDetail($requestUserDetail);
-            $model = [
-                'title' => 'Admin | User Update',
-                'success' => 'Berhasil diubah',
-                'username' => $username ?? '',
-                'fullName' => $result->getFullName() ?? '',
-                'userRole' => $result->getRoleId() ?? ''
-            ];
-            View::render('Admin/User/update', compact('model'));
-
-        } catch (ValidationException $exception) {
-            $model = [
-                'title' => 'Admin | User Update',
-                'error' => $exception->getMessage(),
-                'username' => $username ?? '',
-                'fullName' => $result->getFullName() ?? '',
-                'userRole' => $result->getRoleId() ?? ''
-            ];
-            View::render('Admin/User/update', compact('model'));
-        }
-    }
-
-    public function updatePassword()
-    {
-        $username = $_GET['username'] ?? View::redirect('/');
-        $model = [
-            'title' => 'Admin | User Password',
-            'username' => $username ?? View::redirect('/'),
-        ];
-        View::render('Admin/User/update-password', compact('model'));
-    }
-
-    public function postUpdatePassword()
-    {
-        $username = $_GET['username'];
-
-        $request = new UserRequest();
-        $request->username = $username;
-        $request->password = $_POST['password'] ?? View::redirect('/');
-        $request->repeatPassword = $_POST['repeatPassword'];
-
-        try {
+        if (isset($_POST['name'])) {
+            $request = new UserRequest();
+            $request->username = $username;
+            $request->fullName = $_POST['name'];
             $this->userService->requestUpdateUser($request);
             $model = [
-                'title' => 'Admin | User Password',
-                'success' => 'Password berhasil diubah',
-                'username' => $username,
+                'success' => "/admin/user/$username/update"
             ];
-            View::render('Admin/User/update-password', compact('model'));
-
-        } catch (ValidationException $exception) {
+            View::render('Admin/User/tmp/tmp', compact('model'));
+        } elseif (isset($_POST['password'])) {
+            $request = new UserRequest();
+            $request->username = $username;
+            $request->password = $_POST['password'];
+            $this->userService->requestUpdateUser($request);
             $model = [
-                'title' => 'Admin | User Password',
-                'error' => $exception->getMessage(),
-                'username' => $username ?? View::redirect('/'),
+                'success' => "/admin/user/$username/update"
             ];
-            View::render('Admin/User/update-password', compact('model'));
+            View::render('Admin/User/tmp/tmp', compact('model'));
+        } elseif (isset($_POST['role'])) {
+            $request = new UserRequest();
+            $request->username = $username;
+            $request->role = $_POST['role'];
+            $this->userService->requestUpdateUser($request);
+            $model = [
+                'success' => "/admin/user/$username/update"
+            ];
+            View::render('Admin/User/tmp/tmp', compact('model'));
         }
+
+        $model = [
+            'Title' => 'Admin | User',
+            'Users' => '',
+            'user' => $this->userRepository->findByUsername($username),
+            'roles' => $this->userRoleRepository->findAll()
+        ];
+        View::render('Admin/User/update', compact('model'));
     }
 
     public function login()
@@ -181,44 +144,22 @@ class AdminUserController
         }
     }
 
-    public function create(): void
-    {
-        $model = [
-            'title' => 'Admin | User Baru',
-            'allRole' => $this->userRoleRepository->findAll(),
-        ];
-        View::render('Admin/User/create', compact('model'));
-    }
-
     public function logout()
     {
         $this->sessionService->destroy();
         View::redirect('/admin');
     }
 
-    public function userManagement()
+    public function delete(string $username)
     {
+        $request = new UserRequest();
+        $request->username = $username;
+        $this->userService->requestDeleteUser($request);
+
         $model = [
-            'title' => 'Admin | User',
-            'admin' => $this->userRepository->userData(1),
-            'subjig' => $this->userRepository->userData(2),
-            'userRole' => $this->userRoleRepository->findAll(),
+            'success' => '/admin/users'
         ];
-        View::render('Admin/User/user', compact('model'));
-    }
-
-    public function delete()
-    {
-        if (isset($_GET['username'])) {
-            $username = $_GET['username'];
-            $request = new UserRequest();
-            $request->username = $username;
-            $this->userService->requestDeleteUser($request);
-
-            $model = [
-                'success' => '/admin/user'
-            ];
-            View::render('Admin/User/delete', compact('model'));
-        }
+        View::render('Admin/User/delete', compact('model'));
+        exit();
     }
 }

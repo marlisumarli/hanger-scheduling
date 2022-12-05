@@ -2,14 +2,14 @@
 
 namespace Subjig\Report\Repository;
 
-use Subjig\Report\Model\RelationModel\UserUserDetailUserRole;
+use PDO;
 use Subjig\Report\Model\User;
 
 class UserRepository
 {
-    private \PDO $connection;
+    private PDO $connection;
 
-    public function __construct(\PDO $connection)
+    public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
@@ -17,23 +17,36 @@ class UserRepository
     public function save(User $user): User
     {
         $statement = $this->connection
-            ->prepare("INSERT INTO users(username, password, created_at) VALUES (?,?,CURRENT_TIMESTAMP)");
-        $statement->execute([$user->getUsername(), $user->getPassword()]);
+            ->prepare("INSERT INTO users(username, password, full_name, role_id) VALUES (?,?,?,?)");
+        $statement->execute([$user->getUsername(), $user->getPassword(), $user->getFullName(), $user->getRoleId()]);
         return $user;
     }
 
-    public function update(User $user): User
+    public function update(User $user): void
     {
-        $statement = $this->connection
-            ->prepare("UPDATE users SET password = ?, update_password_at = CURRENT_TIMESTAMP WHERE  username = ?");
-        $statement->execute([$user->getPassword(), $user->getUsername()]);
-        return $user;
+        if ($user->getRoleId() !== null) {
+            $statement = $this->connection
+                ->prepare("UPDATE users SET role_id = ?  WHERE  username = ?");
+            $statement->execute([$user->getRoleId(), $user->getUsername()]);
+        } elseif ($user->getFullName() !== null) {
+            $statement = $this->connection
+                ->prepare("UPDATE users SET full_name = ?  WHERE  username = ?");
+            $statement->execute([$user->getFullName(), $user->getUsername()]);
+        } elseif ($user->getPassword() !== null) {
+            $statement = $this->connection
+                ->prepare("UPDATE users SET password = ?  WHERE  username = ?");
+            $statement->execute([$user->getPassword(), $user->getUsername()]);
+        } elseif ($user->getLastLogin() !== null) {
+            $statement = $this->connection
+                ->prepare("UPDATE users SET last_login = ?  WHERE  username = ?");
+            $statement->execute([$user->getLastLogin(), $user->getUsername()]);
+        }
     }
 
     public function findByUsername(string $username): ?User
     {
         $statement = $this->connection
-            ->prepare("SELECT username, password, created_at, update_password_at FROM users WHERE username = ? ");
+            ->prepare("SELECT username, password, full_name, role_id, last_login FROM users WHERE username = ? ");
         $statement->execute([$username]);
 
         try {
@@ -41,9 +54,9 @@ class UserRepository
                 $user = new User();
                 $user->setUsername($row['username']);
                 $user->setPassword($row['password']);
-                $user->setCreatedAt($row['created_at']);
-                $user->setUpdatePasswordAt($row['update_password_at']);
-
+                $user->setFullName($row['full_name']);
+                $user->setRoleId($row['role_id']);
+                $user->setLastLogin($row['last_login']);
                 return $user;
             } else {
                 return null;
@@ -53,64 +66,35 @@ class UserRepository
         }
     }
 
-    public function findAll(): array
+    public function findRoleId(string $roleId): array
     {
-        $sql = "SELECT username, password, created_at, update_password_at FROM users";
+        $sql = "SELECT username, password, full_name, role_id, last_login FROM users WHERE role_id = ?";
         $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        $statement->execute([$roleId]);
 
         $result = [];
 
-        $user = $statement->fetchAll();
+        try {
+            $user = $statement->fetchAll();
 
-        foreach ($user as $row) {
-            $user = new User();
-            $user->setUsername($row['username']);
-            $user->setUpdatePasswordAt($row['update_password_at']);
-            $user->setCreatedAt($row['create_at']);
+            foreach ($user as $row) {
+                $user = new User();
+                $user->setUsername($row['username']);
+                $user->setFullName($row['full_name']);
+                $user->setRoleId($row['role_id']);
+                $user->setLastLogin($row['last_login']);
 
-            $result[] = $user;
+                $result[] = $user;
+            }
+            return $result;
+        } finally {
+            $statement->closeCursor();
         }
-        return $result;
     }
 
     public function deleteByUsername(string $username): void
     {
         $statement = $this->connection->prepare("DELETE FROM users WHERE username = ?");
         $statement->execute([$username]);
-    }
-
-    public function userData(int $role_id): array
-    {
-        $sql = "SELECT usr.username,
-       usr_d.full_name,
-       usr_r.user_role_name,
-       usr.created_at,
-       usr_d.updated_at,
-       usr.update_password_at
-FROM user_details as usr_d
-         INNER JOIN users as usr ON usr.username = usr_d.username
-         INNER JOIN user_roles as usr_r ON usr_r.id = usr_d.role_id
-WHERE usr_r.id = ?";
-
-        $statement = $this->connection->prepare($sql);
-        $statement->execute([$role_id]);
-
-        $result = [];
-        $user = $statement->fetchAll();
-
-        foreach ($user as $row) {
-            $userData = new UserUserDetailUserRole();
-            $userData->setUsername($row['username']);
-            $userData->setFullName($row['full_name']);
-            $userData->setRoleName($row['user_role_name']);
-            $userData->setCreatedAt($row['created_at']);
-            $userData->setUserDetailUpdatedAt($row['updated_at']);
-            $userData->setUserUpdatePasswordAt($row['update_password_at']);
-
-            $result[] = $userData;
-        }
-
-        return $result;
     }
 }
