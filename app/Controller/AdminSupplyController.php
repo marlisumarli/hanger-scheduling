@@ -74,6 +74,7 @@ class AdminSupplyController
             'Title' => 'Admin | Supply',
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'hanger_types' => $this->hangerTypeRepository->findAll(),
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/index', compact('model'));
     }
@@ -89,7 +90,8 @@ class AdminSupplyController
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
             'schedule_weeks' => $this->scheduleWeekRepository,
             'supplies' => $this->supplyRepository,
-            'type' => $type
+            'type' => $type,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/index', compact('model'));
     }
@@ -108,6 +110,7 @@ class AdminSupplyController
             'supplies' => $this->supplyRepository,
             'supply_lines' => $this->supplyLineRepository,
             'type' => $type,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/data-report', compact('model'));
     }
@@ -121,6 +124,7 @@ class AdminSupplyController
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
             'hangers' => $this->hangerRepository->findHangerTypeId($type),
             'type' => $type,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
     }
@@ -156,7 +160,8 @@ class AdminSupplyController
         $model = [
             'Title' => "Admin | Supply $type",
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
-            'success' => "/admin/supply/$type"
+            'success' => "/admin/supply/$type",
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
 
@@ -177,6 +182,7 @@ class AdminSupplyController
             'type' => $type,
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/view', compact('model'));
     }
@@ -195,6 +201,7 @@ class AdminSupplyController
             'type' => $type,
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
     }
@@ -233,7 +240,8 @@ class AdminSupplyController
             'type' => $type,
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
-            'success' => 'Berhasil Diubah'
+            'success' => 'Berhasil Diubah',
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
 

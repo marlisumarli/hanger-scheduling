@@ -118,7 +118,6 @@
                id="searchData" onkeyup="search()">
     </form>
 
-    <section>
         <?php $__currentLoopData = $model['periods']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php $__currentLoopData = $model['schedules']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($schedule->getPeriodId() == $period->getId()): ?>
@@ -210,12 +209,10 @@
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    </section>
     <script type="text/javascript">
 
         const search = () => {
             const searchBox = document.getElementById("searchData").value.toUpperCase();
-            const dataScope = document.getElementsByTagName("section");
             const data = document.querySelectorAll(".data");
 
             for (let i = 0; i < data.length; i++) {

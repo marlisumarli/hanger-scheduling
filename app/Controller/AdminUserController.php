@@ -36,7 +36,8 @@ class AdminUserController
             'Title' => 'Admin | User',
             'Users' => '',
             'user_role' => $this->userRoleRepository->findAll(),
-            'users' => $this->userRepository
+            'users' => $this->userRepository,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/User/index', compact('model'));
     }
@@ -71,7 +72,8 @@ class AdminUserController
             'Title' => 'Admin | User',
             'Users' => '',
             'user' => $this->userRepository->findByUsername($username),
-            'roles' => $this->userRoleRepository->findAll()
+            'roles' => $this->userRoleRepository->findAll(),
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/User/update', compact('model'));
     }
@@ -111,7 +113,8 @@ class AdminUserController
             'Title' => 'Admin | User',
             'Users' => '',
             'user' => $this->userRepository->findByUsername($username),
-            'roles' => $this->userRoleRepository->findAll()
+            'roles' => $this->userRoleRepository->findAll(),
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/User/update', compact('model'));
     }
@@ -138,7 +141,8 @@ class AdminUserController
         } catch (ValidationException $exception) {
             $model = [
                 'title' => 'Admin | Masuk',
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
+                'session' => $this->sessionService->current(),
             ];
             View::render('Admin/User/login', compact('model'));
         }

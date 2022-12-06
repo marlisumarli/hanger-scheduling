@@ -62,6 +62,7 @@ class AdminScheduleSupplyController
             'Title' => 'Admin | Schedule',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
             'supply_schedule' => $this->scheduleSupplyRepository,
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/index', compact('model'));
     }
@@ -76,7 +77,8 @@ class AdminScheduleSupplyController
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
             'schedule_weeks' => $this->scheduleWeekRepository,
             'type' => $type,
-            'search' => $_GET['search'] ?? ''
+            'search' => $_GET['search'] ?? '',
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/create', compact('model'));
 
@@ -110,7 +112,8 @@ class AdminScheduleSupplyController
             }
 
             $model = [
-                'success' => "/admin/schedule/$type/create"
+                'success' => "/admin/schedule/$type/create",
+                'session' => $this->sessionService->current(),
             ];
             View::render('Admin/ScheduleSupply/create', compact('model'));
         }
@@ -121,7 +124,8 @@ class AdminScheduleSupplyController
         $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
         $model = [
-            'success' => "/admin/schedule/$type/create"
+            'success' => "/admin/schedule/$type/create",
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/ScheduleSupply/delete', compact('model'));
     }

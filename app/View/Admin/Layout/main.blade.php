@@ -37,8 +37,7 @@
         }
 
         .avatar {
-            font-size: 14px;
-            font-weight: 400;
+            font-size: 16px;
             width: 2.5em;
             height: 2.5em;
             border-radius: 50%;

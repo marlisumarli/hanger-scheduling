@@ -71,7 +71,8 @@ class AdminItemController
                 'Title' => 'Admin | Daftar Hanger',
                 'error' => $exception->getMessage(),
                 'hanger_types' => $this->hangerTypeRepository->findAll(),
-                'hangers' => $this->hangerRepository
+                'hangers' => $this->hangerRepository,
+                'session' => $this->sessionService->current(),
             ];
             View::render('Admin/Item/HangerType/index', compact('model'));
         }
@@ -84,7 +85,8 @@ class AdminItemController
             'List_Item' => 'active bg-warning',
             'Title' => 'Admin | Item',
             'find_id' => $this->hangerTypeRepository->findById($type),
-            'hangers' => $this->hangerRepository->findHangerTypeId($type)
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'session' => $this->sessionService->current(),
         ];
         View::render('Admin/Item/HangerType/update', compact('model'));
     }
@@ -102,7 +104,8 @@ class AdminItemController
                 $model = [
                     'success' => "/admin/item/$newId/hanger/update",
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
@@ -110,7 +113,8 @@ class AdminItemController
                 $model = [
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
             }
@@ -125,7 +129,8 @@ class AdminItemController
                 $model = [
                     'success' => "/admin/item/$type/hanger/update",
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
@@ -133,7 +138,8 @@ class AdminItemController
                 $model = [
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
             }
@@ -155,7 +161,8 @@ class AdminItemController
                     $this->hangerService->requestCreate($request);
                 }
                 $model = [
-                    'success' => "/admin/item/$type/hanger/update"
+                    'success' => "/admin/item/$type/hanger/update",
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/Temp/update', compact('model'));
 
@@ -163,7 +170,8 @@ class AdminItemController
                 $model = [
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/update', compact('model'));
             }
@@ -190,7 +198,8 @@ class AdminItemController
                 $model = [
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
-                    'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
                 ];
                 View::render('Admin/Item/HangerType/update', compact('model'));
             }
@@ -213,7 +222,8 @@ class AdminItemController
             $model = [
                 'error' => $exception->getMessage(),
                 'find_id' => $this->hangerTypeRepository->findById($type),
-                'hangers' => $this->hangerRepository->findHangerTypeId($type)
+                'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                'session' => $this->sessionService->current(),
             ];
             View::render('Admin/Item/HangerType/update', compact('model'));
         }

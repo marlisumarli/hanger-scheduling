@@ -117,7 +117,6 @@
                id="searchData" onkeyup="search()">
     </form>
 
-    <section>
         @foreach($model['periods'] as $period)
             @foreach($model['schedules'] as $schedule)
                 @if($schedule->getPeriodId() == $period->getId())
@@ -209,12 +208,10 @@
                 @endif
             @endforeach
         @endforeach
-    </section>
     <script type="text/javascript">
 
         const search = () => {
             const searchBox = document.getElementById("searchData").value.toUpperCase();
-            const dataScope = document.getElementsByTagName("section");
             const data = document.querySelectorAll(".data");
 
             for (let i = 0; i < data.length; i++) {
