@@ -97,8 +97,8 @@
             </header>
         @endif
 
-        <div class="container-fluid px-5 py-3">
+        <main class="container-fluid px-3 py-3">
             @yield('content')
-        </div>
+        </main>
     </div>
 </div>

@@ -97,9 +97,9 @@
             </header>
         <?php endif; ?>
 
-        <div class="container-fluid px-5 py-3">
+        <main class="container-fluid px-3 py-3">
             <?php echo $__env->yieldContent('content'); ?>
-        </div>
+        </main>
     </div>
 </div>
 <?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/Layout/navigation.blade.php ENDPATH**/ ?>

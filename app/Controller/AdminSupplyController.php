@@ -36,7 +36,6 @@ class AdminSupplyController
     private PeriodRepository $periodRepository;
     private SupplyScheduleRepository $scheduleSupplyRepository;
     private SessionService $sessionService;
-    private string $username;
 
 
     public function __construct()

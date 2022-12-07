@@ -161,6 +161,11 @@
             border: 1px solid #dee2e6 !important;
         }
 
+        #logout:hover {
+            color: #0d6efd !important;
+        }
+
+
         @media (max-width: 767px) {
 
             #header {
@@ -228,6 +233,7 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
 <script>
+
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 

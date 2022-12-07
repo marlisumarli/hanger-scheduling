@@ -3,7 +3,6 @@
 namespace Subjig\Report\Repository;
 
 use PDO;
-use Subjig\Report\Model\RelationModel\SupplyScheduleHangerTypeScheduleWeek;
 use Subjig\Report\Model\ScheduleWeek;
 
 class ScheduleWeekRepository
