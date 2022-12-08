@@ -1,5 +1,5 @@
-@if(isset($model['success']))
+@if(isset($success))
     <script>
-        window.location.href = '{{$model['success']}}';
+        window.location.href = '{{$success}}';
     </script>
 @endif

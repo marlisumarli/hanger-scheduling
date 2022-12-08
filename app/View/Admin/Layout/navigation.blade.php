@@ -17,7 +17,7 @@
         <nav class="d-flex">
             <ul class="nav flex-column w-100">
                 <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['Dashboard'] ?? ''}}"
+                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$Dashboard ?? ''}}"
                        data-bs-placement="left" data-bs-title="Dashboard" data-bs-toggle="tooltip"
                        href="/admin/dashboard">
                         <i class="fa-solid fa-house"></i>
@@ -25,7 +25,7 @@
                     </a>
                 </li>
                 <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['Supply'] ?? ''}}"
+                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$Supply ?? ''}}"
                        data-bs-placement="left" data-bs-title="Supply" data-bs-toggle="tooltip"
                        href="/admin/supply">
                         <i class="fa-solid fa-check-double"></i>
@@ -33,16 +33,16 @@
                     </a>
                 </li>
                 <li class="nav-item py-1">
-                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['List_Item'] ?? ''}}"
+                    <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$List_Item ?? ''}}"
                        data-bs-placement="left" data-bs-title="List Item" data-bs-toggle="tooltip"
                        href="/admin/item">
                         <i class="fa-solid fa-list"></i>
                         <span>List Item</span>
                     </a>
                 </li>
-                @if($model['session']->getRoleId() == 1)
+                @if($session->getRoleId() == 1)
                     <li class="nav-item py-1">
-                        <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$model['Schedule'] ?? ''}}"
+                        <a class="nav-link d-flex align-items-center text-dark rounded-2 mx-2 py-2 {{$Schedule ?? ''}}"
                            data-bs-placement="left" data-bs-title="Schedule" data-bs-toggle="tooltip"
                            href="/admin/schedule">
                             <i class="fa-solid fa-calendar-days"></i>
@@ -57,7 +57,7 @@
     </aside>
 
     <div class="content vw-100">
-        @if(!isset($model['Users']))
+        @if(!isset($Users))
             <header class="sticky-top d-flex bg-light align-items-center shadow-sm mb-3" id="header"
                     style="height: 51px">
                 @endif
@@ -66,7 +66,7 @@
                         type="button">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                @if(!isset($model['Users']))
+                @if(!isset($Users))
                     <div class="ms-auto">
                         <div class="container-fluid d-grid gap-3 align-items-center">
                             <div class="d-flex align-items-center">
@@ -75,10 +75,10 @@
                                        class="d-block link-dark text-decoration-none dropdown-toggle"
                                        data-bs-toggle="dropdown" href="#">
                                         <div class="avatar"
-                                             data-label="{{$model['full_name'] ?? 'HA'}}"></div>
+                                             data-label="{{$full_name ?? 'HA'}}"></div>
                                     </a>
                                     <ul class="dropdown-menu p-2 text-small shadow">
-                                        @if($model['session']->getRoleId() != 1)
+                                        @if($session->getRoleId() != 1)
                                             <li><a class="dropdown-item" href="/admin/user/logout">Logout</a></li>
 
                                         @else

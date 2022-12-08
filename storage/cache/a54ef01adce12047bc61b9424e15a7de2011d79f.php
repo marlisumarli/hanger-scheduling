@@ -1,1 +1,0 @@
-<h1>Home</h1><?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Home/index.blade.php ENDPATH**/ ?>

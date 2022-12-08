@@ -1,1 +1,0 @@
-navbar login<?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/Layout/navlogin.blade.php ENDPATH**/ ?>

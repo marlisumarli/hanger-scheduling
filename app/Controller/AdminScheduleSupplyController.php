@@ -56,32 +56,28 @@ class AdminScheduleSupplyController
 
     public function index()
     {
-        $model = [
+        View::render('Admin/ScheduleSupply/index', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Schedule' => 'active bg-warning',
             'Title' => 'Admin | Schedule',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
             'supply_schedule' => $this->scheduleSupplyRepository,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/index', compact('model'));
+        ]);
     }
 
     public function create(string $type)
     {
-        $model = [
+        View::render('Admin/ScheduleSupply/create', [
             'Schedule' => 'active bg-warning',
             'Title' => "Admin | Schedule $type",
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'periods' => $this->periodRepository->findAll(),
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
-            'schedule_weeks' => $this->scheduleWeekRepository,
             'type' => $type,
-            'search' => $_GET['search'] ?? '',
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/create', compact('model'));
-
+            'schedule_weeks' => $this->scheduleWeekRepository,
+        ]);
     }
 
     public function postCreate(string $type)
@@ -111,11 +107,10 @@ class AdminScheduleSupplyController
                 $i++;
             }
 
-            $model = [
+            View::render('Admin/ScheduleSupply/create', [
                 'success' => "/admin/schedule/$type/create",
                 'session' => $this->sessionService->current(),
-            ];
-            View::render('Admin/ScheduleSupply/create', compact('model'));
+            ]);
         }
     }
 
@@ -123,10 +118,10 @@ class AdminScheduleSupplyController
     {
         $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
-        $model = [
+
+        View::render('Admin/ScheduleSupply/delete', [
             'success' => "/admin/schedule/$type/create",
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/delete', compact('model'));
+        ]);
     }
 }

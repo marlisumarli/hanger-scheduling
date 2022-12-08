@@ -2,6 +2,8 @@
 
 namespace Subjig\Report\Controller;
 
+use DateTime;
+use DateTimeZone;
 use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
@@ -37,7 +39,6 @@ class AdminSupplyController
     private SupplyScheduleRepository $scheduleSupplyRepository;
     private SessionService $sessionService;
 
-
     public function __construct()
     {
         $connection = Database::getConnection();
@@ -68,19 +69,19 @@ class AdminSupplyController
 
     public function index()
     {
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/index', [
             'Supply' => 'active bg-warning',
             'Title' => 'Admin | Supply',
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'hanger_types' => $this->hangerTypeRepository->findAll(),
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/index', compact('model'));
+        ]);
     }
 
     public function schedule(string $type)
     {
-        $model = [
+
+        View::render('Admin/ScheduleSupply/Supply/Hanger/index', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -91,15 +92,15 @@ class AdminSupplyController
             'supplies' => $this->supplyRepository,
             'type' => $type,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/index', compact('model'));
+            'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta'))
+        ]);
     }
 
     public function dataReport(string $type, string $scheduleId)
     {
         $schedule = $this->scheduleSupplyRepository->findById($scheduleId);
 
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/data-report', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -110,13 +111,12 @@ class AdminSupplyController
             'supply_lines' => $this->supplyLineRepository,
             'type' => $type,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/data-report', compact('model'));
+        ]);
     }
 
     public function create(string $type, string $scheduleWeekId, string $supplyId,)
     {
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/Hanger/create', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -124,8 +124,7 @@ class AdminSupplyController
             'hangers' => $this->hangerRepository->findHangerTypeId($type),
             'type' => $type,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
+        ]);
     }
 
     public function postCreate(string $type, string $scheduleWeekId, string $supplyId)
@@ -156,13 +155,12 @@ class AdminSupplyController
         $supplySch->setId($updateSchW->getScheduleSupplyId());
         $this->scheduleSupplyRepository->update($supplySch);
 
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/Hanger/create', [
             'Title' => "Admin | Supply $type",
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
             'success' => "/admin/supply/$type",
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/create', compact('model'));
+        ]);
 
         exit();
     }
@@ -170,7 +168,7 @@ class AdminSupplyController
     public function view(string $type, string $scheduleWeekId, string $supplyId)
     {
 
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/Hanger/view', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -182,14 +180,13 @@ class AdminSupplyController
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/view', compact('model'));
+        ]);
     }
 
     public function update(string $type, string $scheduleWeekId, string $supplyId)
     {
 
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/Hanger/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -201,8 +198,7 @@ class AdminSupplyController
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
+        ]);
     }
 
     public function postUpdate(string $type, string $scheduleWeekId, string $supplyId)
@@ -228,7 +224,7 @@ class AdminSupplyController
                 }
             }
         }
-        $model = [
+        View::render('Admin/ScheduleSupply/Supply/Hanger/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -241,8 +237,7 @@ class AdminSupplyController
             'supplyId' => $supplyId,
             'success' => 'Berhasil Diubah',
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/ScheduleSupply/Supply/Hanger/update', compact('model'));
+        ]);
 
         exit();
     }

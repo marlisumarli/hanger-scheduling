@@ -60,14 +60,4 @@ class SupplyService
             throw $exception;
         }
     }
-
-    public function requestDelete(SupplyRequest $request): ResponseSubjigApp
-    {
-        $supply = new  Supply();
-        $supply->setSupplyId($request->supplyId);
-        $this->supplyRepository->deleteById($supply->getSupplyId());
-        $response = new ResponseSubjigApp();
-        $response->supply = $supply;
-        return $response;
-    }
 }

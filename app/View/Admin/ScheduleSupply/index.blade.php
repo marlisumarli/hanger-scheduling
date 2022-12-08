@@ -4,7 +4,7 @@
         <h1>SCHEDULE</h1>
     </div>
     <div class="row">
-        @foreach($model['hanger_types'] as $hanger_type)
+        @foreach($hanger_types as $hanger_type)
 
             @php($dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta')))
 
@@ -16,8 +16,8 @@
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">
-                            @if($model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null)
-                                @php($schedule = $model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth())
+                            @if($supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null)
+                                @php($schedule = $supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth())
                                 <span>Schedule saat ini</span><br>
                                 <span class="badge text-bg-success">{{DateTime::createFromFormat('!m', $schedule)->format('F')}}</span>
                             @else

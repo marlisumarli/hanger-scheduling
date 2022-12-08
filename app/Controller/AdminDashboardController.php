@@ -49,7 +49,7 @@ class AdminDashboardController
 
     public function index()
     {
-        $model = [
+        View::render('Admin/Dashboard/index', [
             'Title' => 'Admin | Dashboard',
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Dashboard' => 'active bg-warning',
@@ -60,8 +60,7 @@ class AdminDashboardController
             'supply_lines' => $this->supplyLineRepository,
             'hangers' => $this->hangerRepository,
             'supplies' => $this->supplyRepository,
-        ];
-        View::render('Admin/Dashboard/index', compact('model'));
+        ]);
     }
 
     public function direct()

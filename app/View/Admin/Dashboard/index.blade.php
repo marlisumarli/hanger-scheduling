@@ -15,7 +15,7 @@
                     <div class="avatar my-auto"
                          data-label="MS"></div>
                     <div class="mx-3">
-                        <span class="fw-bold">Selamat Datang, User</span>
+                        <span class="fw-bold">Selamat Datang, {{$session->getUsername()}} 👋</span>
                         <br>
                         <a class="btn-link text-dark text-decoration-none" href="" id="logout">Logout</a>
                     </div>
@@ -30,16 +30,16 @@
             $dateNow = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
         @endphp
 
-        @foreach($model['hanger_types'] as $hanger_type)
+        @foreach($hanger_types as $hanger_type)
 
-            @if($model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null)
+            @if($supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null)
 
                 @php
-                    $schedule = $model['supply_schedule']->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()));
+                    $schedule = $supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()));
 
                         $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
 
-                           foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week){
+                           foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week){
                                if ($sch_week->getMId() == 'M1'){
                                    $result['m1'][] = $sch_week->getMId();
                                }elseif ($sch_week->getMId() == 'M2'){
@@ -80,7 +80,7 @@
                                 <tbody class="table-group-divider">
                                 <tr>
 
-                                    @foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week)
+                                    @foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week)
                                         @php
                                             $dateTime = new DateTime($sch_week->getDate());
                                         @endphp
@@ -131,13 +131,13 @@
                                 </div>
 
 
-                                @foreach($model['schedule_weeks']->findScheduleSupplyId($schedule->getId()) as $sch_week)
+                                @foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week)
 
                                     @php
                                         $dateTime2 = new DateTime($sch_week->getDate());
-                                    @endphp
+//                                    @endphp
 
-                                    @foreach($model['supplies']->findScheduleWeekId($sch_week->getId()) as $supply)
+                                    @foreach($supplies->findScheduleWeekId($sch_week->getId()) as $supply)
 
                                         <div class="container overflow-scroll mb-3">
                                             <span><i>Periode Tanggal : {{$dateTime2->format('d/m/Y')}}</i></span>
@@ -166,12 +166,12 @@
                                                 </thead>
                                                 <tbody>
 
-                                                @foreach($model['hangers']->findHangerTypeId($hanger_type->getId()) as $hanger)
+                                                @foreach($hangers->findHangerTypeId($hanger_type->getId()) as $hanger)
 
                                                     @if($sch_week->getIsdone() != null)
 
                                                         <tr>
-                                                            @foreach($model['supply_lines']->findSupplyId($supply->getId()) as $supply_line)
+                                                            @foreach($supply_lines->findSupplyId($supply->getId()) as $supply_line)
                                                                 @if($supply_line->getHangerId() == $hanger->getId())
                                                                     @php($total = $supply_line->getTotal())
                                                                     <td>{{$hanger->getOrderNumber()}}</td>

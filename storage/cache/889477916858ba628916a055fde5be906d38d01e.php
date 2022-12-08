@@ -1,1 +1,0 @@
-navbar login<?php /**PATH C:\xampp\htdocs\subjig-management-pt-indospray\app\View/Admin/Partial/navlogin.blade.php ENDPATH**/ ?>

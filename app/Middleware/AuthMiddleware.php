@@ -8,7 +8,7 @@ use Subjig\Report\Repository\SessionRepository;
 use Subjig\Report\Repository\UserRepository;
 use Subjig\Report\Service\SessionService;
 
-class MandatoryLoginMiddleware implements Middleware
+class AuthMiddleware implements Middleware
 {
     private SessionService $sessionService;
 

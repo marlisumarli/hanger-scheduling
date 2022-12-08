@@ -1,29 +1,27 @@
 @extends('Admin/Layout/main')
 @section('content')
 
-    @php
-        $date = new DateTime()
-    @endphp
+    @php($date = new DateTime())
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="/admin/supply">Supply</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Laporan {{$model["type"]}}</li>
+            <li aria-current="page" class="breadcrumb-item active">Laporan {{$type}}</li>
         </ol>
     </nav>
     <div class="mb-4">
-        <h1>Laporan Supply <u>{{strtoupper($model["type"])}}</u> Bulan
-            <u>{{DateTime::createFromFormat('!m', $model['schedule']->getMonth())->format('F')}}</u>
+        <h1>Laporan Supply <u>{{strtoupper($type)}}</u> Bulan
+            <u>{{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</u>
         </h1>
     </div>
 
-    @foreach($model['schedule_weeks'] as $scheduleWeek)
-        @php
-            $dateTime = new DateTime($scheduleWeek->getDate());
-        @endphp
+    @foreach($schedule_weeks as $scheduleWeek)
+
+        @php($dateTime = new DateTime($scheduleWeek->getDate()))
+
         @if((INT)$scheduleWeek->getIsDone() != 0)
-            @foreach($model['supplies']->findScheduleWeekId($scheduleWeek->getId()) as $supply)
+            @foreach($supplies->findScheduleWeekId($scheduleWeek->getId()) as $supply)
 
                 <div class="card mb-2">
                     <div class="card-header d-flex">
@@ -61,9 +59,9 @@
                             </tr>
                             </thead>
                             <tbody class="border">
-                            @foreach($model['hangers'] as $hanger)
+                            @foreach($hangers as $hanger)
                                 <tr class="c-border">
-                                    @foreach($model['supply_lines']->findSupplyId($supply->getId()) as $supply_line)
+                                    @foreach($supply_lines->findSupplyId($supply->getId()) as $supply_line)
                                         @if($supply_line->getHangerId() == $hanger->getId())
                                             @php($total = $supply_line->getTotal())
                                             <td>{{$hanger->getOrderNumber()}}</td>

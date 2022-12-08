@@ -58,7 +58,7 @@ class SupplyScheduleRepository
 
     public function findAll(string $type): array
     {
-        $sql = "SELECT id, period_id, month, is_done FROM supply_schedules WHERE hanger_type_id = ?";
+        $sql = "SELECT id, period_id, month, is_done FROM supply_schedules WHERE hanger_type_id = ? ORDER BY month DESC, period_id DESC";
         $statement = $this->connection->prepare($sql);
         $statement->execute([$type]);
 
