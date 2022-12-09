@@ -111,7 +111,8 @@ class HangerService
 
                 $hangerModel = new Hanger();
                 $hangerModel->setId($hanger->getId());
-                $hangerModel->setName(null);
+                $hangerModel->setName($hanger->getName());
+                $hangerModel->setQty($hanger->getQty());
                 $hangerModel->setOrderNumber($key + 1);
                 $this->hangerRepository->update($hangerModel);
 

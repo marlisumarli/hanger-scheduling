@@ -1,13 +1,7 @@
 @extends('Admin/Layout/main')
 @section('content')
 
-    @if (isset($model['error']))
-        <script>
-            alert({{$model['error']}});
-        </script>
-    @endif
-
-    @if($model['find_id'] != null)
+    @if($find_id != null)
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -18,7 +12,7 @@
         </nav>
 
         <div class="px-lg-5 px-sm-3 mb-4">
-            <h1>LIST ITEM</h1>
+            <h4>LIST ITEM</h4>
         </div>
 
         <div class="row d-flex justify-content-center">
@@ -27,7 +21,7 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <span class="fw-bold">Type : {{strtoupper($model['find_id']->getId())}}</span>
+                            <span class="fw-bold">Type : {{strtoupper($find_id->getId())}}</span>
                         </div>
                         <button class="btn btn-sm rounded bg-warning py-1 ms-auto shadow-lg"
                                 data-bs-placement="top"
@@ -39,7 +33,7 @@
                     </li>
                     <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                            <span class="fw-bold">Jumlah Item : {{$model['find_id']->getQty()}}</span>
+                            <span class="fw-bold">Jumlah Item : {{$find_id->getQty()}}</span>
                         </div>
                         <button class="btn btn-sm rounded bg-warning py-1 ms-auto shadow-lg"
                                 data-bs-placement="top"
@@ -55,7 +49,7 @@
 
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 mb-3">
                 <form class="card rounded-3 shadow-lg"
-                      action="/admin/item/{{$model['find_id']->getId()}}/hanger/register" method="post">
+                      action="/admin/item/{{$find_id->getId()}}/hanger/update" method="post" autocomplete="off">
                     <div class="card-header">
                         <h5 class="card-title"># Item</h5>
                     </div>
@@ -90,35 +84,35 @@
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                            @for($i = 0; $i < $model['find_id']->getQty(); $i++)
+                            @for($i = 0; $i < $find_id->getQty(); $i++)
                                 <tr>
                                     <td>
                                         <input class="form-control p-0 text-center order" id="numberOrder"
-                                               name="{{$i >= count($model['hangers']) ? 'orderNumber[]' : 'updateOrderNumber[]'}}"
+                                               name="{{$i >= count($hangers) ? 'orderNumber[]' : 'updateOrderNumber[]'}}"
                                                placeholder="0" required title="" type="number"
-                                               value="{{$i < count($model['hangers']) ? $model['hangers'][$i]->getOrderNumber() : ''}}"
+                                               value="{{$i < count($hangers) ? $hangers[$i]->getOrderNumber() : ''}}"
                                                min="1">
                                     </td>
                                     <td>
                                         <input class="form-control p-0 text-center" id="name"
-                                               name="{{$i >= count($model['hangers']) ? 'hangerName[]' : 'updateName[]'}}"
+                                               name="{{$i >= count($hangers) ? 'hangerName[]' : 'updateName[]'}}"
                                                placeholder="..."
                                                required title="" type="text"
-                                               value="{{$i < count($model['hangers']) ? $model['hangers'][$i]->getName() : ''}}"
+                                               value="{{$i < count($hangers) ? $hangers[$i]->getName() : ''}}"
                                                min="1">
                                     </td>
                                     <td>
                                         <input class="form-control p-0 text-center" id="qty"
-                                               name="{{$i >= count($model['hangers']) ? 'qty[]' : 'updateQty[]'}}"
+                                               name="{{$i >= count($hangers) ? 'qty[]' : 'updateQty[]'}}"
                                                placeholder="00"
                                                required title="" type="number"
-                                               value="{{$i < count($model['hangers']) ? $model['hangers'][$i]->getQty() : ''}}"
+                                               value="{{$i < count($hangers) ? $hangers[$i]->getQty() : ''}}"
                                                min="1">
                                     </td>
                                     <td>
-                                        @if($i < count($model['hangers']))
+                                        @if($i < count($hangers))
                                             <a class="link-danger"
-                                               href="/admin/item/{{$model['hangers'][$i]->getHangerTypeId()}}/{{$model['hangers'][$i]->getId()}}/delete"
+                                               href="/admin/item/{{$hangers[$i]->getHangerTypeId()}}/{{$hangers[$i]->getId()}}/delete"
                                                onclick="return confirm('are you sure want to be delete?')">Hapus</a>
                                         @endif
                                     </td>
@@ -129,25 +123,29 @@
                         </table>
                     </div>
                     <div class="card-footer text-end">
-                        @if(count($model['hangers']) < $model['find_id']->getQty())
+                        @if(count($hangers) < $find_id->getQty())
                             <button name="register" class="btn btn-primary" type="submit">
                                 Submit
                             </button>
-                        @endif
-                        @if(count($model['hangers']) >= $model['find_id']->getQty())
+                        @elseif(count($hangers) >= $find_id->getQty())
                             <button name="update" class="btn btn-primary" type="submit">
-                                Submit
+                                Update
                             </button>
                         @endif
                     </div>
                 </form>
+                @isset($error)
+                    <script>
+                        alert('{{$error}}');
+                    </script>
+                @endisset
             </div>
         </div>
 
         <div aria-hidden="true" aria-labelledby="updateTypeLabel" class="modal fade"
              data-bs-backdrop="static" data-bs-keyboard="false"
              id="updateType" tabindex="-1">
-            <form action="/admin/item/{{$model['find_id']->getId()}}/update" method="post" class="modal-dialog">
+            <form action="/admin/item/{{$find_id->getId()}}/update" method="post" class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="updateTypeLabel">Ubah Nama Type</h1>
@@ -176,7 +174,7 @@
         <div aria-hidden="true" aria-labelledby="updateQtyLabel" class="modal fade"
              data-bs-backdrop="static" data-bs-keyboard="false"
              id="updateQty" tabindex="-1">
-            <form action="/admin/item/{{$model['find_id']->getId()}}/update" method="post" class="modal-dialog">
+            <form action="/admin/item/{{$find_id->getId()}}/update" method="post" class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="updateQtyLabel">Ubah Jumlah Item</h1>

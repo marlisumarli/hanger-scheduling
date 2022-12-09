@@ -8,7 +8,7 @@
         </button>
     </div>
 
-    @foreach($model['user_role'] as $role)
+    @foreach($user_role as $role)
 
         <h1>{{$role->getRoleName()}}</h1>
 
@@ -26,7 +26,7 @@
                 </tr>
                 </thead>
                 <tbody class="table-group-divider">
-                @foreach($model['users']->findRoleId($role->getId()) as $user)
+                @foreach($users->findRoleId($role->getId()) as $user)
                     @if($user->getRoleId() == $role->getId())
                         @php($dateTime = new DateTime($user->getLastLogin()))
                         <tr>
@@ -77,7 +77,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <select aria-label="Default select example" class="form-select" required name="role">
-                        @foreach($model['user_role'] as $role)
+                        @foreach($user_role as $role)
                             <option value="{{$role->getId()}}">{{$role->getRoleName()}}</option>
                         @endforeach
                     </select>

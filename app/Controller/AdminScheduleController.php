@@ -2,6 +2,8 @@
 
 namespace Subjig\Report\Controller;
 
+use DateTime;
+use DateTimeZone;
 use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
@@ -19,7 +21,7 @@ use Subjig\Report\Service\SessionService;
 use Subjig\Report\Service\SupplyScheduleService;
 use Subjig\Report\Service\SupplyService;
 
-class AdminScheduleSupplyController
+class AdminScheduleController
 {
     private ScheduleWeekService $scheduleWeekService;
     private SupplyScheduleService $scheduleSupplyService;
@@ -56,7 +58,7 @@ class AdminScheduleSupplyController
 
     public function index()
     {
-        View::render('Admin/ScheduleSupply/index', [
+        View::render('Admin/Schedule/index', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Schedule' => 'active bg-warning',
             'Title' => 'Admin | Schedule',
@@ -68,15 +70,17 @@ class AdminScheduleSupplyController
 
     public function create(string $type)
     {
-        View::render('Admin/ScheduleSupply/create', [
+        View::render('Admin/Schedule/create', [
             'Schedule' => 'active bg-warning',
             'Title' => "Admin | Schedule $type",
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'periods' => $this->periodRepository->findAll(),
             'schedules' => $this->scheduleSupplyRepository->findAll($type),
+            'schedule_weeks' => $this->scheduleWeekRepository,
+            'supplies' => $this->supplyRepository,
             'type' => $type,
             'session' => $this->sessionService->current(),
-            'schedule_weeks' => $this->scheduleWeekRepository,
+            'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta'))
         ]);
     }
 
@@ -107,7 +111,7 @@ class AdminScheduleSupplyController
                 $i++;
             }
 
-            View::render('Admin/ScheduleSupply/create', [
+            View::render('Admin/Schedule/create', [
                 'success' => "/admin/schedule/$type/create",
                 'session' => $this->sessionService->current(),
             ]);
@@ -119,7 +123,7 @@ class AdminScheduleSupplyController
         $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
 
-        View::render('Admin/ScheduleSupply/delete', [
+        View::render('Admin/Schedule/delete', [
             'success' => "/admin/schedule/$type/create",
             'session' => $this->sessionService->current(),
         ]);

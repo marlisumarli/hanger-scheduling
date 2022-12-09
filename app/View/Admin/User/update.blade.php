@@ -5,15 +5,15 @@
         <div class="card rounded-3 shadow-lg">
             <div class="card-header">
                 <div class="card-title">
-                    <span>Update User #<b>{{$model['user']->getUserName()}}</b></span>
+                    <span>Update User #<b>{{$user->getUserName()}}</b></span>
                 </div>
             </div>
 
             <div class="card-body">
-                <form action="/admin/user/{{$model['user']->getUsername()}}/update" method="post"
+                <form action="/admin/user/{{$user->getUsername()}}/update" method="post"
                       class="form-floating d-flex mb-3">
                     <input class="form-control" id="floatingUpdateName" placeholder="Name" required
-                           type="text" value="{{$model['user']->getFullName()}}" name="name">
+                           type="text" value="{{$user->getFullName()}}" name="name">
                     <label for="floatingUpdateName">Name</label>
                     <div class="m-auto px-2">
                         <button type="submit" class="btn btn-warning">
@@ -22,7 +22,7 @@
                     </div>
                 </form>
 
-                <form action="/admin/user/{{$model['user']->getUsername()}}/update" method="post"
+                <form action="/admin/user/{{$user->getUsername()}}/update" method="post"
                       class="form-floating d-flex mb-3">
                     <input class="form-control" id="floatingUpdatePassword" placeholder="Password"
                            required
@@ -34,15 +34,15 @@
                         </button>
                     </div>
                 </form>
-                <form action="/admin/user/{{$model['user']->getUsername()}}/update" method="post" class="d-flex">
+                <form action="/admin/user/{{$user->getUsername()}}/update" method="post" class="d-flex">
                     <select aria-label="Default select example" class="form-select" required name="role">
                         <option selected>Jabatan</option>
-                        @foreach($model['roles'] as $role)
+                        @foreach($roles as $role)
                             @if($model['user']->getRoleId() == $role->getId())
-                                <option value="{{$model['user']->getRoleId()}}"
+                                <option value="{{$user->getRoleId()}}"
                                         selected>{{$role->getRoleName()}}</option>
                             @else
-                                <option value="{{$model['user']->getRoleId()}}">{{$role->getRoleName()}}</option>
+                                <option value="{{$user->getRoleId()}}">{{$role->getRoleName()}}</option>
                             @endif
                         @endforeach
                     </select>
@@ -63,9 +63,9 @@
         </div>
     </div>
 
-    @if(isset($model['success']))
+    @if(isset($success))
         <script>
-            alert('{{$model['success']}}');
+            alert('{{$success}}');
         </script>
     @endif
 

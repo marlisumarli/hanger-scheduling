@@ -1,21 +1,20 @@
 @extends('Admin/Layout/main')
 @section('content')
-    @if (isset($model['success']))
+    @if (isset($success))
         <script>
             alert('success');
-            document.location.href = '{{$model["success"]}}';
+            document.location.href = '{{$success}}';
         </script>
     @endif
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="/admin/supply">Supply</a></li>
-            <li class="breadcrumb-item"><a href="/admin/supply/{{$model["type"]}}">Schedule</a></li>
+            <li class="breadcrumb-item"><a href="/admin/supply/{{$type}}">Schedule</a></li>
             <li aria-current="page" class="breadcrumb-item active">Buat Laporan</li>
         </ol>
     </nav>
     <div class="mb-4">
-        <h1>Buat Laporan Supply {{$model["type"]}}</h1>
+        <h1>Buat Laporan Supply {{strtoupper($type)}}</h1>
     </div>
 
     <form class="d-flex justify-content-center" method="post">
@@ -25,7 +24,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <span>Tanggal dibuat</span><span
-                                    class="badge text-bg-warning">{{$model['schedule_week']->getDate()}}</span>
+                                    class="badge text-bg-warning">{{$schedule_week->getDate()}}</span>
                         </div>
                         <label class="form-label card-title" for="targetSet">Target Set</label>
                         <input class="form-control" id="targetSet" min="100" name="target" required type="number">
@@ -34,7 +33,7 @@
             </div>
 
             <div class="col-md">
-                @foreach ($model['hangers'] as $hanger)
+                @foreach ($hangers as $hanger)
                     <div class="card shadow-lg rounded-3 mb-2">
                         <div class="card-header border-bottom-0">
                             <span class="card-title"># {{$hanger->getName()}}</span>
@@ -59,7 +58,7 @@
                 @endforeach
                 <div class="d-flex justify-content-end">
                     <button class="btn btn-primary rounded-3 mt-3 px mx-2 shadow-lg" type="submit">Submit</button>
-                    <a href="/admin/supply/{{$model["type"]}}" class="btn btn-secondary rounded-3 mt-3 shadow-lg">Kembali</a>
+                    <a href="/admin/supply/{{$type}}" class="btn btn-secondary rounded-3 mt-3 shadow-lg">Kembali</a>
                 </div>
             </div>
         </div>

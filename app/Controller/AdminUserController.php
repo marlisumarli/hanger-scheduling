@@ -32,14 +32,13 @@ class AdminUserController
 
     public function index()
     {
-        $model = [
+        View::render('Admin/User/index', [
             'Title' => 'Admin | User',
             'Users' => '',
             'user_role' => $this->userRoleRepository->findAll(),
             'users' => $this->userRepository,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/User/index', compact('model'));
+        ]);
     }
 
     public function postRegister()
@@ -57,10 +56,9 @@ class AdminUserController
 
         try {
             $this->userService->requestCreateUser($request);
-            $model = [
+            View::render('Admin/User/tmp/tmp', [
                 'success' => '/admin/users'
-            ];
-            View::render('Admin/User/tmp/tmp', compact('model'));
+            ]);
         } finally {
             exit();
         }
@@ -68,14 +66,13 @@ class AdminUserController
 
     public function update(string $username)
     {
-        $model = [
+        View::render('Admin/User/update', [
             'Title' => 'Admin | User',
             'Users' => '',
             'user' => $this->userRepository->findByUsername($username),
             'roles' => $this->userRoleRepository->findAll(),
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/User/update', compact('model'));
+        ]);
     }
 
     public function postUpdate(string $username)
@@ -85,46 +82,41 @@ class AdminUserController
             $request->username = $username;
             $request->fullName = $_POST['name'];
             $this->userService->requestUpdateUser($request);
-            $model = [
+            View::render('Admin/User/tmp/tmp', [
                 'success' => "/admin/user/$username/update"
-            ];
-            View::render('Admin/User/tmp/tmp', compact('model'));
+            ]);
         } elseif (isset($_POST['password'])) {
             $request = new UserRequest();
             $request->username = $username;
             $request->password = $_POST['password'];
             $this->userService->requestUpdateUser($request);
-            $model = [
+            View::render('Admin/User/tmp/tmp', [
                 'success' => "/admin/user/$username/update"
-            ];
-            View::render('Admin/User/tmp/tmp', compact('model'));
+            ]);
         } elseif (isset($_POST['role'])) {
             $request = new UserRequest();
             $request->username = $username;
             $request->role = $_POST['role'];
             $this->userService->requestUpdateUser($request);
-            $model = [
+            View::render('Admin/User/tmp/tmp', [
                 'success' => "/admin/user/$username/update"
-            ];
-            View::render('Admin/User/tmp/tmp', compact('model'));
+            ]);
         }
 
-        $model = [
+        View::render('Admin/User/update', [
             'Title' => 'Admin | User',
             'Users' => '',
             'user' => $this->userRepository->findByUsername($username),
             'roles' => $this->userRoleRepository->findAll(),
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/User/update', compact('model'));
+        ]);
     }
 
     public function login()
     {
-        $model = [
+        View::render('Admin/User/login', [
             'title' => 'Admin | Masuk'
-        ];
-        View::render('Admin/User/login', compact('model'));
+        ]);
     }
 
     public function postLogin()
@@ -139,12 +131,11 @@ class AdminUserController
             View::redirect('/admin/dashboard');
 
         } catch (ValidationException $exception) {
-            $model = [
+            View::render('Admin/User/login', [
                 'title' => 'Admin | Masuk',
                 'error' => $exception->getMessage(),
                 'session' => $this->sessionService->current(),
-            ];
-            View::render('Admin/User/login', compact('model'));
+            ]);
         }
     }
 
@@ -160,10 +151,9 @@ class AdminUserController
         $request->username = $username;
         $this->userService->requestDeleteUser($request);
 
-        $model = [
+        View::render('Admin/User/delete', [
             'success' => '/admin/users'
-        ];
-        View::render('Admin/User/delete', compact('model'));
+        ]);
         exit();
     }
 }

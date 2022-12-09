@@ -32,22 +32,22 @@
     <form method="post">
         <h1 class="h3 mb-3 fw-normal">Login Admin</h1>
 
-        @if (isset($model['error']))
+        @if (isset($error))
             <div class="alert alert-danger py-1">
-                <span>{{$model['error']}}</span>
+                <span>{{$error}}</span>
             </div>
         @endif
 
         <div class="form-floating">
             <input type="text"
-                   class="form-control rounded-0 rounded-top mb-1 {{isset($model['error']) ? 'is-invalid' : ''}}"
+                   class="form-control rounded-0 rounded-top mb-1 {{isset($error) ? 'is-invalid' : ''}}"
                    id="floatingInput" autofocus
                    placeholder="Username" required name="username">
             <label for="floatingInput">Username</label>
         </div>
         <div class="form-floating">
             <input type="password"
-                   class="form-control rounded-0 rounded-bottom {{isset($model['error']) ? 'is-invalid' : ''}}"
+                   class="form-control rounded-0 rounded-bottom {{isset($error) ? 'is-invalid' : ''}}"
                    id="floatingPassword"
                    placeholder="Password" required name="password">
             <label for="floatingPassword">Password</label>

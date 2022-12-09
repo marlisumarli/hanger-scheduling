@@ -28,16 +28,10 @@ class HangerRepository
 
     public function update(Hanger $hanger): Hanger
     {
-        if ($hanger->getOrderNumber() !== null) {
-            $statement = $this->connection
-                ->prepare("UPDATE hangers SET order_number = ? WHERE id = ?");
-            $statement->execute([$hanger->getOrderNumber(), $hanger->getId()]);
-        }
-        if (($hanger->getName()) !== null) {
-            $statement = $this->connection
-                ->prepare("UPDATE hangers SET name = ?, qty = ? WHERE id = ?");
-            $statement->execute([$hanger->getName(), $hanger->getQty(), $hanger->getId()]);
-        }
+        $statement = $this->connection
+            ->prepare("UPDATE hangers SET order_number = ? , name = ?, qty = ? WHERE id = ?");
+        $statement->execute([$hanger->getOrderNumber(), $hanger->getName(), $hanger->getQty(), $hanger->getId()]);
+
         return $hanger;
     }
 

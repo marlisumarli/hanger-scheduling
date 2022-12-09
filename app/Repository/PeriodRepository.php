@@ -18,7 +18,7 @@ class PeriodRepository
 
     public function findAll(): array
     {
-        $stmt = $this->connection->prepare("SELECT id, created_at FROM periods");
+        $stmt = $this->connection->prepare("SELECT id, created_at FROM periods ORDER BY id DESC");
         $stmt->execute();
 
         $result = [];

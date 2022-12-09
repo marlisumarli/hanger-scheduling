@@ -3,9 +3,8 @@
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="/admin/supply">Supply</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Schedule</li>
+            <li aria-current="page" class="breadcrumb-item active">Schedule Supply</li>
         </ol>
     </nav>
 
@@ -88,7 +87,7 @@
     @foreach($periods as $period)
         <hr class="my-5">
         <div class="mb-4">
-            <h1>SCHEDULE {{strtoupper($type)}} {{$period->getId()}}</h1>
+            <h1>DATA SUPPLY {{strtoupper($type)}} {{$period->getId()}}</h1>
         </div>
         @foreach($schedules as $schedule)
             @if($schedule->getPeriodId() == $period->getId())
@@ -109,9 +108,9 @@
                            }
                        }
                 @endphp
-                <div class="card mb-2">
+                <div class="card mb-3 shadow-lg">
                     <div class="card-header d-flex">
-                        <a class="card-title" href="/admin/supply/{{$type}}/{{$schedule->getId()}}">#
+                        <a class="card-title" href="/admin/supply-data/{{$type}}/{{$schedule->getId()}}">#
                             <span>{{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</span>
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
@@ -131,24 +130,26 @@
                             <tbody class="table-group-divider">
                             <tr>
                                 @foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week)
-                                    @php($date = new DateTime($sch_week->getDate()))
-                                    <td>
-                                        <div class="card border-0">
-                                            <div class="card-body p-0">
-                                                <a class="btn-link position-relative"
-                                                   href="/admin/supply/{{$type}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$date->format('d/m/Y')}}</a>
-                                            </div>
-                                            <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
+                                    @foreach($supplies->findScheduleWeekId($sch_week->getId()) as $supply)
+                                        @php($date = new DateTime($sch_week->getDate()))
+                                        <td>
+                                            <div class="card border-0">
+                                                <div class="card-body p-0">
+                                                    <a class="btn-link position-relative"
+                                                       href="/admin/supply/{{$type}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$date->format('d/m/Y')}}</a>
+                                                </div>
+                                                <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
                                                 @if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null)
-                                                    <i class="fa-solid fa-question text-warning"></i>
-                                                @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
-                                                    <i class="fa-regular fa-clock text-secondary"></i>
-                                                @else
-                                                    <i class="fa-solid fa-check text-success"></i>
-                                                @endif
+                                                        <i class="fa-solid fa-question text-warning"></i>
+                                                    @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
+                                                        <i class="fa-regular fa-clock text-secondary"></i>
+                                                    @else
+                                                        <i class="fa-solid fa-check text-success"></i>
+                                                    @endif
                                             </span>
-                                        </div>
-                                    </td>
+                                            </div>
+                                        </td>
+                                    @endforeach
                                 @endforeach
                             </tr>
                             </tbody>

@@ -2,6 +2,8 @@
 
 namespace Subjig\Report\Controller;
 
+use DateTime;
+use DateTimeZone;
 use Subjig\Report\App\Util;
 use Subjig\Report\App\View;
 use Subjig\Report\Config\Database;
@@ -60,6 +62,7 @@ class AdminDashboardController
             'supply_lines' => $this->supplyLineRepository,
             'hangers' => $this->hangerRepository,
             'supplies' => $this->supplyRepository,
+            'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta'))
         ]);
     }
 

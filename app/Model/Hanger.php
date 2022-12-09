@@ -7,7 +7,7 @@ class Hanger
     private string $id;
     private string $hanger_type_id;
     private int $order_number;
-    private ?string $name = null;
+    private string $name;
     private int $qty;
     private string $created_at;
 
@@ -60,17 +60,17 @@ class Hanger
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param string|null $name
+     * @param string $name
      */
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -106,6 +106,5 @@ class Hanger
     {
         $this->created_at = $created_at;
     }
-
 
 }

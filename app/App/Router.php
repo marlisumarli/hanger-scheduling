@@ -49,6 +49,6 @@ class Router
             }
         }
         http_response_code(404);
-        include __DIR__ . "/../View/404.php";
+        include __DIR__ . "/../View/404.blade.php";
     }
 }

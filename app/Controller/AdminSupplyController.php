@@ -69,7 +69,7 @@ class AdminSupplyController
 
     public function index()
     {
-        View::render('Admin/ScheduleSupply/Supply/index', [
+        View::render('Admin/Supply/index', [
             'Supply' => 'active bg-warning',
             'Title' => 'Admin | Supply',
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -78,10 +78,10 @@ class AdminSupplyController
         ]);
     }
 
-    public function schedule(string $type)
+    public function scheduleMonitor(string $type)
     {
 
-        View::render('Admin/ScheduleSupply/Supply/Hanger/index', [
+        View::render('Admin/Supply/schedule-monitor', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -96,27 +96,9 @@ class AdminSupplyController
         ]);
     }
 
-    public function dataReport(string $type, string $scheduleId)
-    {
-        $schedule = $this->scheduleSupplyRepository->findById($scheduleId);
-
-        View::render('Admin/ScheduleSupply/Supply/data-report', [
-            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
-            'Supply' => 'active bg-warning',
-            'Title' => "Admin | Supply $type",
-            'schedule' => $schedule,
-            'schedule_weeks' => $this->scheduleWeekRepository->findScheduleSupplyId($schedule->getId()),
-            'hangers' => $this->hangerRepository->findHangerTypeId($type),
-            'supplies' => $this->supplyRepository,
-            'supply_lines' => $this->supplyLineRepository,
-            'type' => $type,
-            'session' => $this->sessionService->current(),
-        ]);
-    }
-
     public function create(string $type, string $scheduleWeekId, string $supplyId,)
     {
-        View::render('Admin/ScheduleSupply/Supply/Hanger/create', [
+        View::render('Admin/Supply/create', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -155,7 +137,7 @@ class AdminSupplyController
         $supplySch->setId($updateSchW->getScheduleSupplyId());
         $this->scheduleSupplyRepository->update($supplySch);
 
-        View::render('Admin/ScheduleSupply/Supply/Hanger/create', [
+        View::render('Admin/Supply/create', [
             'Title' => "Admin | Supply $type",
             'schedule_week' => $this->scheduleWeekRepository->findById($scheduleWeekId),
             'success' => "/admin/supply/$type",
@@ -168,7 +150,7 @@ class AdminSupplyController
     public function view(string $type, string $scheduleWeekId, string $supplyId)
     {
 
-        View::render('Admin/ScheduleSupply/Supply/Hanger/view', [
+        View::render('Admin/Supply/view', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -186,7 +168,7 @@ class AdminSupplyController
     public function update(string $type, string $scheduleWeekId, string $supplyId)
     {
 
-        View::render('Admin/ScheduleSupply/Supply/Hanger/update', [
+        View::render('Admin/Supply/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",
@@ -224,7 +206,7 @@ class AdminSupplyController
                 }
             }
         }
-        View::render('Admin/ScheduleSupply/Supply/Hanger/update', [
+        View::render('Admin/Supply/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
             'Title' => "Admin | Supply $type",

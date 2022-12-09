@@ -12,12 +12,12 @@
                     </div>
                     <div class="card-body d-flex text-center p-3">
                         <div class="mx-auto">
-                            Schedule Supply
+                            Data Supply
                         </div>
                     </div>
                     <div class="card-footer text-center">
-                        <a class="small" href="/admin/supply/{{$hanger_type->getId()}}">
-                            Daftar Schedule
+                        <a class="small stretched-link" href="/admin/supply/{{$hanger_type->getId()}}">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
                 </div>

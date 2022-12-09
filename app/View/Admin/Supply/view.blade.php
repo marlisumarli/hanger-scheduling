@@ -2,18 +2,26 @@
 @section('content')
 
     @php
-        if (isset($model['schedule_week'])){
-             $dateTime = new \DateTime($model['schedule_week']);
+        if (isset($schedule_week)){
+             $dateTime = new \DateTime($schedule_week);
         }
     @endphp
 
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="/admin/supply">Supply</a></li>
-            <li class="breadcrumb-item"><a href="/admin/supply/{{$model["type"]}}">Schedule</a></li>
-            <li aria-current="page" class="breadcrumb-item active">View Data</li>
-        </ol>
+        @if($session->getRoleId() == 1)
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/schedule">Schedule</a></li>
+                <li class="breadcrumb-item"><a href="/admin/schedule/{{$type}}/create">Buat</a></li>
+                <li aria-current="page" class="breadcrumb-item active">View Data</li>
+            </ol>
+        @elseif($session->getRoleId() == 3)
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/supply">Supply</a></li>
+                <li class="breadcrumb-item"><a href="/admin/supply/{{$type}}">Schedule</a></li>
+                <li aria-current="page" class="breadcrumb-item active">View Data</li>
+            </ol>
+
+        @endif
     </nav>
     <div class="mb-4">
         <h1>Laporan Supply <u>K2F</u> Tanggal <i> {{$dateTime->format('d/m/Y')}}</i>
@@ -23,7 +31,7 @@
         <div class="card-header d-flex">
             <span class="card-title"># {{$dateTime->format('d F Y')}}</span>
             <div class="ms-auto">
-                <span>Target #{{$model['supply']->getTargetSet()}} set</span>
+                <span>Target #{{$supply->getTargetSet()}} set</span>
             </div>
         </div>
         <div class="card-body overflow-scroll">
@@ -53,21 +61,21 @@
                 </tr>
                 </thead>
                 <tbody class="border">
-                @foreach($model['hangers'] as $hanger)
+                @foreach($hangers as $hanger)
                     <tr class="c-border">
-                        @foreach($model['supply_lines'] as $supply_line)
+                        @foreach($supply_lines as $supply_line)
                             @if($supply_line->getHangerId() == $hanger->getId())
                                 @php($total = $supply_line->getTotal())
                                 <td>{{$hanger->getOrderNumber()}}</td>
                                 <td>{{$hanger->getName()}}</td>
                                 <td>{{$hanger->getQty()}}</td>
                                 <td>{{strtoupper($hanger->getHangerTypeId())}}</td>
-                                <td>{{ceil($model['supply']->getTargetSet()/$hanger->getQty())}}</td>
+                                <td>{{ceil($supply->getTargetSet()/$hanger->getQty())}}</td>
                                 <td>{{$supply_line->getLineA()}}</td>
                                 <td>{{$supply_line->getLineB()}}</td>
                                 <td>{{$supply_line->getLineC()}}</td>
                                 <td>{{$supply_line->getTotal()}}</td>
-                                <td>{{($total*$hanger->getQty()) <= $model['supply']->getTargetSet() ? 'Open' : 'Close'}}</td>
+                                <td>{{($total*$hanger->getQty()) <= $supply->getTargetSet() ? 'Open' : 'Close'}}</td>
                             @endif
                         @endforeach
                     </tr>
@@ -75,14 +83,16 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer d-flex">
-            <div class="ms-auto">
-                <a class="btn btn-warning btn-sm py-0"
-                   href="/admin/supply/{{$model['type']}}/{{$model['schedule']}}/{{$model['supplyId']}}/update">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    <span>Ubah</span>
-                </a>
+        @if($session->getRoleId() == 3)
+            <div class="card-footer d-flex">
+                <div class="ms-auto">
+                    <a class="btn btn-warning btn-sm py-0"
+                       href="/admin/supply/{{$type}}/{{$schedule}}/{{$supplyId}}/update">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Ubah</span>
+                    </a>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection

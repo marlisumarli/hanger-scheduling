@@ -42,15 +42,14 @@ class AdminItemController
 
     public function index()
     {
-        $model = [
+        View::render('Admin/ItemList/index', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'List_Item' => 'active bg-warning',
             'Title' => 'Admin | Item',
             'hanger_types' => $this->hangerTypeRepository->findAll(),
             'hangers' => $this->hangerRepository,
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/Item/HangerType/index', compact('model'));
+        ]);
     }
 
     public function postRegister()
@@ -67,31 +66,30 @@ class AdminItemController
             View::redirect("/admin/item/$response/hanger/update");
 
         } catch (ValidationException $exception) {
-            $model = [
+            View::render('Admin/ItemList/index', [
                 'Title' => 'Admin | Daftar Hanger',
                 'error' => $exception->getMessage(),
                 'hanger_types' => $this->hangerTypeRepository->findAll(),
                 'hangers' => $this->hangerRepository,
                 'session' => $this->sessionService->current(),
-            ];
-            View::render('Admin/Item/HangerType/index', compact('model'));
+            ]);
         }
+        exit();
     }
 
     public function update(string $type)
     {
-        $model = [
+        View::render('Admin/ItemList/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'List_Item' => 'active bg-warning',
             'Title' => 'Admin | Item',
             'find_id' => $this->hangerTypeRepository->findById($type),
             'hangers' => $this->hangerRepository->findHangerTypeId($type),
             'session' => $this->sessionService->current(),
-        ];
-        View::render('Admin/Item/HangerType/update', compact('model'));
+        ]);
     }
 
-    public function postTmp(string $type)
+    public function postUpdateType(string $type)
     {
         if (isset($_POST['updateId'])) {
             $newId = $_POST['newId'];
@@ -101,22 +99,23 @@ class AdminItemController
                 $request->newId = $newId;
                 $this->typeService->requestUpdate($request);
 
-                $model = [
-                    'success' => "/admin/item/$newId/hanger/update",
+                View::render('Admin/ItemList/Temp/update', [
+                    'direct' => "/admin/item/$newId/hanger/update",
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                ]);
 
             } catch (ValidationException $exception) {
-                $model = [
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                ]);
             }
         } elseif (isset($_POST['updateQty'])) {
             $qty = $_POST['qty'];
@@ -126,27 +125,35 @@ class AdminItemController
                 $request->qty = $qty;
                 $this->typeService->requestUpdate($request);
 
-                $model = [
-                    'success' => "/admin/item/$type/hanger/update",
+                View::render('Admin/ItemList/Temp/update', [
+                    'direct' => "/admin/item/$type/hanger/update",
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                ]);
 
             } catch (ValidationException $exception) {
-                $model = [
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                ]);
             }
         }
     }
 
-    public function postHangerRegister(string $type)
+    public function updateHanger(string $type)
+    {
+        View::render('Admin/ItemList/Temp/update', [
+            'direct' => "/admin/item/$type/update",
+        ]);
+    }
+
+    public function postUpdateHanger(string $type)
     {
         if (isset($_POST['register'])) {
             try {
@@ -160,50 +167,51 @@ class AdminItemController
                     $request->qty = $qty;
                     $this->hangerService->requestCreate($request);
                 }
-                $model = [
-                    'success' => "/admin/item/$type/hanger/update",
+                View::render('Admin/ItemList/Temp/update', [
+                    'direct' => "/admin/item/$type/hanger/update",
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                ]);
 
             } catch (ValidationException $exception) {
-                $model = [
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/update', compact('model'));
+                ]);
             }
         } elseif (isset($_POST['update'])) {
             try {
                 foreach ($this->hangerRepository->findHangerTypeId($type) as $key => $hanger) {
                     $orderNumber = $_POST['updateOrderNumber'][ $key ];
-                    $hanger = $_POST['updateName'][ $key ];
+                    $hangerName = $_POST['updateName'][ $key ];
                     $qty = $_POST['updateQty'][ $key ];
 
                     $request = new HangerRequest();
                     $request->hangerId = $hanger->getId();
                     $request->orderNumber = $orderNumber;
-                    $request->name = $hanger;
+                    $request->name = $hangerName;
                     $request->hangerTypeId = $type;
                     $request->qty = $qty;
                     $this->hangerService->requestUpdate($request);
                 }
-                $model = [
-                    'success' => "/admin/item/$type/hanger/update",
-                ];
-                View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+                View::redirect("/admin/item/$type/hanger/update");
             } catch (ValidationException $exception) {
-                $model = [
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
                     'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
-                ];
-                View::render('Admin/Item/HangerType/update', compact('model'));
+                ]);
             }
         }
+        exit();
     }
 
     public function delete(string $type, string $hanger)
@@ -214,18 +222,17 @@ class AdminItemController
         try {
             $this->hangerService->requestDelete($request);
 
-            $model = [
-                'success' => "/admin/item/$type/hanger/update"
-            ];
-            View::render('Admin/Item/HangerType/Temp/update', compact('model'));
+            View::render('Admin/ItemList/Temp/delete', [
+                'direct' => "/admin/item/$type/hanger/update"
+            ]);
         } catch (\Exception $exception) {
-            $model = [
+            View::render('Admin/ItemList/Temp/delete', [
                 'error' => $exception->getMessage(),
+                'direct' => "/admin/item/$type/hanger/update",
                 'find_id' => $this->hangerTypeRepository->findById($type),
                 'hangers' => $this->hangerRepository->findHangerTypeId($type),
                 'session' => $this->sessionService->current(),
-            ];
-            View::render('Admin/Item/HangerType/update', compact('model'));
+            ]);
         }
     }
 }

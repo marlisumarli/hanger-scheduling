@@ -12,12 +12,12 @@
           rel="stylesheet">
     <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script crossorigin="anonymous" src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <title>{{$Title ?? 'Hanger App'}}</title>
+    <title><?php echo e($Title ?? 'Hanger App'); ?></title>
     <link rel="stylesheet" href="/src/css/custom.css">
 </head>
 
 <body>
-@include('Admin/Layout/navigation')
+<?php echo $__env->make('Admin/Layout/navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
@@ -25,3 +25,4 @@
 <script src="/src/js/navigation.js"></script>
 </body>
 </html>
+<?php /**PATH C:\xampp\htdocs\hanger-management-pt-indospray\app\View/Admin/Layout/main.blade.php ENDPATH**/ ?>

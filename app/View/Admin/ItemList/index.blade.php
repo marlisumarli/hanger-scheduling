@@ -1,8 +1,8 @@
 @extends('Admin/Layout/main')
 @section('content')
     <div class="px-lg-5 px-sm-3 mb-4">
-        <h1>LIST ITEM</h1>
-        @if($model['session']->getRoleId() == 1)
+        <h4>LIST ITEM</h4>
+        @if($session->getRoleId() == 1 || $session->getRoleId() == 3)
             <div class="d-flex">
                 <button class="btn btn-sm bg-warning py-1 ms-auto shadow-lg" data-bs-placement="top"
                         data-bs-target="#staticBackdrop"
@@ -16,7 +16,7 @@
     </div>
 
     <div class="row">
-        @foreach($model['hanger_types'] as $hangerType)
+        @foreach($hanger_types as $hangerType)
             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 mb-3 container">
                 <div class="card rounded-3 shadow-lg">
                     <div class="card-header">
@@ -24,7 +24,7 @@
                     </div>
                     <div class="card-body text-center p-3">
                         <ol class="list-group list-group-numbered">
-                            @foreach ($model['hangers']->findHangerTypeId($hangerType->getId()) as $hanger)
+                            @foreach ($hangers->findHangerTypeId($hangerType->getId()) as $hanger)
                                 @if($hanger->getHangerTypeId() == $hangerType->getId())
                                     <li class="list-group-item d-flex justify-content-between align-items-start">
                                         <div class="ms-2 me-auto">
@@ -36,14 +36,14 @@
                             @endforeach
                         </ol>
                     </div>
-                    @if($model['session']->getRoleId() == 1)
-                    <div class="card-footer d-flex">
-                        <div class="ms-auto">
-                            <a class="small" href="/admin/item/{{$hangerType->getId()}}/hanger/update">
-                                Ubah
-                            </a>
+                    @if($session->getRoleId() == 1 || $session->getRoleId() == 3)
+                        <div class="card-footer d-flex">
+                            <div class="ms-auto">
+                                <a class="small" href="/admin/item/{{$hangerType->getId()}}/update">
+                                    Ubah
+                                </a>
+                            </div>
                         </div>
-                    </div>
                     @endif
                 </div>
             </div>
