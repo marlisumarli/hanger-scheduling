@@ -4,7 +4,6 @@ namespace Subjig\Report\Model;
 
 class SupplyLine
 {
-    private int $id;
     private string $supply_id;
     private string $hanger_id;
     private int $line_a;

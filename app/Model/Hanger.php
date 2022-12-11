@@ -2,30 +2,11 @@
 
 namespace Subjig\Report\Model;
 
-class Hanger
+class Hanger extends HangerType
 {
-    private string $id;
     private string $hanger_type_id;
     private int $order_number;
     private string $name;
-    private int $qty;
-    private string $created_at;
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string
@@ -41,22 +22,6 @@ class Hanger
     public function setHangerTypeId(string $hanger_type_id): void
     {
         $this->hanger_type_id = $hanger_type_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrderNumber(): int
-    {
-        return $this->order_number;
-    }
-
-    /**
-     * @param int $order_number
-     */
-    public function setOrderNumber(int $order_number): void
-    {
-        $this->order_number = $order_number;
     }
 
     /**
@@ -78,33 +43,18 @@ class Hanger
     /**
      * @return int
      */
-    public function getQty(): int
+    public function getOrderNumber(): int
     {
-        return $this->qty;
+        return $this->order_number;
     }
 
     /**
-     * @param int $qty
+     * @param int $order_number
      */
-    public function setQty(int $qty): void
+    public function setOrderNumber(int $order_number): void
     {
-        $this->qty = $qty;
+        $this->order_number = $order_number;
     }
 
-    /**
-     * @return string
-     */
-    public function getCreatedAt(): string
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param string $created_at
-     */
-    public function setCreatedAt(string $created_at): void
-    {
-        $this->created_at = $created_at;
-    }
 
 }

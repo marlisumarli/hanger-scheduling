@@ -2,28 +2,11 @@
 
 namespace Subjig\Report\Model;
 
-class HangerType
+class HangerType extends Model
 {
-    private string $id;
     private ?string $new_id = null;
-    private int $qty;
+    protected int $qty;
     private string $created_at;
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string|null

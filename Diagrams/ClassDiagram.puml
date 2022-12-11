@@ -1,0 +1,10 @@
+@startuml
+
+
+
+class User {
+Object[] elementData
+size()
+}
+
+@enduml

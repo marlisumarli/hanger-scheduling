@@ -2,13 +2,12 @@
 
 namespace Subjig\Report\Model;
 
-class SupplySchedule
+class SupplySchedule extends Model
 {
-    private string $id;
     private string $hanger_type_id;
     private string $month;
     private string $period_id;
-    private int $is_done;
+    protected int $is_done;
 
     /**
      * @return int
@@ -24,22 +23,6 @@ class SupplySchedule
     public function setIsDone(int $is_done): void
     {
         $this->is_done = $is_done;
-    }
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
     }
 
     /**

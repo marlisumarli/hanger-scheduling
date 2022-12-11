@@ -1,73 +1,106 @@
 @startuml
 
-hide circle
-!theme plain
+!theme toy
+skinparam shadowing true
 
-entity schedules_supply_subjig {
-*id : VARCHAR(55) <<PK>>
+entity users {
+* username: VARCHAR(55) <<PK>>
 --
-*month : DATE
-*created_at : TIMESTAMP
+* password: VARCHAR(55)
+* full_name: VARCHAR(125)
+* last_login: TIMESTAMP
 --
-type_id : VARCHAR(55) <<FK>>
+* role_id: INT <<FK>>
+}
+
+entity user_role {
+* id: INT <<PK>>
+--
+* role_name: VARCHAR(55)
+}
+
+entity session {
+* id: VARCHAR(55) <<PK>>
+--
+* username: VARCHAR(120) <<FK>>
+}
+
+entity hanger_types {
+* id: VARCHAR(55) <<PK>>
+--
+* qty: INT
+}
+
+entity hangers {
+* id: VARCHAR(55) <<PK>>
+--
+* order_number: INT
+* name: VARCHAR(125)
+* qty: INT
+--
+* hanger_types_id: VARCHAR(55) <<FK>>
+}
+
+entity periods {
+* id: VARCHAR(11) <<PK>>
+--
+* created_at TIMESTAMP
+}
+
+entity schedule_m_category {
+* id: VARCHAR(3) <<PK>>
+--
+}
+
+entity supply_schedules {
+* id: VARCHAR(55) <<PK>>
+--
+* month: INT
+* is_done: TINYINT
+--
+* hanger_types_id: VARCHAR(55) <<FK>>
+* period_id: VARCHAR(11) <<FK>>
 }
 
 entity schedule_weeks {
-* id : VARCHAR(55) <<PK>>
+* id: VARCHAR(55) <<PK>>
 --
-*tanggal : DATE
-*is_implemented : TINYINT
-*created_at : TIMESTAMP
+* date: DATE
+* is_done: TINYINT
 --
-*schedule_supply_subjig_id : VARCHAR(55) <<FK>>
+* supply_schedules_id: VARCHAR(55) <<FK>>
+* m_id: VARCHAR(3) <<FK>>
 }
 
 entity supplies {
-*id : VARCHAR(55) <<PK>>
+* id: VARCHAR(55) <<PK>>
 --
-*target_set : INT
+* target_set: INT
 --
-*schedule_week_id : VARCHAR(55) <<FK>>
-*type_id : VARCHAR(11) <<FK>>
-}
-
-entity types {
-*id : VARCHAR(11) <<PK>>
---
-*type_qty : INT
-*created_at : TIMESTAMP
-}
-
-entity subjigs {
-*id : VARCHAR(55) <<PK>>
---
-*order_number : INT
-*subjig_name : VARCHAR(55)
-*subjig_qty : INT
-*created_at : TIMESTAMP
-updated_at : TIMESTAMP
---
-*type_id : VARCHAR(55) <<FK>>
+* hanger_types_id: VARCHAR(55) <<FK>>
+* schedule_weeks_id: VARCHAR(55) <<FK>>
 }
 
 entity supply_lines {
-*id : INT <<PK>>
+* id: INT <<PK>>
 --
-*jumlah_line_a : INT
-*jumlah_line_b : INT
-*jumlah_line_c : INT
-*total : INT
-*target_set : INT
+line_a: INT
+line_b: INT
+line_c: INT
+total: INT
 --
-*supply_id : VARCHAR(55) <<FK>>
-*subjig_id : VARCHAR(55) <<FK>>
+* supply_id: VARCHAR(55) <<FK>>
+* hanger_id: VARCHAR(55) <<FK>>
 }
 
-schedules_supply_subjig}|---||types
-schedules_supply_subjig||---|{schedule_weeks
-supplies||---||schedule_weeks
-subjigs}|---||types
-supply_lines}|---||subjigs
-supply_lines}|---||supplies
-supplies}|---||types
+users}|--||user_role
+users||--||session
+hangers}|--||hanger_types
+supply_schedules}|--||periods
+supply_schedules}|--||hanger_types
+schedule_weeks}|--||schedule_m_category
+schedule_weeks}|--||supply_schedules
+supplies}|--||hanger_types
+supplies||--||schedule_weeks
+supply_lines}|--||supplies
 @enduml

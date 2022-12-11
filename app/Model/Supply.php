@@ -2,28 +2,11 @@
 
 namespace Subjig\Report\Model;
 
-class Supply
+class Supply extends Model
 {
-    private string $id;
     private string $hanger_Type_id;
     private string $schedule_week_id;
     private int $target_set = 0;
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string
