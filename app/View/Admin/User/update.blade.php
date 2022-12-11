@@ -36,13 +36,12 @@
                 </form>
                 <form action="/admin/user/{{$user->getUsername()}}/update" method="post" class="d-flex">
                     <select aria-label="Default select example" class="form-select" required name="role">
-                        <option selected>Jabatan</option>
                         @foreach($roles as $role)
-                            @if($model['user']->getRoleId() == $role->getId())
+                            @if($user->getRoleId() == $role->getId())
                                 <option value="{{$user->getRoleId()}}"
                                         selected>{{$role->getRoleName()}}</option>
                             @else
-                                <option value="{{$user->getRoleId()}}">{{$role->getRoleName()}}</option>
+                                <option value="{{$role->getId()}}">{{$role->getRoleName()}}</option>
                             @endif
                         @endforeach
                     </select>

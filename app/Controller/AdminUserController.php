@@ -66,6 +66,10 @@ class AdminUserController
 
     public function update(string $username)
     {
+        if ($this->userRepository->findByUsername($username) === null) {
+            View::render('404');
+            return;
+        }
         View::render('Admin/User/update', [
             'Title' => 'Admin | User',
             'Users' => '',
@@ -77,6 +81,10 @@ class AdminUserController
 
     public function postUpdate(string $username)
     {
+        if ($this->userRepository->findByUsername($username) === null) {
+            View::render('404');
+            return;
+        }
         if (isset($_POST['name'])) {
             $request = new UserRequest();
             $request->username = $username;
@@ -147,6 +155,11 @@ class AdminUserController
 
     public function delete(string $username)
     {
+        if ($this->userRepository->findByUsername($username) === null) {
+            View::render('404');
+            return;
+        }
+
         $request = new UserRequest();
         $request->username = $username;
         $this->userService->requestDeleteUser($request);

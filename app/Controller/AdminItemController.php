@@ -79,6 +79,10 @@ class AdminItemController
 
     public function update(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
         View::render('Admin/ItemList/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'List_Item' => 'active bg-warning',
@@ -91,6 +95,11 @@ class AdminItemController
 
     public function postUpdateType(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
+
         if (isset($_POST['updateId'])) {
             $newId = $_POST['newId'];
             try {
@@ -148,6 +157,11 @@ class AdminItemController
 
     public function updateHanger(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
+
         View::render('Admin/ItemList/Temp/update', [
             'direct' => "/admin/item/$type/update",
         ]);
@@ -155,6 +169,11 @@ class AdminItemController
 
     public function postUpdateHanger(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
+
         if (isset($_POST['register'])) {
             try {
                 for ($i = 0; $i < count($_POST['orderNumber']); $i++) {
@@ -216,6 +235,11 @@ class AdminItemController
 
     public function delete(string $type, string $hanger)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->hangerRepository->findById($hanger) === null) {
+            View::render('404');
+            return;
+        }
+
         $request = new HangerRequest();
         $request->hangerId = $hanger;
         $request->hangerTypeId = $type;

@@ -68,47 +68,55 @@ class DataController
 
     public function scheduleData(string $type)
     {
-        View::render('Admin/Data/SupplyData/schedule-data', [
-            'Data' => 'active bg-warning',
-            'Title' => "Admin | Data",
-            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
-            'periods' => $this->periodRepository->findAll(),
-            'schedules' => $this->scheduleSupplyRepository->findAll($type),
-            'schedule_weeks' => $this->scheduleWeekRepository,
-            'type' => $type,
-            'session' => $this->sessionService->current(),
-            'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta'))
-        ]);
-    }
+        if ($this->hangerTypeRepository->findById($type) != null) {
 
-    public function supplyData(string $type, string $scheduleId)
-    {
-
-        if ($this->supplyScheduleRepository->findById($scheduleId) !== null) {
-
-            $schedule = $this->supplyScheduleRepository->findById($scheduleId);
-
-            View::render('Admin/Data/SupplyData/supply-data', [
-                'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+            View::render('Admin/Data/SupplyData/schedule-data', [
                 'Data' => 'active bg-warning',
-                'Supply' => 'active bg-warning',
-                'Schedule' => 'active bg-warning',
-                'Title' => "Data Supply $type",
-                'schedule' => $schedule,
-                'schedule_weeks' => $this->scheduleWeekRepository->findScheduleSupplyId($schedule->getId()),
-                'hangers' => $this->hangerRepository->findHangerTypeId($type),
-                'supplies' => $this->supplyRepository,
-                'supply_lines' => $this->supplyLineRepository,
+                'Title' => "Admin | Data",
+                'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                'periods' => $this->periodRepository->findAll(),
+                'schedules' => $this->scheduleSupplyRepository->findAll($type),
+                'schedule_weeks' => $this->scheduleWeekRepository,
                 'type' => $type,
                 'session' => $this->sessionService->current(),
+                'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta'))
             ]);
         } else {
             View::render('404');
         }
     }
 
+    public function supplyData(string $type, string $scheduleId)
+    {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->supplyScheduleRepository->findById($scheduleId) === null) {
+            View::render('404');
+            return;
+        }
+
+        $schedule = $this->supplyScheduleRepository->findById($scheduleId);
+
+        View::render('Admin/Data/SupplyData/supply-data', [
+            'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+            'Data' => 'active bg-warning',
+            'Supply' => 'active bg-warning',
+            'Schedule' => 'active bg-warning',
+            'Title' => "Data Supply $type",
+            'schedule' => $schedule,
+            'schedule_weeks' => $this->scheduleWeekRepository->findScheduleSupplyId($schedule->getId()),
+            'hangers' => $this->hangerRepository->findHangerTypeId($type),
+            'supplies' => $this->supplyRepository,
+            'supply_lines' => $this->supplyLineRepository,
+            'type' => $type,
+            'session' => $this->sessionService->current(),
+        ]);
+    }
+
     public function export(string $type, string $scheduleId)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->supplyScheduleRepository->findById($scheduleId) === null) {
+            View::render('404');
+            return;
+        }
 
         View::render('Admin/Data/SupplyData/export', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),

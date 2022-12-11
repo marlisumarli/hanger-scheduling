@@ -80,6 +80,10 @@ class AdminSupplyController
 
     public function scheduleMonitor(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
 
         View::render('Admin/Supply/schedule-monitor', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -98,6 +102,10 @@ class AdminSupplyController
 
     public function create(string $type, string $scheduleWeekId, string $supplyId,)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->scheduleWeekRepository->findById($scheduleWeekId) === null || $this->supplyRepository->findById($supplyId) === null) {
+            View::render('404');
+            return;
+        }
         View::render('Admin/Supply/create', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'Supply' => 'active bg-warning',
@@ -111,6 +119,11 @@ class AdminSupplyController
 
     public function postCreate(string $type, string $scheduleWeekId, string $supplyId)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->scheduleWeekRepository->findById($scheduleWeekId) === null || $this->supplyRepository->findById($supplyId) === null) {
+            View::render('404');
+            return;
+        }
+
         $hangers = $this->hangerRepository->findHangerTypeId($type);
 
         $requestUpdateSupply = new SupplyRequest();
@@ -149,6 +162,10 @@ class AdminSupplyController
 
     public function view(string $type, string $scheduleWeekId, string $supplyId)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->scheduleWeekRepository->findById($scheduleWeekId) === null || $this->supplyRepository->findById($supplyId) === null) {
+            View::render('404');
+            return;
+        }
 
         View::render('Admin/Supply/view', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -167,6 +184,10 @@ class AdminSupplyController
 
     public function update(string $type, string $scheduleWeekId, string $supplyId)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->scheduleWeekRepository->findById($scheduleWeekId) === null || $this->supplyRepository->findById($supplyId) === null) {
+            View::render('404');
+            return;
+        }
 
         View::render('Admin/Supply/update', [
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -185,6 +206,11 @@ class AdminSupplyController
 
     public function postUpdate(string $type, string $scheduleWeekId, string $supplyId)
     {
+        if ($this->hangerTypeRepository->findById($type) === null || $this->scheduleWeekRepository->findById($scheduleWeekId) === null || $this->supplyRepository->findById($supplyId) === null) {
+            View::render('404');
+            return;
+        }
+
         $supply_lines = $this->supplyLineRepository->findSupplyId($supplyId);
         $hangers = $this->hangerRepository->findHangerTypeId($type);
         $supply = $this->supplyRepository->findById($supplyId);

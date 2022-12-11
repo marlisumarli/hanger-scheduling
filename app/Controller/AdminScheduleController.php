@@ -70,6 +70,10 @@ class AdminScheduleController
 
     public function create(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
         View::render('Admin/Schedule/create', [
             'Schedule' => 'active bg-warning',
             'Title' => "Admin | Schedule $type",
@@ -86,6 +90,12 @@ class AdminScheduleController
 
     public function postCreate(string $type)
     {
+        if ($this->hangerTypeRepository->findById($type) === null) {
+            View::render('404');
+            return;
+        }
+
+
         if (isset($_POST['submit'])) {
             $requestSSS = new ScheduleRequest();
             $requestSSS->hangerTypeId = $type;
@@ -120,6 +130,11 @@ class AdminScheduleController
 
     public function delete(string $id)
     {
+        if ($this->scheduleSupplyRepository->findById($id) === null) {
+            View::render('404');
+            return;
+        }
+
         $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
 
