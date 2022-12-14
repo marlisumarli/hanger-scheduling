@@ -1,10 +1,61 @@
 @startuml
 
+SessionManager "1" *-- User : contains
+User <|-- Admin
 
+class SessionManager {
++username : string
++getUser()
+}
 
 class User {
-Object[] elementData
-size()
+#username : string
+-password : string
+#lastLogin : string
++verifyLogin()
+}
+
+class Admin {
+#fullName : string
++login()
+}
+
+class UserManagement {
+-name : string
+-username : string
+-password : string
+-role : int
+-showAllUser()
+-registerUser()
+-updateUser()
+-deleteUser()
+}
+
+class Type {
++id : string
++qty : int
+#register()
+#update()
+}
+
+class Item {
++numberOrder : int
++name : string
++qty : int
+#register()
+#update()
+#delete()
+}
+
+class Schedule {
+-tanggalMinggu1 : string
+-tanggalMinggu2 : string
+-tanggalMinggu3 : string
+-tanggalMinggu4 : string
+-tanggalMinggu5 : string
+-create()
+-update()
+-delete()
 }
 
 @enduml
