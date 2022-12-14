@@ -1,0 +1,70 @@
+@startuml
+left to right direction
+actor User as user
+actor Database as mysql
+
+note as n1
+Use Case Login
+end note
+
+rectangle "Login System" {
+user -- (login)
+login ..> (Username) : <<include>>
+login ..> (Password) : <<include>>
+(Username) -- mysql
+(Password) -- mysql
+}
+
+newpage
+
+left to right direction
+actor User as user
+actor Database as mysql
+actor BrowserSession as session
+actor Admin as admin
+actor Leader as leader
+actor Karyawan as karyawan
+
+note as n1
+Use Case Schedule Supply Application
+end note
+
+user ..> session : <<include>>
+user <|-- admin
+user <|-- leader
+user <|-- karyawan
+
+rectangle "Schedule Supply Application" {
+(Kelola User) as userManagement
+(Add User) as addUser
+(Update User) as updateUser
+(Delete User) as deleteUser
+admin -- userManagement
+userManagement <|-- addUser
+userManagement <|-- updateUser
+userManagement <|-- deleteUser
+addUser ..> (Name) : <<include>>
+addUser ..> (Username) : <<include>>
+addUser ..> (Password) : <<include>>
+addUser ..> (User Role) : <<include>>
+updateUser .> addUser : <<extend>>
+deleteUser ..> (Username) : <<include>>
+
+(Kelola Type) as listItem
+(Registrasi Type) as regType
+(Update Type) as updateType
+(Registrasi Item) as regItem
+(Update Item) as updateItem
+(Delete Item) as deleteItem
+admin -- listItem
+listItem <|-- regType
+listItem <|-- updateType
+listItem <|-- regItem
+listItem <|-- updateItem
+listItem <|-- deleteItem
+
+}
+
+userManagement ..> mysql : <<include>>
+
+@enduml
