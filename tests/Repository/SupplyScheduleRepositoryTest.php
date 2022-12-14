@@ -17,7 +17,6 @@ class SupplyScheduleRepositoryTest extends TestCase
     private SupplyRepository $supplyRepository;
     private SupplyLineRepository $supplyLineRepository;
     private HangerRepository $hangerRepository;
-    private HangerTypeRepository $hangerTypeRepository;
 
     public function testSave()
     {
@@ -66,8 +65,8 @@ class SupplyScheduleRepositoryTest extends TestCase
                         $scheduleWeek->setId(uniqid());
                         $scheduleWeek->setScheduleSupplyId($sc->getId());
                         $scheduleWeek->setDate($y . '-' . $m . '-' . rand(1, 28));
-                        $scheduleWeek->setMId($mid[ rand(0, 4) ]);
-                        $scheduleWeek->setIsDone(rand(0, 1));
+                        $scheduleWeek->setMId($mid[ $d - 1 ]);
+                        $scheduleWeek->setIsDone(1);
                         $sWeekSave = $this->scheduleWeekRepository->save($scheduleWeek);
 
                         $supply = new Supply();

@@ -6,7 +6,6 @@ class HangerType extends Model
 {
     private ?string $new_id = null;
     protected int $qty;
-    private string $created_at;
 
     /**
      * @return string|null
@@ -39,21 +38,4 @@ class HangerType extends Model
     {
         $this->qty = $qty;
     }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt(): string
-    {
-        return $this->created_at;
-    }
-
-    /**
-     * @param string $created_at
-     */
-    public function setCreatedAt(string $created_at): void
-    {
-        $this->created_at = $created_at;
-    }
-
 }

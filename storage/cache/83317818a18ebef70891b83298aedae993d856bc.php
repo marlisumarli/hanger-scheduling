@@ -1,7 +1,7 @@
 
 <?php $__env->startSection('content'); ?>
     <div class="mb-4">
-        <h1>SCHEDULE</h1>
+        <h3>SCHEDULE</h3>
     </div>
     <div class="row">
         <?php $__currentLoopData = $hanger_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hanger_type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>

@@ -110,13 +110,13 @@
         <div class="d-flex justify-content-center">
             <button class="btn btn-primary disabled" id="submit" type="submit" name="submit">Submit</button>
         </div>
+
     </form>
     <hr class="my-5">
     <form class="col-5 ms-auto">
         <input aria-label="Search" class="form-control" placeholder="2022december" type="search" name=""
                id="searchData" onkeyup="search()">
     </form>
-
 
     <?php $__currentLoopData = $periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <hr class="my-5">

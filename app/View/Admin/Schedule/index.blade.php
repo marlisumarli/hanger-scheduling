@@ -1,7 +1,7 @@
 @extends('Admin/Layout/main')
 @section('content')
     <div class="mb-4">
-        <h1>SCHEDULE</h1>
+        <h3>SCHEDULE</h3>
     </div>
     <div class="row">
         @foreach($hanger_types as $hanger_type)

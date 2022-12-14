@@ -109,13 +109,13 @@
         <div class="d-flex justify-content-center">
             <button class="btn btn-primary disabled" id="submit" type="submit" name="submit">Submit</button>
         </div>
+
     </form>
     <hr class="my-5">
     <form class="col-5 ms-auto">
         <input aria-label="Search" class="form-control" placeholder="2022december" type="search" name=""
                id="searchData" onkeyup="search()">
     </form>
-
 
     @foreach($periods as $period)
         <hr class="my-5">
