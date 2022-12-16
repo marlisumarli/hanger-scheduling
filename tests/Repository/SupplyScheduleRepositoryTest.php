@@ -25,9 +25,9 @@ class SupplyScheduleRepositoryTest extends TestCase
         $monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $date = [1, 2, 3, 4, 5];
         $mid = ['M1', 'M2', 'M3', 'M4', 'M5'];
-        $type = ['k2f', 'k1a'];
+        $type = ['k2f', 'k2v'];
         $hangersK2f = ['Speedometer A', 'Speedometer B', 'Front R', 'Front L', 'Lid Pocket', 'Inner', 'Inner Upper', 'Front Top', 'Fender', 'Center', 'Center Upper', 'Rr Center', 'Under R', 'Under L', 'Body R', 'Body L', 'Front'];
-        $hangersK1a = ['Front', 'Fender', 'CHF', 'CHT', 'Body L', 'Body R'];
+        $hangersK1a = ['Front', 'Fender', 'CHF', 'CHT', 'Body L', 'Body R', 'Front Top', 'Rack', 'Body R', 'Body L', 'Center'];
 
         foreach ($hangersK2f as $key => $hk2f) {
             $hanger = new Hanger();
@@ -42,7 +42,7 @@ class SupplyScheduleRepositoryTest extends TestCase
         foreach ($hangersK1a as $key2 => $hk1a) {
             $hanger = new Hanger();
             $hanger->setId(uniqid());
-            $hanger->setHangerTypeId('k1a');
+            $hanger->setHangerTypeId('k2v');
             $hanger->setName($hk1a);
             $hanger->setQty(rand(1, 5));
             $hanger->setOrderNumber($key2);
