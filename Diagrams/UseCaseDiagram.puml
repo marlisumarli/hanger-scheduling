@@ -1,77 +1,145 @@
 @startuml
+!theme toy
+skinparam shadowing true
 
+package "uc Hak Akses Admin" {
 left to right direction
 
-actor Database as mysql
-actor BrowserSession as session
+(Login)
+:Admin:
 
-actor Admin as admin
-actor Leader as leader
-actor Karyawan as karyawan
+(Dapat Unduh Data Supply Hanger) as downloadData
 
-rectangle "Schedule Supply Application" {
+(Dapat Mengatur Data Pengguna) as manageUser
+(Dapat Menambah Pengguna) as addUser
+(Ubah Nama) as updateName
+(Ubah Password) as updatePassword
+(Ubah Hak Akses) as updatePermission
 
-package Login {
-admin ---- (login)
-leader ---- (login)
-karyawan ---- (login)
-login <.. (Display Error) : <<extend>>
-login ..> (User Validation) : <<include>>
+(Dapat Kelola Type) as manageType
+(Registrasi Type Baru) as addType
+(Ubah Type) as updateType
+
+(Kelola Hanger) as manageHanger
+(Registrasi Hanger) as registerHanger
+(Ubah Hanger) as updateHanger
+(Hapus Hanger) as deleteHanger
+
+(Input Jadwal Supply) as addSchedule
+(Hapus Jadwal Supply) as deleteSchedule
+
+(Login) <.. downloadData : <<include>>
+
+(Login) <.. addUser : <<include>>
+
+(Login) <.. manageUser : <<include>>
+manageUser <|-- updateName : <<extend>>
+manageUser <|-- updatePassword : <<extend>>
+manageUser <|-- updatePermission : <<extend>>
+
+(Login) <.. manageType : <<include>>
+manageType <|-- addType : <<extend>>
+manageType <|-- updateType : <<extend>>
+
+manageType ..> manageHanger : <<include>>
+manageHanger <|-- registerHanger : <<extend>>
+manageHanger <|-- deleteHanger : <extend>
+manageHanger <|-- updateHanger : <extend>
+
+(Login) <.. (Dapat Mencari Laporan) : <<include>>
+(Dapat Mencari Laporan) ..> (Input Tahun dan Bulan) : <<include>>
+
+(Login) <.. addSchedule : <<include>>
+(Input Tanggal) .u.> addSchedule : <<include>>
+
+(Login) <.. deleteSchedule : <<include>>
+
+Admin - addUser
+Admin --- manageUser
+Admin --- manageType
+Admin --- downloadData
+Admin --- addSchedule
+Admin --- deleteSchedule
+Admin --- (Dapat Mencari Laporan)
 }
 
-package User {
-(Kelola User) as userManagement
-(Add User) as addUser
-(Display User) as displayUser
-(Update User) as updateUser
-(Delete User) as deleteUser
-admin --- userManagement
-userManagement <|-- addUser
-userManagement <|-- displayUser
-userManagement <|-- updateUser
-userManagement <|-- deleteUser
+newpage
+!theme toy
+skinparam shadowing true
+
+package "uc Hak Akses Karyawan" {
+left to right direction
+
+(Login)
+:Karyawan:
+
+(Dapat Unduh Data Supply Hanger) as downloadData
+
+(Dapat Kelola Type) as manageType
+(Registrasi Type Baru) as addType
+(Ubah Type) as updateType
+
+(Kelola Hanger) as manageHanger
+(Registrasi Hanger) as registerHanger
+(Ubah Hanger) as updateHanger
+(Hapus Hanger) as deleteHanger
+
+(Membuat Laporan Supply) as createSupply
+(Input Jumlah Target) as targetSet
+(Input Jumlah Hanger Line A) as lineA
+(Input Jumlah Hanger Line B) as lineB
+(Input Jumlah Hanger Line C) as lineC
+
+(Login) <... downloadData : <<include>>
+
+(Login) <.. manageType : <<include>>
+manageType <|-- addType : <<extend>>
+manageType <|-- updateType : <<extend>>
+
+manageType ..> manageHanger : <<include>>
+manageHanger <|-- registerHanger : <<extend>>
+manageHanger <|-- deleteHanger : <extend>
+manageHanger <|-- updateHanger : <extend>
+
+(Login) <.. createSupply : <<include>>
+createSupply ..> targetSet : <<include>>
+createSupply ..> lineA : <<include>>
+createSupply ..> lineB : <<include>>
+createSupply ..> lineC : <<include>>
+
+(Login) <.. (Dapat Mengubah Laporan) : <<include>>
+(Login) <.. (Dapat Mencari Laporan) : <<include>>
+(Dapat Mencari Laporan) ..> (Input Tahun dan Bulan) : <<include>>
+
+Karyawan --- manageType
+Karyawan --- downloadData
+Karyawan --- createSupply
+Karyawan -- (Dapat Mengubah Laporan)
+Karyawan --- (Dapat Unduh Laporan)
+Karyawan --- (Dapat Mencari Laporan)
 }
 
-package Type {
-(Kelola Type) as listItem
-(Registrasi Type) as regType
-(Display Type) as displayType
-(Update Type) as updateType
-(Registrasi Item) as regItem
-(Update Item) as updateItem
-(Delete Item) as deleteItem
-(Display Item) as displayItem
-admin --- listItem
-karyawan --- listItem
-leader --- displayType
-leader --- displayItem
-listItem <|-- regType
-listItem <|-- displayItem
-listItem <|-- displayType
-listItem <|-- updateType
-listItem <|-- regItem
-listItem <|-- updateItem
-listItem <|-- deleteItem
-}
+newpage
+!theme toy
+skinparam shadowing true
 
-package Schedule {
-(Kelola Schedule) as schedule
-(Buat Schedule) as createSchedule
-(Display Schedule) as displaySchedule
-(Delete Schedule) as deleteSchedule
-admin --- schedule
-schedule <|-- createSchedule
-schedule <|-- displaySchedule
-schedule <|-- deleteSchedule
-}
+package "uc Hak Akses Atasan" {
+left to right direction
 
+(Login)
+:Atasan:
 
-(User Validation) ..> mysql : <<include>>
-login <.. session : <<extend>>
-userManagement ..> mysql : <<include>>
-listItem ..> mysql : <<include>>
-schedule ...> mysql : <<include>>
+(Dapat Unduh Data Supply Hanger) as downloadData
+(Dapat Melihat Daftar Type) as listItem
 
+(Login) <.. listItem : <<include>>
+(Login) <.. downloadData : <<include>>
+(Login) <.. (Dapat Mencari Laporan) : <<include>>
+(Dapat Mencari Laporan) ..> (Input Tahun dan Bulan) : <<include>>
+
+Atasan -- downloadData
+Atasan -- listItem
+Atasan -- (Dapat Mencari Laporan)
 }
 
 

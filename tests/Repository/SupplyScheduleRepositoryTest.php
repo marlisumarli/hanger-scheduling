@@ -26,8 +26,8 @@ class SupplyScheduleRepositoryTest extends TestCase
         $date = [1, 2, 3, 4, 5];
         $mid = ['M1', 'M2', 'M3', 'M4', 'M5'];
         $type = ['k2f', 'k1a'];
-        $hangersK2f = ['k2f01', 'k2f02', 'k2f03', 'k2f04', 'k2f05', 'k2f06', 'k2f07', 'k2f08', 'k2f09', 'k2f10', 'k2f11', 'k2f12', 'k2f13', 'k2f14', 'k2f15', 'k2f16', 'k2f17'];
-        $hangersK1a = ['k1a01', 'k1a02', 'k1a03', 'k1a04', 'k1a05', 'k1a06'];
+        $hangersK2f = ['Speedometer A', 'Speedometer B', 'Front R', 'Front L', 'Lid Pocket', 'Inner', 'Inner Upper', 'Front Top', 'Fender', 'Center', 'Center Upper', 'Rr Center', 'Under R', 'Under L', 'Body R', 'Body L', 'Front'];
+        $hangersK1a = ['Front', 'Fender', 'CHF', 'CHT', 'Body L', 'Body R'];
 
         foreach ($hangersK2f as $key => $hk2f) {
             $hanger = new Hanger();
