@@ -3,9 +3,6 @@
 !theme toy
 skinparam shadowing true
 
-package "erd Database Aplikasi Jadwal Pensupplyan Hanger" {
-
-
 entity users {
 * username: VARCHAR(55) <<PK>>
 --
@@ -106,5 +103,5 @@ schedule_weeks}|--||supply_schedules
 supplies}|--||hanger_types
 supplies||--||schedule_weeks
 supply_lines}|--||supplies
-}
+
 @enduml
