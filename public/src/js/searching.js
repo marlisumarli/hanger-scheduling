@@ -6,10 +6,10 @@ const search = () => {
     let i;
     let n = data.length;
     for (i = 0; i < n; i++) {
-        if (!data[i].id.toLowerCase().includes(x)) {
-            data[i].style.display = "none";
-        } else {
+        if (data[i].id.toLowerCase().includes(x)) {
             data[i].style.display = "block";
+        } else {
+            data[i].style.display = "none";
         }
     }
 }

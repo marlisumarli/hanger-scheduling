@@ -1,0 +1,21 @@
+@startuml
+title Flowchart Algoritma Sequential Search
+!theme toy
+skinparam shadowing true
+
+start
+  :x = Input text;
+  :data = ""[]""
+  n = ""length.data""
+  i = 0;
+
+while (i < n; i++) is (yes)
+
+  if (data""[i]"" include (x) ?) is (not include) then
+    :Set CSS display none;
+  else (include)
+    :Set CSS display block;
+  endif
+endwhile (no)
+end
+@enduml
