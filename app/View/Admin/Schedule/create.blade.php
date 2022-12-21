@@ -9,120 +9,137 @@
         {{$success}}
     @endif
 
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin/schedule">Schedule</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Buat</li>
-        </ol>
-    </nav>
+    @if($schedules->findById(strtolower($dateNow->format('YF').'-'.$type)) === null)
 
-    <div class="mb-4">
-        <h1>BUAT SCHEDULE {{strtoupper($type)}}</h1>
-    </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/schedule">Schedule</a></li>
+                <li aria-current="page" class="breadcrumb-item active">Buat</li>
+            </ol>
+        </nav>
 
-    <form class="row" method="post">
-        <div class="col-lg-3 col-md-5 mb-3">
-            <div class="card rounded-3 shadow-lg">
-                <div class="card-header p-0">
-                    <h5 class="card-title m-2">Minggu #1</h5>
-                </div>
-                <div class="card-body p-3">
-                    <div class="mx-auto text-center">
-                        <div id="m1">
-                        </div>
-                        <button class="btn btn-sm btn-primary py-0 rounded-3"
-                                id="add-m1" type="button">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-5 mb-3">
-            <div class="card rounded-3 shadow-lg">
-                <div class="card-header p-0">
-                    <h5 class="card-title m-2">Minggu #2</h5>
-                </div>
-                <div class="card-body p-3">
-                    <div class="mx-auto text-center">
-                        <div id="m2">
-                        </div>
-                        <button class="btn btn-sm btn-primary py-0 rounded-3"
-                                id="add-m2" type="button">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-5 mb-3">
-            <div class="card rounded-3 shadow-lg">
-                <div class="card-header p-0">
-                    <h5 class="card-title m-2">Minggu #3</h5>
-                </div>
-                <div class="card-body p-3">
-                    <div class="mx-auto text-center">
-                        <div id="m3">
-                        </div>
-                        <button class="btn btn-sm btn-primary py-0 rounded-3"
-                                id="add-m3" type="button">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-5 mb-3">
-            <div class="card rounded-3 shadow-lg">
-                <div class="card-header p-0">
-                    <h5 class="card-title m-2">Minggu #4</h5>
-                </div>
-                <div class="card-body p-3">
-                    <div class="mx-auto text-center">
-                        <div id="m4">
-                        </div>
-                        <button class="btn btn-sm btn-primary py-0 rounded-3"
-                                id="add-m4" type="button">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-5 mb-3">
-            <div class="card rounded-3 shadow-lg">
-                <div class="card-header p-0">
-                    <h5 class="card-title m-2">Minggu #5</h5>
-                </div>
-                <div class="card-body p-3">
-                    <div class="mx-auto text-center">
-                        <div id="m5">
-                        </div>
-                        <button class="btn btn-sm btn-primary py-0 rounded-3"
-                                id="add-m5" type="button">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center">
-            <button class="btn btn-primary disabled" id="submit" type="submit" name="submit">Submit</button>
+
+        <div class="mb-4">
+            <h1>BUAT SCHEDULE {{strtoupper($type)}}</h1>
         </div>
 
-    </form>
+        <form class="row" method="post">
+            <div class="col-lg-3 col-md-5 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header p-0">
+                        <h5 class="card-title m-2">Minggu #1</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mx-auto text-center">
+                            <div id="m1">
+                            </div>
+                            <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                    id="add-m1" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-5 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header p-0">
+                        <h5 class="card-title m-2">Minggu #2</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mx-auto text-center">
+                            <div id="m2">
+                            </div>
+                            <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                    id="add-m2" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-5 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header p-0">
+                        <h5 class="card-title m-2">Minggu #3</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mx-auto text-center">
+                            <div id="m3">
+                            </div>
+                            <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                    id="add-m3" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-5 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header p-0">
+                        <h5 class="card-title m-2">Minggu #4</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mx-auto text-center">
+                            <div id="m4">
+                            </div>
+                            <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                    id="add-m4" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-5 mb-3">
+                <div class="card rounded-3 shadow-lg">
+                    <div class="card-header p-0">
+                        <h5 class="card-title m-2">Minggu #5</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mx-auto text-center">
+                            <div id="m5">
+                            </div>
+                            <button class="btn btn-sm btn-primary py-0 rounded-3"
+                                    id="add-m5" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-primary disabled" id="submit" type="submit" name="submit">Submit</button>
+            </div>
+
+        </form>
+
+    @else
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/schedule">Schedule</a></li>
+                <li aria-current="page" class="breadcrumb-item active">All Jadwal Supply</li>
+            </ol>
+        </nav>
+
+
+    @endif
+
+
     <hr class="my-5">
-    <form class="col-5 ms-auto">
-        <input aria-label="Search" class="form-control" placeholder="2022december" type="search" name=""
+    <div class="col-5 ms-auto">
+        Search
+        <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
                id="searchData" onkeyup="search()">
-    </form>
+    </div>
 
     @foreach($periods as $period)
         <hr class="my-5">
         <div class="mb-4">
             <h1>SCHEDULE {{strtoupper($type)}} {{$period->getId()}}</h1>
         </div>
-        @foreach($schedules as $schedule)
+        @foreach($schedules->findAll($type) as $schedule)
             @if($schedule->getPeriodId() == $period->getId())
                 <div class="data" id="{{$schedule->getId()}}">
                     @php

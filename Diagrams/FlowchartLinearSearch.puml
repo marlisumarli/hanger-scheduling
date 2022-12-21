@@ -1,7 +1,7 @@
 @startuml
-title Flowchart Algoritma Sequential Search
 !theme toy
 skinparam shadowing true
+mainframe fc Algoritma Sequential Search
 
 start
   :x = Input text;

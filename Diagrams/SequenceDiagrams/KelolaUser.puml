@@ -1,0 +1,59 @@
+@startuml
+
+!theme toy
+skinparam shadowing true
+mainframe **sd** Kelola User
+
+actor Admin
+boundary "Halaman Kelola User : View" as kelolaUser
+boundary "Halaman Edit User : View" as editUser
+control Controller as controller
+entity "User : Model" as dataUser
+
+Admin -> kelolaUser ++ : 1 Masuk halaman user ()
+
+kelolaUser -> controller ++ : 1.1 Request User ()
+
+controller -> dataUser ++ : 1.1.1 Get all user ()
+return 1.1.2 Response all user data ()
+return 1.1.3 Tampilkan user ()
+
+Admin -> kelolaUser : 2 Tambah user ()
+
+kelolaUser -> kelolaUser : 2.1 Input user data ()
+
+kelolaUser -> controller ++ : 2.2 Request buat user ()
+
+controller -> dataUser ++ : 2.2.1 Simpan user ()
+return 2.2.2 Response sukses ()
+return 2.2.3 User berhasil dibuat ()
+
+Admin -> kelolaUser : 3 Edit User ()
+
+kelolaUser -> editUser ++ : 3.1 Masuk ke halaman edit user ()
+
+editUser -> controller ++ : 3.1.1 Request user ()
+controller -> dataUser ++ : 3.1.1.1 Get user data ()
+return 3.1.1.2 Response user data()
+return 3.1.1.3 Tampilkan user data ()
+
+editUser -> editUser ++ : 3.1.1.4 Ubah data user ()
+deactivate editUser
+
+editUser -> controller ++ : 3.1.1.5 Request edit user ()
+controller -> dataUser ++ : 3.1.1.6 Simpan perubahan ()
+return 3.1.1.7 Response sukses ()
+return 3.1.1.8 Berhasil diubah ()
+deactivate
+
+Admin -> kelolaUser : 4 Hapus user ()
+
+kelolaUser -> controller ++ : 4.1 Request hapus ()
+
+controller -> dataUser ++ : 4.1.1 Hapus user ()
+
+return 4.1.2 Response sukses ()
+return 4.1.3 Berhasil dihapus ()
+deactivate
+
+@enduml

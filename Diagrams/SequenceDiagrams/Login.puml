@@ -1,0 +1,33 @@
+@startuml
+
+!theme toy
+skinparam shadowing true
+mainframe **sd** User Login
+autonumber
+
+actor User
+boundary "Halaman Login" as halamanLogin
+control Proses
+entity "Data User" as dataUser
+boundary "Halaman Utama" as halamanUtama
+
+activate User
+User -> halamanLogin ++ : Masuk ke halaman login()
+deactivate User
+halamanLogin -> Proses ++ : Masukkan username dan password()
+deactivate halamanLogin
+Proses -> dataUser ++ : getDataUser()
+return Data User()
+deactivate dataUser
+Proses -> Proses ++ : Validasi data()
+deactivate Proses
+alt #lightgreen Login Sukses
+Proses -> halamanUtama ++ : Arahkan ke halaman utama()
+deactivate halamanUtama
+else #pink Login Gagal
+Proses -> halamanLogin ++ : Username dan password salah()
+deactivate halamanLogin
+deactivate Proses
+end
+
+@enduml

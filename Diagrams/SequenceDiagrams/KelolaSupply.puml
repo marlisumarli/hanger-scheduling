@@ -1,0 +1,32 @@
+@startuml
+
+!theme toy
+skinparam shadowing true
+mainframe **sd** Buat Laporan Supply
+autonumber
+
+actor Karyawan
+boundary "Halaman Supply" as halamanSupply
+boundary "Lampiran Jadwal" as lampiranJadwal
+boundary "Halaman Buat Laporan" as buatLaporan
+control Proses
+entity "Tabel Jadwal" as tabelJadwal
+entity "Tabel Tipe" as tabelTipe
+
+
+activate Karyawan
+Karyawan -> halamanSupply ++ : Masuk ke halaman supply ()
+deactivate Karyawan
+
+
+halamanSupply -> lampiranJadwal ++ : Data jadwal ()
+lampiranJadwal -> tabelJadwal ++ : getAllJadwal ()
+return Tampilkan jadwal ()
+deactivate tabelJadwal
+
+lampiranJadwal -> tabelTipe ++ : getTipe ()
+activate lampiranJadwal
+deactivate lampiranJadwal
+deactivate tabelTipe
+
+@enduml

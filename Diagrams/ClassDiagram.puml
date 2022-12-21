@@ -1,0 +1,12 @@
+@startuml
+
+class Admin {
+- username
+- fullName
+- roleId
++ login ()
+}
+
+
+
+@enduml

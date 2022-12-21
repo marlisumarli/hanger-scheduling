@@ -79,7 +79,7 @@ class AdminScheduleController
             'Title' => "Admin | Schedule $type",
             'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
             'periods' => $this->periodRepository->findAll(),
-            'schedules' => $this->scheduleSupplyRepository->findAll($type),
+            'schedules' => $this->scheduleSupplyRepository,
             'schedule_weeks' => $this->scheduleWeekRepository,
             'supplies' => $this->supplyRepository,
             'type' => $type,
@@ -121,10 +121,7 @@ class AdminScheduleController
                 $i++;
             }
 
-            View::render('Admin/Schedule/create', [
-                'success' => "/admin/schedule/$type/create",
-                'session' => $this->sessionService->current(),
-            ]);
+            View::redirect("/admin/schedule/$type/create");
         }
     }
 

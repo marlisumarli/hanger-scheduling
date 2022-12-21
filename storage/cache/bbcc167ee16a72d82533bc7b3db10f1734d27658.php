@@ -86,10 +86,11 @@
 
     <hr class="my-5">
 
-    <form class="col-5 ms-auto">
-        <input aria-label="Search" class="form-control" placeholder="2022december" type="search" name=""
+    <div class="col-5 ms-auto">
+        Search
+        <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
                id="searchData" onkeyup="search()">
-    </form>
+    </div>
 
     <?php $__currentLoopData = $periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <hr class="my-5">

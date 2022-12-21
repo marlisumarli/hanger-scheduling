@@ -5,11 +5,11 @@
         <h4>DATA SUPPLY</h4>
     </div>
 
-    <form class="col-5 ms-auto">
+    <div class="col-5 ms-auto">
         Search
-        <input aria-label="Search" class="form-control" placeholder="2022january" type="search" name=""
+        <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
                id="searchData" onkeyup="search()">
-    </form>
+    </div>
 
     <?php $__currentLoopData = $periods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $period): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <hr class="my-5">

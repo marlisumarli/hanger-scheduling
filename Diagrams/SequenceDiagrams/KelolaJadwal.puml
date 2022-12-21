@@ -1,0 +1,46 @@
+@startuml
+
+!theme toy
+skinparam shadowing true
+mainframe **sd** Kelola Jadwal
+
+actor Admin
+boundary "Halaman Jadwal : View" as halamanJadwal
+boundary "Halaman Buat Jadwal : View" as buatJadwal
+control "Controller" as controller
+entity "Tipe Hanger : Model" as tabelTipe
+entity "Jadwal : Model" as tabelJadwal
+
+
+Admin -> halamanJadwal ++ : 1 Masuk ke halaman Jadwal ()
+
+halamanJadwal -> controller ++ : 1.1 Request all tipe hanger()
+
+controller -> tabelTipe ++ : 1.1.1 Get all tipe hanger ()
+
+return 1.1.2 Response all tipe hanger data ()
+return 1.1.3 Menampilkan tipe hanger ()
+
+alt #orange Jika jadwal bulan saat ini belum dibuat
+Admin -> halamanJadwal  : 2 Buat jadwal ()
+halamanJadwal -> buatJadwal ++ : 2.1 Masuk ke halaman buat jadwal
+
+buatJadwal -> buatJadwal ++ : 2.1.1 Input tanggal ()
+deactivate buatJadwal
+
+buatJadwal -> controller ++ : 2.1.2 Request buat jadwal ()
+controller -> tabelJadwal ++ : 2.1.2.1 Simpan jadwal ()
+return 2.1.2.2 Response sukses ()
+return 2.1.2.3 Berhasil dibuat ()
+
+end
+
+buatJadwal -> controller ++ : 3 Request all jadwal ()
+
+controller -> tabelJadwal ++ : 3.1 Get all jadwal ()
+
+return 3.2 Response jadwal ()
+return 3.4 Tampilkan jadwal ()
+
+
+@enduml

@@ -2,7 +2,7 @@
 !theme toy
 skinparam shadowing true
 
-package "uc Hak Akses Admin" {
+mainframe uc Hak Akses Admin
 left to right direction
 
 (Login)
@@ -61,13 +61,13 @@ Admin --- downloadData
 Admin --- addSchedule
 Admin --- deleteSchedule
 Admin --- (Dapat Mencari Laporan)
-}
+
 
 newpage
 !theme toy
 skinparam shadowing true
 
-package "uc Hak Akses Karyawan" {
+mainframe uc Hak Akses Karyawan
 left to right direction
 
 (Login)
@@ -117,13 +117,12 @@ Karyawan --- createSupply
 Karyawan -- (Dapat Mengubah Laporan)
 Karyawan --- (Dapat Unduh Laporan)
 Karyawan --- (Dapat Mencari Laporan)
-}
+
 
 newpage
 !theme toy
 skinparam shadowing true
-
-package "uc Hak Akses Atasan" {
+mainframe uc Hak Akses Atasan
 left to right direction
 
 (Login)
@@ -140,7 +139,6 @@ left to right direction
 Atasan -- downloadData
 Atasan -- listItem
 Atasan -- (Dapat Mencari Laporan)
-}
 
 
 @enduml

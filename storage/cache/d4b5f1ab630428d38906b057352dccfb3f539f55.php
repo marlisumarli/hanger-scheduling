@@ -90,6 +90,20 @@
             })
             modal.show()
         }
+
+        const id = document.getElementById('floatingId')
+        const idRegex = /^[a-zA-Z0-9]+$/
+        id.addEventListener('input', function () {
+            if (idRegex.test(id.value)) {
+                id.classList.remove('is-invalid')
+                id.classList.add('is-valid')
+            } else {
+                id.classList.remove('is-valid')
+                id.classList.add('is-invalid')
+                id.setCustomValidity('ID hanya boleh huruf dan angka')
+            }
+        })
+
     </script>
 
 <?php $__env->stopSection(); ?>
