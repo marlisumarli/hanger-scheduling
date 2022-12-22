@@ -123,7 +123,6 @@
             </ol>
         </nav>
 
-
     @endif
 
 
@@ -133,93 +132,132 @@
         <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
                id="searchData" onkeyup="search()">
     </div>
-
-    @foreach($periods as $period)
-        <hr class="my-5">
-        <div class="mb-4">
-            <h1>SCHEDULE {{strtoupper($type)}} {{$period->getId()}}</h1>
+    <br>
+    <div class="card text-center d-none" id="notFound">
+        <div class="card-body">
+            <h1>Data tidak ditemukan</h1>
         </div>
-        @foreach($schedules->findAll($type) as $schedule)
-            @if($schedule->getPeriodId() == $period->getId())
-                <div class="data" id="{{$schedule->getId()}}">
-                    @php
-                        $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
+    </div>
 
-                           foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week){
-                               if ($sch_week->getMId() == 'M1'){
-                                   $result['m1'][] = $sch_week->getMId();
-                               }elseif ($sch_week->getMId() == 'M2'){
-                                   $result['m2'][] = $sch_week->getMId();
-                               }elseif ($sch_week->getMId() == 'M3'){
-                                   $result['m3'][] = $sch_week->getMId();
-                               }elseif ($sch_week->getMId() == 'M4'){
-                                   $result['m4'][] = $sch_week->getMId();
-                               }elseif ($sch_week->getMId() == 'M5'){
-                                   $result['m5'][] = $sch_week->getMId();
+    <div class="d-block" id="found">
+        @foreach($periods as $period)
+            <hr class="my-5">
+            <div class="mb-4" id="{{$period->getId()}}">
+                <h1>SCHEDULE {{strtoupper($type)}} {{$period->getId()}}</h1>
+            </div>
+            @foreach($schedules->findAll($type) as $schedule)
+                @if($schedule->getPeriodId() == $period->getId())
+                    <div class="data" id="{{$schedule->getId()}}">
+                        @php
+                            $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
+
+                               foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week){
+                                   if ($sch_week->getMId() == 'M1'){
+                                       $result['m1'][] = $sch_week->getMId();
+                                   }elseif ($sch_week->getMId() == 'M2'){
+                                       $result['m2'][] = $sch_week->getMId();
+                                   }elseif ($sch_week->getMId() == 'M3'){
+                                       $result['m3'][] = $sch_week->getMId();
+                                   }elseif ($sch_week->getMId() == 'M4'){
+                                       $result['m4'][] = $sch_week->getMId();
+                                   }elseif ($sch_week->getMId() == 'M5'){
+                                       $result['m5'][] = $sch_week->getMId();
+                                   }
                                }
-                           }
-                    @endphp
+                        @endphp
 
-                    <div class="card mb-2">
-                        <div class="card-header d-flex">
-                            <a class="card-title" href="/admin/supply-data/{{$type}}/{{$schedule->getId()}}">#
-                                <span class="month">{{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            </a>
-                        </div>
-                        <div class="card-body overflow-scroll">
-                            <table class="table table-bordered text-center">
-                                <thead>
-                                <tr>
-                                    <th colspan="{{count($result['m1'])}}" scope="col">M1</th>
-                                    <th colspan="{{count($result['m2'])}}" scope="col">M2</th>
-                                    <th colspan="{{count($result['m3'])}}" scope="col">M3</th>
-                                    <th colspan="{{count($result['m4'])}}" scope="col">M4</th>
-                                    <th colspan="{{count($result['m5'])}}" scope="col">M5</th>
-                                </tr>
-                                </thead>
+                        <div class="card mb-2">
+                            <div class="card-header d-flex">
+                                <a class="card-title" href="/admin/supply-data/{{$type}}/{{$schedule->getId()}}">#
+                                    <span class="month">{{DateTime::createFromFormat('!m', $schedule->getMonth())->format('F')}}</span>
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                            <div class="card-body overflow-scroll">
+                                <table class="table table-bordered text-center">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="{{count($result['m1'])}}" scope="col">M1</th>
+                                        <th colspan="{{count($result['m2'])}}" scope="col">M2</th>
+                                        <th colspan="{{count($result['m3'])}}" scope="col">M3</th>
+                                        <th colspan="{{count($result['m4'])}}" scope="col">M4</th>
+                                        <th colspan="{{count($result['m5'])}}" scope="col">M5</th>
+                                    </tr>
+                                    </thead>
 
-                                <tbody class="table-group-divider">
-                                <tr>
-                                    @foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week)
-                                        @foreach($supplies->findScheduleWeekId($sch_week->getId()) as $supply)
-                                            @php($date = new DateTime($sch_week->getDate()))
-                                            <td>
-                                                <div class="card border-0">
-                                                    <div class="card-body p-0">
-                                                        <a class="btn-link position-relative"
-                                                           href="/admin/supply/{{$type}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$date->format('d/m/Y')}}</a>
-                                                    </div>
-                                                    <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
+                                    <tbody class="table-group-divider">
+                                    <tr>
+                                        @foreach($schedule_weeks->findScheduleSupplyId($schedule->getId()) as $sch_week)
+                                            @foreach($supplies->findScheduleWeekId($sch_week->getId()) as $supply)
+                                                @php($date = new DateTime($sch_week->getDate()))
+                                                <td>
+                                                    <div class="card border-0">
+                                                        <div class="card-body p-0">
+                                                            <a class="btn-link position-relative"
+                                                               href="/admin/supply/{{$type}}/{{$sch_week->getId()}}/{{$supply->getId()}}/view">{{$date->format('d/m/Y')}}</a>
+                                                        </div>
+                                                        <span class="position-absolute top-100 start-100 translate-middle rounded-circle">
                                                 @if($dateNow->format('Y-m-d') >= $sch_week->getDate() && $sch_week->getIsDone() == null)
-                                                            <i class="fa-solid fa-question text-warning"></i>
-                                                        @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
-                                                            <i class="fa-regular fa-clock text-secondary"></i>
-                                                        @else
-                                                            <i class="fa-solid fa-check text-success"></i>
-                                                        @endif
+                                                                <i class="fa-solid fa-question text-warning"></i>
+                                                            @elseif($dateNow->format('Y-m-d') <= $sch_week->getDate() && $sch_week->getIsDone() == null)
+                                                                <i class="fa-regular fa-clock text-secondary"></i>
+                                                            @else
+                                                                <i class="fa-solid fa-check text-success"></i>
+                                                            @endif
                                             </span>
-                                                </div>
-                                            </td>
+                                                    </div>
+                                                </td>
+                                            @endforeach
                                         @endforeach
-                                    @endforeach
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="card-footer d-flex">
-                            <a class="btn btn-danger btn-sm py-0 ms-auto {{$schedule->getIsDone() != null ? 'disabled' : ''}}"
-                               href="/admin/schedule/{{$schedule->getId()}}/delete"
-                               onclick="return confirm('Apakah ingin menghapus Data?')"><i
-                                        class="fa-solid fa-trash"></i>
-                                <span>Hapus</span>
-                            </a>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer d-flex">
+                                <a class="btn btn-danger btn-sm py-0 ms-auto {{$schedule->getIsDone() != null ? 'disabled' : ''}}"
+                                   href="/admin/schedule/{{$schedule->getId()}}/delete"
+                                   onclick="return confirm('Apakah ingin menghapus Data?')"><i
+                                            class="fa-solid fa-trash"></i>
+                                    <span>Hapus</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endif
+
+                @endif
+            @endforeach
         @endforeach
-    @endforeach
+    </div>
     <script src="/src/js/schedule.js"></script>
-    <script src="/src/js/searching.js"></script>
+{{--    <script src="/src/js/searching.js"></script>--}}
+
+    <script>
+        function search(){
+            let input = document.getElementById('searchData').value
+            input=input.toLowerCase();
+            let x = document.getElementsByClassName('data');
+            let notFound = document.getElementById('notFound');
+            let found = document.getElementById('found');
+            let count = 0;
+
+            for (let i = 0; i < x.length; i++) {
+                if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                    x[i].style.display="none";
+                }
+                else {
+                    x[i].style.display="block";
+                    count++;
+                }
+            }
+
+            if (count === 0){
+                notFound.classList.remove('d-none');
+                found.classList.add('d-none');
+            }else{
+                notFound.classList.add('d-none');
+                found.classList.remove('d-none');
+            }
+        }
+    </script>
+
 @endsection
