@@ -10,50 +10,55 @@ boundary "Halaman Edit User : View" as editUser
 control Controller as controller
 entity "User : Model" as dataUser
 
+activate Admin
 Admin -> kelolaUser ++ : 1 Masuk halaman user ()
 
 kelolaUser -> controller ++ : 1.1 Request User ()
 
 controller -> dataUser ++ : 1.1.1 Get all user ()
-return 1.1.2 Response all user data ()
-return 1.1.3 Tampilkan user ()
+dataUser --> controller : 1.1.2 All user data ()
+deactivate dataUser
+controller --> kelolaUser : 1.1.3 Response all user ()
+deactivate controller
+kelolaUser --> Admin : 1.1.4 Tampilkan user ()
+deactivate kelolaUser
 
-Admin -> kelolaUser : 2 Tambah user ()
+Admin -> kelolaUser ++ : 2 Tambah user ()
 
-kelolaUser -> kelolaUser : 2.1 Input user data ()
+kelolaUser --> Admin : 2.1 Input user data ()
 
-kelolaUser -> controller ++ : 2.2 Request buat user ()
+kelolaUser -> controller ++ : 2.1.1 Request buat user ()
 
-controller -> dataUser ++ : 2.2.1 Simpan user ()
-return 2.2.2 Response sukses ()
-return 2.2.3 User berhasil dibuat ()
-
-Admin -> kelolaUser : 3 Edit User ()
-
-kelolaUser -> editUser ++ : 3.1 Masuk ke halaman edit user ()
-
-editUser -> controller ++ : 3.1.1 Request user ()
-controller -> dataUser ++ : 3.1.1.1 Get user data ()
-return 3.1.1.2 Response user data()
-return 3.1.1.3 Tampilkan user data ()
-
-editUser -> editUser ++ : 3.1.1.4 Ubah data user ()
-deactivate editUser
-
-editUser -> controller ++ : 3.1.1.5 Request edit user ()
-controller -> dataUser ++ : 3.1.1.6 Simpan perubahan ()
-return 3.1.1.7 Response sukses ()
-return 3.1.1.8 Berhasil diubah ()
+controller -> dataUser ++ : 2.1.1.1 Simpan user ()
+return 2.1.1.2 Sukses ()
+return 2.1.1.3 Response sukses ()
+kelolaUser --> Admin : 2.1.1.4 Berhasil disimpan ()
 deactivate
 
-Admin -> kelolaUser : 4 Hapus user ()
+Admin -> kelolaUser ++ : 3 Edit User ()
+kelolaUser -> editUser ++ : 3.1 Masuk ke halaman edit user ()
+deactivate kelolaUser
+editUser -> controller ++ : 3.1.1 Request user ()
+controller -> dataUser ++ : 3.1.1.1 Get user data ()
+return 3.1.1.2 User data()
+return 3.1.1.3 Response user data ()
+editUser --> Admin : 3.1.1.4 Tampilkan user data ()
 
+Admin -> editUser  : 3.1.1.5 Ubah data user ()
+
+editUser -> controller ++ : 3.1.1.6 Request edit user ()
+controller -> dataUser ++ : 3.1.1.7 Simpan perubahan ()
+return 3.1.1.8 Sukses ()
+return 3.1.1.9 Response sukses ()
+editUser --> Admin : 3.1.1.10 Berhasil disimpan ()
+deactivate editUser
+
+Admin -> kelolaUser ++ : 4 Hapus user ()
 kelolaUser -> controller ++ : 4.1 Request hapus ()
 
 controller -> dataUser ++ : 4.1.1 Hapus user ()
 
 return 4.1.2 Response sukses ()
 return 4.1.3 Berhasil dihapus ()
-deactivate
 
 @enduml

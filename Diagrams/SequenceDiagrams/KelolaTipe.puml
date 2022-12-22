@@ -1,0 +1,91 @@
+@startuml
+
+!theme toy
+skinparam shadowing true
+mainframe **sd** Kelola Tipe
+
+actor "Admin / Karyawan" as user
+boundary "Halaman Kelola Tipe : View" as kelolaTipe
+boundary "Halaman Ubah Tipe : View" as kelolaTipe
+boundary "Halaman Kelola Hanger : View" as kelolaHanger
+control Controller as controller
+entity "Tabel Hanger : Model" as tabelHanger
+entity "Tabel Tipe : Model" as tabelTipe
+
+activate user
+user -> kelolaTipe ++ : 1 Masuk ke halaman kelola tipe ()
+kelolaTipe -> controller ++ : 1.1 Request all tipe hanger data()
+kelolaTipe -> controller  : 1.2 Request all hanger data ()
+controller -> tabelTipe ++ : 1.2.1 Get all tipe hanger data ()
+controller -> tabelHanger ++ : 1.2.2 Get all hanger data ()
+
+return 1.2.3 All hanger data ()
+return 1.2.4 All tipe hanger data ()
+controller --> kelolaTipe : 1.2.5 Response all tipe hanger data ()
+controller --> kelolaTipe : 1.2.6 Response all hanger data ()
+deactivate controller
+kelolaTipe --> user : 1.2.7 Tampilkan tipe hanger ()
+kelolaTipe --> user : 1.2.8 Tampilkan hanger ()
+
+
+user -> kelolaTipe : 1.2.9 Registrasi tipe hanger ()
+kelolaTipe --> user : 1.2.10 Input tipe hanger data ()
+kelolaTipe -> controller ++ : 1.2.11 Request registrasi tipe hanger ()
+deactivate kelolaTipe
+controller -> tabelTipe ++ : 1.2.12 Simpan tipe hanger data ()
+tabelTipe --> controller : 1.2.13  Sukses ()
+deactivate tabelTipe
+controller --> kelolaHanger ++ : 1.2.14 Response sukses ()
+kelolaHanger --> user : 1.2.15 Direct user ()
+user -> kelolaHanger : 1.2.16 Masuk ke halaman kelola hanger ()
+user --> kelolaHanger ++ : 1.2.17 Input hanger data ()
+deactivate kelolaHanger
+kelolaHanger -> controller : 1.2.18 Request registrasi hanger ()
+controller -> tabelHanger ++ : 1.2.19 Simpan data hanger ()
+tabelHanger --> controller : 1.2.20 Sukses ()
+deactivate tabelHanger
+controller --> kelolaHanger : 1.2.21 Response sukses ()
+deactivate controller
+kelolaHanger --> user : 1.2.22 Berhasil disimpan ()
+deactivate kelolaHanger
+
+user -> kelolaTipe ++ : 2 Ubah tipe hanger data ()
+kelolaTipe -> controller ++ : 2.1 Request tipe hanger data ()
+controller -> tabelTipe ++ : 2.1.1 Get tipe hanger data ()
+tabelTipe --> controller : 2.1.2 Tipe hanger data ()
+controller --> kelolaTipe : 2.1.3 Response tipe hanger data ()
+kelolaTipe --> user : 2.1.4 Tampilkan tipe hanger ()
+user -> kelolaTipe : 2.1.5 Ubah data ()
+kelolaTipe -> controller : 2.1.6 Request ubah ()
+controller -> tabelTipe  : 2.1.7 Simpan tipe hanger data ()
+tabelTipe --> controller : 2.1.8 Sukses ()
+controller --> kelolaTipe : 2.1.9 Response sukses ()
+kelolaTipe --> user : 2.1.10 Data berhasil diubah ()
+deactivate kelolaTipe
+deactivate controller
+deactivate tabelTipe
+
+user -> kelolaHanger ++ : 3 Ubah hanger data ()
+kelolaHanger -> controller ++ : 3.1 Request hanger data ()
+controller -> tabelHanger ++ : 3.1.1 Get hanger data ()
+tabelHanger --> controller : 3.1.2 Hanger data ()
+controller --> kelolaHanger : 3.1.4 Response hanger data ()
+kelolaHanger --> user : 3.1.5 Tampilkan hanger ()
+user -> kelolaHanger : 3.1.6 Ubah data ()
+kelolaHanger -> controller : 3.1.6 Request ubah hanger ()
+controller -> tabelHanger : 3.1.7 Simpan hanger data ()
+tabelHanger --> controller : 3.1.8 Sukses ()
+controller --> kelolaHanger : 3.1.10 Response sukses ()
+kelolaHanger --> user : 3.1.10 Data berhasil diubah ()
+deactivate kelolaHanger
+deactivate controller
+deactivate tabelHanger
+
+user -> kelolaHanger ++ : 4 Hapus hanger ()
+kelolaHanger -> controller ++ : 4.1 Request hapus hanger ()
+controller -> tabelHanger ++ : 4.1.1 Hapus hanger ()
+tabelHanger --> controller : 4.1.2 Sukses ()
+controller --> kelolaHanger : 4.1.3 Response sukses ()
+kelolaHanger --> user : 4.1.4 Data berhasil dihapus ()
+
+@enduml

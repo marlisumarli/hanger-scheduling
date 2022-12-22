@@ -12,34 +12,79 @@ control "Controller" as controller
 entity "Tipe Hanger : Model" as tabelTipe
 entity "Jadwal : Model" as tabelJadwal
 
+activate Admin
 
-Admin -> halamanJadwal ++ : 1 Masuk ke halaman Jadwal ()
-
+Admin -> halamanJadwal ++ : 1 Masuk ke halaman jadwal ()
 halamanJadwal -> controller ++ : 1.1 Request all tipe hanger()
-
 controller -> tabelTipe ++ : 1.1.1 Get all tipe hanger ()
 
-return 1.1.2 Response all tipe hanger data ()
-return 1.1.3 Menampilkan tipe hanger ()
-
-halamanJadwal -> halamanJadwal : 2 Buat jadwal ()
-halamanJadwal -> buatJadwal ++ : 2.1 Masuk ke halaman jadwal ()
-
-buatJadwal -> buatJadwal ++ : 2.1.1 Input tanggal ()
-deactivate buatJadwal
-
-buatJadwal -> controller ++ : 2.1.2 Request buat jadwal ()
-controller -> tabelJadwal ++ : 2.1.2.1 Simpan jadwal ()
-return 2.1.2.2 Response sukses ()
-return 2.1.2.3 Berhasil dibuat ()
-
-buatJadwal -> controller ++ : 3 Request all jadwal ()
-
-controller -> tabelJadwal ++ : 3.1 Get all data jadwal ()
-
-return 3.2 Response all data jadwal ()
-return 3.4 Tampilkan jadwal ()
+return 1.1.2 all tipe hanger data ()
+return 1.1.3 Response all tipe hanger data ()
+return 1.1.4 Menampilkan tipe ()
 
 
+Admin -> halamanJadwal : 2 Buat jadwal ()
+
+activate halamanJadwal
+halamanJadwal -> controller ++ : 2.1 Request tipe hanger data ()
+deactivate halamanJadwal
+
+controller -> tabelTipe ++ : 2.1.1 Get tipe hanger data ()
+return 2.1.2 Tipe hanger data ()
+
+'return
+controller --> buatJadwal ++ : 2.1.3 Response tipe hanger data ()
+
+'return
+buatJadwal --> Admin : 2.1.4 Menampilkan tipe hanger data ()
+
+'return
+Admin -> buatJadwal ++ : 2.1.5 Input tanggal ()
+
+deactivate
+buatJadwal -> controller  : 2.1.6 Request buat jadwal ()
+
+
+controller -> tabelJadwal ++ : 2.1.7 Simpan jadwal ()
+
+'return
+return 2.1.8 Sukses ()
+controller --> buatJadwal : 2.1.9 Response sukses ()
+buatJadwal --> Admin : 2.1.10 Berhasil dibuat ()
+deactivate
+deactivate controller
+
+'lihat jadwal
+'
+Admin -> lihatJadwal ++ : 3 Masuk ke halaman lihat jadwal ()
+lihatJadwal -> controller ++ : 3.1 Request get tipe hanger data ()
+lihatJadwal -> controller  : 3.2 Request get all jadwal ()
+controller -> tabelTipe ++ : 3.2.1 Get tipe hanger data ()
+
+
+tabelTipe --> controller : 3.2.2 Tipe hanger data ()
+controller --> lihatJadwal : 3.2.3 Response tipe hanger data ()
+controller --> lihatJadwal : 3.2.4 Response jadwal
+deactivate
+controller -> tabelJadwal ++ : 3.2.5 Get all jadwal ()
+
+
+tabelJadwal --> controller : 3.2.6 All jadwal ()
+lihatJadwal --> Admin : 3.2.7 Menampilkan tipe hanger data ()
+deactivate controller
+deactivate tabelJadwal
+lihatJadwal --> Admin : 3.2.8 Menampilkan jadwal ()
+
+
+Admin -> lihatJadwal : 3.2.9 Mencari laporan jadwal ()
+return 3.2.10 Menampilkan Data jadwal / data tidak ditemukan ()
+
+Admin -> halamanJadwal ++ : 4 Hapus jadwal ()
+halamanJadwal -> controller ++ : 4.1 Request hapus jadwal ()
+controller -> tabelJadwal ++ : 4.1.1 Hapus jadwal ()
+return 4.1.2 Hapus sukses ()
+controller --> halamanJadwal : 4.1.3 Response sukses ()
+deactivate
+halamanJadwal --> Admin : 4.1.5 Data berhasil dihapus ()
 
 @enduml
