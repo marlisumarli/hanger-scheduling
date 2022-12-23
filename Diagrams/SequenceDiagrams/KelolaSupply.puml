@@ -2,31 +2,79 @@
 
 !theme toy
 skinparam shadowing true
-mainframe **sd** Buat Laporan Supply
-autonumber
+mainframe **sd** Kelola Supply
 
-actor Karyawan
-boundary "Halaman Supply" as halamanSupply
-boundary "Lampiran Jadwal" as lampiranJadwal
-boundary "Halaman Buat Laporan" as buatLaporan
-control Proses
-entity "Tabel Jadwal" as tabelJadwal
-entity "Tabel Tipe" as tabelTipe
+actor Karyawan as karyawan
+boundary "Halaman Kelola Supply : View" as kelolaSupply
+boundary "Halaman buat laporan : View" as buatLaporan
+entity "Halaman Edit : View" as halamanEdit
+control Controller as controller
+entity "Supply : Model" as tabelSupply
+entity "Tipe Hanger : Model" as tabelTipe
+entity "Jadwal : Model" as tabelJadwal
 
-
-activate Karyawan
-Karyawan -> halamanSupply ++ : Masuk ke halaman supply ()
-deactivate Karyawan
-
-
-halamanSupply -> lampiranJadwal ++ : Data jadwal ()
-lampiranJadwal -> tabelJadwal ++ : getAllJadwal ()
-return Tampilkan jadwal ()
-deactivate tabelJadwal
-
-lampiranJadwal -> tabelTipe ++ : getTipe ()
-activate lampiranJadwal
-deactivate lampiranJadwal
+karyawan -> kelolaSupply ++ : Masuk halaman supply ()
+activate karyawan
+kelolaSupply -> controller ++ : Request all tipe ()
+controller -> tabelTipe ++ : Get all tipe hanger ()
+tabelTipe --> controller : All tipe hanger ()
 deactivate tabelTipe
+controller --> kelolaSupply : Response all tipe ()
+deactivate controller
+kelolaSupply --> karyawan : Menampilkan tipe hanger ()
+deactivate kelolaSupply
+
+karyawan -> buatLaporan ++ : Jadwal supply ()
+buatLaporan -> controller ++ : Request jadwal supply data ()
+controller -> tabelJadwal ++ : Get all jadwal supply data ()
+tabelJadwal --> controller : ALl jadwal supply data ()
+deactivate tabelJadwal
+controller --> buatLaporan : Response jadwal supply data ()
+deactivate controller
+buatLaporan --> karyawan : Menampilkan jadwal supply ()
+deactivate buatLaporan
+karyawan -> buatLaporan ++ : Buat laporan ()
+buatLaporan -> controller ++ : Request tipe hanger data ()
+controller -> tabelTipe ++ : Get tipe hanger data ()
+tabelTipe --> controller : Tipe hanger data ()
+deactivate tabelTipe
+controller --> buatLaporan : Response tipe hanger data ()
+buatLaporan --> karyawan : Tampilkan tipe hanger data ()
+karyawan -> buatLaporan : Isi data supply ()
+buatLaporan -> controller : Request buat laporan ()
+controller -> tabelSupply ++ : Simpan laporan ()
+tabelSupply --> controller : Sukses ()
+deactivate tabelSupply
+controller --> buatLaporan : Response sukses ()
+deactivate controller
+buatLaporan --> karyawan : Berhasil disimpan ()
+deactivate buatLaporan
+
+karyawan -> halamanEdit ++ : Ubah laporan ()
+halamanEdit -> controller ++ : Request tipe hanger data ()
+halamanEdit -> controller : Request supply data ()
+controller -> tabelTipe ++ : Get tipe hanger data ()
+controller -> tabelSupply ++ : Get supply data ()
+tabelSupply --> controller : Supply data ()
+deactivate tabelSupply
+tabelTipe --> controller : Tipe hanger data ()
+deactivate tabelTipe
+controller --> halamanEdit : Response tipe hanger data ()
+controller --> halamanEdit : Response supply data ()
+deactivate controller
+halamanEdit --> karyawan : Menampilkan tipe hanger data ()
+halamanEdit --> karyawan : Menampilkan supply data ()
+karyawan -> halamanEdit : Ubah data ()
+halamanEdit -> controller ++ : Request ubah data supply ()
+controller -> tabelSupply ++ : Ubah data supply ()
+tabelSupply --> controller : Sukses ()
+deactivate tabelSupply
+controller --> halamanEdit : Response sukses ()
+deactivate controller
+halamanEdit --> karyawan : Berhasil diubah ()
+deactivate halamanEdit
+
+
+
 
 @enduml

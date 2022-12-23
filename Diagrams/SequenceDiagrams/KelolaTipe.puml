@@ -10,7 +10,7 @@ boundary "Halaman Ubah Tipe : View" as kelolaTipe
 boundary "Halaman Kelola Hanger : View" as kelolaHanger
 control Controller as controller
 entity "Tabel Hanger : Model" as tabelHanger
-entity "Tabel Tipe : Model" as tabelTipe
+entity "Tabel Tipe Hanger : Model" as tabelTipe
 
 activate user
 user -> kelolaTipe ++ : 1 Masuk ke halaman kelola tipe ()
@@ -29,24 +29,23 @@ kelolaTipe --> user : 1.2.8 Tampilkan hanger ()
 
 
 user -> kelolaTipe : 1.2.9 Registrasi tipe hanger ()
-kelolaTipe --> user : 1.2.10 Input tipe hanger data ()
-kelolaTipe -> controller ++ : 1.2.11 Request registrasi tipe hanger ()
+kelolaTipe -> controller ++ : 1.2.10 Request registrasi tipe hanger ()
 deactivate kelolaTipe
-controller -> tabelTipe ++ : 1.2.12 Simpan tipe hanger data ()
-tabelTipe --> controller : 1.2.13  Sukses ()
+controller -> tabelTipe ++ : 1.2.11 Simpan tipe hanger data ()
+tabelTipe --> controller : 1.2.12 Sukses ()
 deactivate tabelTipe
-controller --> kelolaHanger ++ : 1.2.14 Response sukses ()
-kelolaHanger --> user : 1.2.15 Direct user ()
-user -> kelolaHanger : 1.2.16 Masuk ke halaman kelola hanger ()
-user --> kelolaHanger ++ : 1.2.17 Input hanger data ()
+controller --> kelolaHanger ++ : 1.2.13 Response sukses ()
+kelolaHanger --> user : 1.2.14 Direct user ()
+user -> kelolaHanger : 1.2.15 Masuk ke halaman kelola hanger ()
+user --> kelolaHanger ++ : 1.2.16 Input hanger data ()
 deactivate kelolaHanger
-kelolaHanger -> controller : 1.2.18 Request registrasi hanger ()
-controller -> tabelHanger ++ : 1.2.19 Simpan data hanger ()
-tabelHanger --> controller : 1.2.20 Sukses ()
+kelolaHanger -> controller : 1.2.17 Request registrasi hanger ()
+controller -> tabelHanger ++ : 1.2.18 Simpan data hanger ()
+tabelHanger --> controller : 1.2.19 Sukses ()
 deactivate tabelHanger
-controller --> kelolaHanger : 1.2.21 Response sukses ()
+controller --> kelolaHanger : 1.2.20 Response sukses ()
 deactivate controller
-kelolaHanger --> user : 1.2.22 Berhasil disimpan ()
+kelolaHanger --> user : 1.2.21 Berhasil disimpan ()
 deactivate kelolaHanger
 
 user -> kelolaTipe ++ : 2 Ubah tipe hanger data ()
