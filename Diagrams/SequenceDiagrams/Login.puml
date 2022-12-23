@@ -16,19 +16,16 @@ User -> halamanLogin : Input username dan password ()
 
 halamanLogin -> controller ++ : Request login ()
 controller -> dataUser ++ : Get user ()
-
 dataUser --> controller : validasi ()
+deactivate dataUser
 controller --> halamanLogin : Response validasi ()
-
+deactivate controller
 alt #lightgreen Valid Login
 halamanLogin --> User : Login sukses ()
-User -> halamanUtama ++ : Masuk halaman login ()
+User -> halamanUtama : Masuk halaman login ()
 else #pink Invalid Login
 halamanLogin --> User : Login gagal ()
-deactivate
-deactivate
-deactivate
-deactivate
+deactivate halamanLogin
 end
 
 @enduml

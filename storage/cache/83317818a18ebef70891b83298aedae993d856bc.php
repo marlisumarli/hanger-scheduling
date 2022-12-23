@@ -14,23 +14,36 @@
                     <div class="card-header">
                         <h5 class="card-title"># <?php echo e(strtoupper($hanger_type->getId())); ?></h5>
                     </div>
-                    <div class="card-body d-flex text-center p-3">
-                        <div class="mx-auto">
-                            <?php if($supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null): ?>
-                                <?php ($schedule = $supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth()); ?>
+
+                    <?php if($supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId())) !== null): ?>
+                        <?php ($schedule = $supply_schedule->findById(strtolower($dateNow->format('YF').'-'.$hanger_type->getId()))->getMonth()); ?>
+                        <div class="card-body d-flex text-center p-3">
+                            <div class="mx-auto">
                                 <span>Schedule saat ini</span><br>
                                 <span class="badge text-bg-success"><?php echo e(DateTime::createFromFormat('!m', $schedule)->format('F')); ?></span>
-                            <?php else: ?>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a class="small" href="/admin/schedule/<?php echo e($hanger_type->getId()); ?>/create">
+                                Lihat Jadwal
+                            </a>
+                        </div>
+
+                    <?php else: ?>
+                        <div class="card-body d-flex text-center p-3">
+                            <div class="mx-auto">
+
                                 Bulan sekarang belum dibuat
                                 <span class="badge text-bg-warning"><?php echo e($dateNow->format('F')); ?></span>
-                            <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <a class="small" href="/admin/schedule/<?php echo e($hanger_type->getId()); ?>/create">
-                            Buat Schedule
-                        </a>
-                    </div>
+                        <div class="card-footer text-center">
+                            <a class="small" href="/admin/schedule/<?php echo e($hanger_type->getId()); ?>/create">
+                                Buat Jadwal
+                            </a>
+                        </div>
+
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

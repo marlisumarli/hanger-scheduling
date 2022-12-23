@@ -13,68 +13,77 @@ entity "Supply : Model" as tabelSupply
 entity "Tipe Hanger : Model" as tabelTipe
 entity "Jadwal : Model" as tabelJadwal
 
-karyawan -> kelolaSupply ++ : Masuk halaman supply ()
+karyawan -> kelolaSupply ++ : 1 Masuk halaman supply ()
 activate karyawan
-kelolaSupply -> controller ++ : Request all tipe ()
-controller -> tabelTipe ++ : Get all tipe hanger ()
-tabelTipe --> controller : All tipe hanger ()
+kelolaSupply -> controller ++ : 1.1 Request all tipe ()
+controller -> tabelTipe ++ : 1.1.1 Get all tipe hanger ()
+tabelTipe --> controller : 1.1.2 All tipe hanger ()
 deactivate tabelTipe
-controller --> kelolaSupply : Response all tipe ()
+controller --> kelolaSupply : 1.1.3 Response all tipe ()
 deactivate controller
-kelolaSupply --> karyawan : Menampilkan tipe hanger ()
+kelolaSupply --> karyawan : 1.1.4 Menampilkan tipe hanger ()
 deactivate kelolaSupply
 
-karyawan -> buatLaporan ++ : Jadwal supply ()
-buatLaporan -> controller ++ : Request jadwal supply data ()
-controller -> tabelJadwal ++ : Get all jadwal supply data ()
-tabelJadwal --> controller : ALl jadwal supply data ()
+karyawan -> buatLaporan ++ : 2 Jadwal supply ()
+buatLaporan -> controller ++ : 2.1 Request jadwal supply data ()
+controller -> tabelJadwal ++ : 2.1.1 Get all jadwal supply data ()
+tabelJadwal --> controller : 2.1.2 All jadwal supply data ()
 deactivate tabelJadwal
-controller --> buatLaporan : Response jadwal supply data ()
+controller --> buatLaporan : 2.1.3 Response jadwal supply data ()
 deactivate controller
-buatLaporan --> karyawan : Menampilkan jadwal supply ()
+buatLaporan --> karyawan : 2.1.4 Menampilkan jadwal supply ()a
 deactivate buatLaporan
-karyawan -> buatLaporan ++ : Buat laporan ()
-buatLaporan -> controller ++ : Request tipe hanger data ()
-controller -> tabelTipe ++ : Get tipe hanger data ()
-tabelTipe --> controller : Tipe hanger data ()
+karyawan -> buatLaporan ++ : 3 Buat laporan ()
+buatLaporan -> controller ++ : 3.1 Request tipe hanger data ()
+controller -> tabelTipe ++ : 3.1.1 Get tipe hanger data ()
+tabelTipe --> controller : 3.1.2 Tipe hanger data ()
 deactivate tabelTipe
-controller --> buatLaporan : Response tipe hanger data ()
-buatLaporan --> karyawan : Tampilkan tipe hanger data ()
-karyawan -> buatLaporan : Isi data supply ()
-buatLaporan -> controller : Request buat laporan ()
-controller -> tabelSupply ++ : Simpan laporan ()
-tabelSupply --> controller : Sukses ()
+controller --> buatLaporan : 3.1.3 Response tipe hanger data ()
+buatLaporan --> karyawan : 3.1.4 Tampilkan tipe hanger data ()
+karyawan -> buatLaporan : 3.1.5 Isi data supply ()
+buatLaporan -> controller : 3.1.6 Request buat laporan ()
+controller -> tabelSupply ++ : 3.1.7 Simpan laporan ()
+tabelSupply --> controller : 3.1.8 Sukses ()
 deactivate tabelSupply
-controller --> buatLaporan : Response sukses ()
+controller --> buatLaporan : 3.1.9 Response sukses ()
 deactivate controller
-buatLaporan --> karyawan : Berhasil disimpan ()
+buatLaporan --> karyawan : 3.1.10 Berhasil disimpan ()
 deactivate buatLaporan
 
-karyawan -> halamanEdit ++ : Ubah laporan ()
-halamanEdit -> controller ++ : Request tipe hanger data ()
-halamanEdit -> controller : Request supply data ()
-controller -> tabelTipe ++ : Get tipe hanger data ()
-controller -> tabelSupply ++ : Get supply data ()
-tabelSupply --> controller : Supply data ()
+karyawan -> halamanEdit ++ : 4 Ubah laporan ()
+halamanEdit -> controller ++ : 4.1 Request tipe hanger data ()
+halamanEdit -> controller : 4.1.1 Request supply data ()
+controller -> tabelTipe ++ : 4.1.2 Get tipe hanger data ()
+controller -> tabelSupply ++ : 4.1.3 Get supply data ()
+tabelSupply --> controller : 4.1.4 Supply data ()
 deactivate tabelSupply
-tabelTipe --> controller : Tipe hanger data ()
+tabelTipe --> controller : 4.1.5 Tipe hanger data ()
 deactivate tabelTipe
-controller --> halamanEdit : Response tipe hanger data ()
-controller --> halamanEdit : Response supply data ()
+controller --> halamanEdit : 4.1.6 Response tipe hanger data ()
+controller --> halamanEdit : 4.1.7 Response supply data ()
 deactivate controller
-halamanEdit --> karyawan : Menampilkan tipe hanger data ()
-halamanEdit --> karyawan : Menampilkan supply data ()
-karyawan -> halamanEdit : Ubah data ()
-halamanEdit -> controller ++ : Request ubah data supply ()
-controller -> tabelSupply ++ : Ubah data supply ()
-tabelSupply --> controller : Sukses ()
+halamanEdit --> karyawan : 4.1.8 Menampilkan tipe hanger data ()
+halamanEdit --> karyawan : 4.1.9 Menampilkan supply data ()
+karyawan -> halamanEdit : 4.1.10 Ubah data ()
+halamanEdit -> controller ++ : 4.1.11 Request ubah data supply ()
+controller -> tabelSupply ++ : 4.1.12 Ubah data supply ()
+tabelSupply --> controller : 4.1.13 Sukses ()
 deactivate tabelSupply
-controller --> halamanEdit : Response sukses ()
+controller --> halamanEdit : 4.1.14 Response sukses ()
 deactivate controller
-halamanEdit --> karyawan : Berhasil diubah ()
+halamanEdit --> karyawan : 4.1.15 Berhasil diubah ()
 deactivate halamanEdit
 
+karyawan -> kelolaSupply ++ : 5 Mencari laporan supply ()
+kelolaSupply -> controller ++ : 5.1 Request all supply ()
+controller -> tabelSupply ++ : 5.1.1 Get all supply ()
+tabelSupply --> controller : 5.1.2 All supply ()
+deactivate tabelSupply
+controller --> kelolaSupply : 5.1.3 Response all supply ()
+deactivate controller
+kelolaSupply --> karyawan : 5.1.4 Menampilkan data supply ()
 
-
+karyawan -> kelolaSupply : 5.1.5 Cari laporan ()
+kelolaSupply -> karyawan : 5.1.6 Menampilkan data / \ndata tidak ditemukan ()
 
 @enduml
