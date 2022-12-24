@@ -33,7 +33,6 @@ class ScheduleWeekRepository
         return $schedule;
     }
 
-// TODO karena PHP OOP itu cocok untuk desain pattern MVC maka kelompok kami memutuskan untuk menggunakan konsep MVC pada projek ini
     public function findById(string $id): ?ScheduleWeek
     {
         $statement = $this->connection

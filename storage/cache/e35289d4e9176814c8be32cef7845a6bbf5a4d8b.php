@@ -3,6 +3,7 @@
         alert('<?php echo e($error); ?>');
         document.location.href = '<?php echo e($direct); ?>';
     </script>
+    
 <?php endif; ?>
 <script>
     document.location.href = '<?php echo e($direct); ?>';

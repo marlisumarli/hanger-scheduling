@@ -7,8 +7,11 @@
 
     <div class="col-5 ms-auto">
         Search
-        <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
-               id="searchData" onkeyup="search()">
+        <input aria-label="Search" class="form-control" type="month"
+               id="searchData">
+        <div class="d-flex">
+            <button type="submit" class="btn btn-sm btn-secondary ms-auto mt-2" onclick="search()">Search..</button>
+        </div>
     </div>
     <br>
     <div class="card text-center d-none" id="notFound">
@@ -26,7 +29,11 @@
             </div>
             <?php $__currentLoopData = $schedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $schedule): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if($schedule->getPeriodId() == $period->getId()): ?>
-                    <div class="data" id="<?php echo e($schedule->getId()); ?>">
+                    <?php
+                        // remove 0 in front of month
+                        $month = DateTime::createFromFormat('!m', $schedule->getMonth())->format('m');
+                    ?>
+                    <div class="data" id="<?php echo e($schedule->getPeriodId().$month); ?>">
                         <?php
                             $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
 
