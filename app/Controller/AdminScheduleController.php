@@ -120,8 +120,21 @@ class AdminScheduleController
                 }
                 $i++;
             }
-
-            View::redirect("/admin/schedule/$type/create");
+            View::render('Admin/Schedule/create', [
+                'Schedule' => 'active bg-warning',
+                'Title' => "Admin | Schedule $type",
+                'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                'periods' => $this->periodRepository->findAll(),
+                'schedules' => $this->scheduleSupplyRepository,
+                'schedule_weeks' => $this->scheduleWeekRepository,
+                'supplies' => $this->supplyRepository,
+                'type' => $type,
+                'session' => $this->sessionService->current(),
+                'dateNow' => new DateTime('now', new DateTimeZone('Asia/Jakarta')),
+                'redirect' => "/admin/schedule/$type/create",
+                'success' => 'Berhasil dibuat'
+            ]);
+            exit();
         }
     }
 
@@ -135,9 +148,6 @@ class AdminScheduleController
         $type = $this->scheduleSupplyRepository->findById($id)->getHangerTypeId();
         $this->scheduleSupplyRepository->deleteById($id);
 
-        View::render('Admin/Schedule/delete', [
-            'success' => "/admin/schedule/$type/create",
-            'session' => $this->sessionService->current(),
-        ]);
+        View::redirect("/admin/schedule/$type/create");
     }
 }

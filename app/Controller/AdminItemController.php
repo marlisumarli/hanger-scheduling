@@ -114,7 +114,7 @@ class AdminItemController
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
                 ]);
-
+                exit();
             } catch (ValidationException $exception) {
                 View::render('Admin/ItemList/update', [
                     'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -125,6 +125,7 @@ class AdminItemController
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
                 ]);
+                exit();
             }
         } elseif (isset($_POST['updateQty'])) {
             $qty = $_POST['qty'];
@@ -139,8 +140,9 @@ class AdminItemController
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
+                    'success' => 'Berhasil mengubah data',
                 ]);
-
+                exit();
             } catch (ValidationException $exception) {
                 View::render('Admin/ItemList/update', [
                     'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
@@ -150,7 +152,9 @@ class AdminItemController
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
+                    'success' => 'Berhasil mengubah data',
                 ]);
+                exit();
             }
         }
     }
@@ -186,9 +190,15 @@ class AdminItemController
                     $request->qty = $qty;
                     $this->hangerService->requestCreate($request);
                 }
-                View::render('Admin/ItemList/Temp/update', [
-                    'direct' => "/admin/item/$type/hanger/update",
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
+                    'success' => "Data berhasil ditambahkan",
+                    'direct' => "/admin/item/$type/hanger/update"
                 ]);
 
             } catch (ValidationException $exception) {
@@ -217,16 +227,26 @@ class AdminItemController
                     $request->qty = $qty;
                     $this->hangerService->requestUpdate($request);
                 }
-                View::redirect("/admin/item/$type/hanger/update");
+                View::render('Admin/ItemList/update', [
+                    'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                    'List_Item' => 'active bg-warning',
+                    'Title' => 'Admin | Item',
+                    'find_id' => $this->hangerTypeRepository->findById($type),
+                    'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                    'session' => $this->sessionService->current(),
+                    'success' => "Data berhasil diubah",
+                    'direct' => "/admin/item/$type/hanger/update",
+                ]);
             } catch (ValidationException $exception) {
                 View::render('Admin/ItemList/update', [
                     'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
                     'List_Item' => 'active bg-warning',
                     'Title' => 'Admin | Item',
-                    'error' => $exception->getMessage(),
                     'find_id' => $this->hangerTypeRepository->findById($type),
                     'hangers' => $this->hangerRepository->findHangerTypeId($type),
                     'session' => $this->sessionService->current(),
+                    'error' => $exception->getMessage(),
+                    'direct' => "/admin/item/$type/hanger/update",
                 ]);
             }
         }
@@ -245,17 +265,27 @@ class AdminItemController
         $request->hangerTypeId = $type;
         try {
             $this->hangerService->requestDelete($request);
-
-            View::render('Admin/ItemList/Temp/delete', [
-                'direct' => "/admin/item/$type/hanger/update"
-            ]);
-        } catch (\Exception $exception) {
-            View::render('Admin/ItemList/Temp/delete', [
-                'error' => $exception->getMessage(),
-                'direct' => "/admin/item/$type/hanger/update",
+            View::render('Admin/ItemList/update', [
+                'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                'List_Item' => 'active bg-warning',
+                'Title' => 'Admin | Item',
                 'find_id' => $this->hangerTypeRepository->findById($type),
                 'hangers' => $this->hangerRepository->findHangerTypeId($type),
                 'session' => $this->sessionService->current(),
+                'success' => "Data berhasil dihapus",
+                'direct' => "/admin/item/$type/hanger/update"
+            ]);
+
+        } catch (\Exception $exception) {
+            View::render('Admin/ItemList/update', [
+                'full_name' => Util::nameSplitter($this->sessionService->current()->getFullName()),
+                'List_Item' => 'active bg-warning',
+                'Title' => 'Admin | Item',
+                'find_id' => $this->hangerTypeRepository->findById($type),
+                'hangers' => $this->hangerRepository->findHangerTypeId($type),
+                'session' => $this->sessionService->current(),
+                'error' => $exception->getMessage(),
+                 'direct' => "/admin/item/$type/hanger/update"
             ]);
         }
     }

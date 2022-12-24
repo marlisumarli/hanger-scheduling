@@ -88,8 +88,9 @@
 
     <div class="col-5 ms-auto">
         Search
-        <input aria-label="Search" class="form-control" placeholder="Tahun&Bulan" type="search"
-               id="searchData" onkeyup="search()">
+        <input aria-label="Search" class="form-control" type="month"
+               id="searchData">
+        <button type="submit" class="btn-sm btn-secondary" onclick="search()">Search..</button>
     </div>
     <br>
     <div class="card text-center d-none" id="notFound">
@@ -106,7 +107,11 @@
             </div>
             @foreach($schedules as $schedule)
                 @if($schedule->getPeriodId() == $period->getId())
-                    <div class="data" id="{{$schedule->getId()}}">
+                    @php
+                    // remove 0 in front of month
+                    $month = DateTime::createFromFormat('!m', $schedule->getMonth())->format('m');
+                    @endphp
+                    <div class="data" id="{{$schedule->getPeriodId().$month}}">
                         @php
                             $result = ['m1' => [], 'm2' => [], 'm3' => [], 'm4' => [], 'm5' => []];
 

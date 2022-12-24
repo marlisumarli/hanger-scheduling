@@ -57,7 +57,7 @@ class HangerService
         if (trim($subjigRequest->name) == '' || ($subjigRequest->qty && $subjigRequest->name) == null) {
             throw new ValidationException('Harus Diisi!');
         } elseif (preg_match('/[^a-zA-Z| ]/i', $subjigRequest->name)) {
-            throw new ValidationException('Tidak valid!');
+            throw new ValidationException('Harus berupa huruf, tidak boleh mengandung angka!');
         }
     }
 
@@ -123,7 +123,7 @@ class HangerService
 
         } catch (Exception) {
             Database::rollBackTransaction();
-            throw new Exception('Tidak boleh menghapus subjig yang sudah dibuat laporan');
+            throw new Exception('Tidak bisa menghapus subjig yang sudah dibuat laporan \nHanya bisa mengubah [Nomor Urut/Nama/Quantity]');
         }
         return $response;
     }

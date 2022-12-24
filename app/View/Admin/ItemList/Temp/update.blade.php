@@ -1,3 +1,3 @@
 <script>
-    document.location.href = '{{$direct}}';
+        document.location = '{{$direct}}';
 </script>

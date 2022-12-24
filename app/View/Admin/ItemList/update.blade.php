@@ -1,5 +1,27 @@
 @extends('Admin/Layout/main')
 @section('content')
+    @if(isset($success))
+        <script>
+            swal({
+                title: "Sukses!",
+                text: "{{$success}}",
+                icon: "success"
+            }).then(function () {
+                window.location = "{{$direct}}";
+            });
+        </script>
+    @endif
+    @isset($error)
+        <script>
+            swal({
+                title: "Perhatian!",
+                text: "{{$error}}",
+                icon: "error"
+            }).then(function () {
+                window.location = "{{$direct}}";
+            });
+        </script>
+    @endisset
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
@@ -41,6 +63,46 @@
                     </button>
                 </li>
             </ul>
+            <div class="mt-3">
+
+                <div class="card">
+                    <section class="card-body">
+                        <p>User guide mengubah atau registrasi tipe hanger atau data hanger</p>
+                        <ol>
+                            <li>Untuk mengubah ID Tipe atau Quantity tipe hanger anda hanya perlu klik tombol <span
+                                        class="btn btn-sm rounded bg-warning py-1 ms-auto shadow-lg">
+                                        <span>Ubah</span></span> kemudian isi bagian yang anda ingin merubahnya, lalu klik <span class="btn btn-sm btn-primary">
+                                Simpan
+                            </span> dengan syarat tidak boleh mengandung karakter yang selain huruf <strong> alphabet dan nomor</strong>,
+                                jika ingin membatalkannya klik <span class="btn btn-sm btn-secondary">
+                                Batal
+                            </span>
+                            </li>
+                            <li><span class="btn btn-sm btn-primary py-0 rounded-3">
+                                <i class="fa-solid fa-list-ol"></i>
+                            </span>
+                                Ini adalah nomor urut generator, yang dimana bisa otomatis mengurutkan nomor.
+                                Setelah nomor diurutkan maka klik tombol <span class="btn btn-sm btn-primary">
+                                Update
+                            </span>
+                            </li>
+                            <li>
+                                Syarat untuk registrasi hanger atau ubah data hanger, tidak boleh memasukkan karakter selain huruf <strong>alphabet</strong>
+                            </li>
+                            <li>
+                                Jika sudah mengubah atau registrasi data hanger, kemudian klik <span class="btn btn-sm btn-primary">
+                                Submit
+                            </span> atau jika anda hanya mengubahnya klik <span class="btn btn-sm btn-primary">
+                                Update
+                            </span>
+                            </li>
+                            <li>
+                                hanger tidak bisa dihapus ketika laporan supply sudah dibuat
+                            </li>
+                        </ol>
+                    </section>
+                </div>
+            </div>
         </div>
 
 
@@ -108,9 +170,24 @@
                                 </td>
                                 <td>
                                     @if($i < count($hangers))
-                                        <a class="link-danger"
-                                           href="/admin/item/{{$hangers[$i]->getHangerTypeId()}}/{{$hangers[$i]->getId()}}/delete"
-                                           onclick="return confirm('are you sure want to be delete?')">Hapus</a>
+                                        <button type="button" class="btn btn-link link-danger"
+                                                onclick="confirmation('{{$hangers[$i]->getHangerTypeId()}}/{{$hangers[$i]->getId()}}')">
+                                            Hapus
+                                        </button>
+                                        <script>
+                                            function confirmation($id) {
+                                                swal({
+                                                    title: "Apakah anda yakin?",
+                                                    text: "Data akan di hapus secara permanen",
+                                                    buttons: true,
+                                                    dangerMode: true,
+                                                }).then((willDelete) => {
+                                                    if (willDelete) {
+                                                        window.location = "/admin/item/" + $id + "/delete";
+                                                    }
+                                                });
+                                            }
+                                        </script>
                                     @endif
                                 </td>
                             </tr>
@@ -131,11 +208,6 @@
                     @endif
                 </div>
             </form>
-            @isset($error)
-                <script>
-                    alert('{{$error}}');
-                </script>
-            @endisset
         </div>
     </div>
 

@@ -3,11 +3,14 @@
 
     <?php if(isset($success)): ?>
         <script>
-            alert('success');
-            document.location.href = '<?php echo e($success); ?>';
+            swal({
+                title: "Sukses!",
+                text: "<?php echo e($success); ?>",
+                icon: "success"
+            }).then(function() {
+                window.location = "<?php echo e($redirect); ?>";
+            });
         </script>
-        <?php echo e($success); ?>
-
     <?php endif; ?>
 
     <?php if($schedules->findById(strtolower($dateNow->format('YF').'-'.$type)) === null): ?>
@@ -215,16 +218,30 @@
                                 </table>
                             </div>
                             <div class="card-footer d-flex">
-                                <a class="btn btn-danger btn-sm py-0 ms-auto <?php echo e($schedule->getIsDone() != null ? 'disabled' : ''); ?>"
-                                   href="/admin/schedule/<?php echo e($schedule->getId()); ?>/delete"
-                                   onclick="return confirm('Apakah ingin menghapus Data?')"><i
+                                <button onclick="confirmation('<?php echo e($schedule->getId()); ?>')"
+                                   class="btn btn-danger btn-sm py-0 ms-auto <?php echo e($schedule->getIsDone() != null ? 'disabled' : ''); ?>"><i
                                             class="fa-solid fa-trash"></i>
                                     <span>Hapus</span>
-                                </a>
+                                </button>
+
+                                <script>
+                                    function confirmation($id) {
+                                        swal({
+                                            title: "Apakah anda yakin?",
+                                            text: "Data akan di hapus secara permanen",
+                                            icon: "warning",
+                                            buttons: true,
+                                            dangerMode: true,
+                                        }).then((willDelete) => {
+                                            if (willDelete) {
+                                                window.location.href = "/admin/schedule/"+$id+"/delete";
+                                            }
+                                        });
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
-
                 <?php endif; ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

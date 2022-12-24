@@ -2,7 +2,13 @@
 <?php $__env->startSection('content'); ?>
     <?php if(isset($success)): ?>
         <script>
-            alert('success');
+            swal({
+                title: "Sukses!",
+                text: "<?php echo e($success); ?>",
+                icon: "success"
+            }).then(function() {
+                window.location = "<?php echo e($redirect); ?>";
+            });
         </script>
     <?php endif; ?>
     <?php
