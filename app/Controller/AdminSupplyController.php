@@ -65,6 +65,7 @@ class AdminSupplyController
 
         $this->scheduleSupplyRepository = new SupplyScheduleRepository($connection);
 
+        $this->supplyRequest = new SupplyRequest();
     }
 
     public function index()
@@ -243,10 +244,10 @@ class AdminSupplyController
             'type' => $type,
             'schedule' => $scheduleWeekId,
             'supplyId' => $supplyId,
-            'success' => 'Berhasil Diubah',
+            'success' => 'Berhasil Diubah.',
             'session' => $this->sessionService->current(),
+            'redirect' => "/admin/supply/$type/$scheduleWeekId/$supplyId/view",
         ]);
-
         exit();
     }
 }

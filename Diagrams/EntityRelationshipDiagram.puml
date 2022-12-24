@@ -3,7 +3,7 @@
 !theme toy
 skinparam shadowing true
 mainframe erd Database Penyuplaian Hanger
-
+skinparam linetype ortho
 entity users {
 * username: VARCHAR(55) <<PK>>
 --

@@ -1,12 +1,89 @@
 @startuml
-
+skinparam linetype polyline
+skinparam linetype ortho
+!theme toy
+skinparam shadowing true
+mainframe **cld**
+skinparam classAttributeIconSize 0
+left to right direction
 class Admin {
 - username
 - fullName
 - roleId
 + login ()
++ logout ()
+}
+
+class Karyawan {
+- username
+- fullName
+- roleId
++ login ()
++ logout ()
+}
+
+class Atasan {
+- username
+- fullName
+- roleId
++ login ()
++ logout ()
+}
+
+class "DataTipeHanger" as TipeHanger {
+- idTipe
+- jumlahHanger
++ showTipe ()
+}
+
+class "DataHanger" as Hanger {
+- idHanger
+- namaHanger
+- qtyHanger
+- nomorUrut
++ showHanger ()
+}
+
+class "DataJadwalSupply" as JadwalSupply {
+- idJadwalSupply
+- idTipe
+- bulan
+- tanggal
++ showInfoJadwal ()
+}
+
+class "DataSupply" as Supply {
+- idSupply
+- namaHanger
+- target
+- jumlahLineA
+- jumlahLineB
+- jumlahLineC
++ showLaporanSupply ()
++ downloadLaporan ()
 }
 
 
+Supply "1..*" --- "1..*" JadwalSupply
+
+TipeHanger "1..*" -- "1..*" JadwalSupply
+'
+TipeHanger "1..*" --- "1..*" Hanger
+'
+TipeHanger "1..*" -- "1..*" Supply
+'
+Hanger "1..*" --- "1..*" Supply
+'
+Admin "1..*" -> "1..*" TipeHanger
+'
+Admin "1..*" -> "1..*" JadwalSupply
+'
+Admin "1..*" -u-> "1..*" Hanger
+'
+Karyawan "1..*" --> "1..*" Supply
+'
+Karyawan --> TipeHanger
+'
+Karyawan - Hanger
 
 @enduml

@@ -1,7 +1,7 @@
 @startuml
 !theme toy
 skinparam shadowing true
-
+skinparam linetype ortho
 mainframe uc Hak Akses Admin
 left to right direction
 
@@ -66,7 +66,7 @@ Admin --- (Dapat Mencari Laporan)
 newpage
 !theme toy
 skinparam shadowing true
-
+skinparam linetype dash
 mainframe uc Hak Akses Karyawan
 left to right direction
 
@@ -124,7 +124,7 @@ newpage
 skinparam shadowing true
 mainframe uc Hak Akses Atasan
 left to right direction
-
+skinparam linetype ortho
 (Login)
 :Atasan:
 
@@ -133,8 +133,8 @@ left to right direction
 
 (Login) <.. listItem : <<include>>
 (Login) <.. downloadData : <<include>>
-(Login) <.. (Dapat Mencari Laporan) : <<include>>
-(Dapat Mencari Laporan) ..> (Input Tahun dan Bulan) : <<include>>
+(Login) <.u. (Dapat Mencari Laporan) : <<include>>
+(Dapat Mencari Laporan) .r.> (Input Tahun dan Bulan) : <<include>>
 
 Atasan -- downloadData
 Atasan -- listItem

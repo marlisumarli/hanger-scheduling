@@ -12,6 +12,7 @@
           rel="stylesheet">
     <script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script crossorigin="anonymous" src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>{{$Title ?? 'Hanger App'}}</title>
     <link rel="stylesheet" href="/src/css/custom.css">
 </head>

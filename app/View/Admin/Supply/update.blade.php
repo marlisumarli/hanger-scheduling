@@ -2,7 +2,13 @@
 @section('content')
     @if (isset($success))
         <script>
-            alert('success');
+            swal({
+                title: "Sukses!",
+                text: "{{$success}}",
+                icon: "success"
+            }).then(function() {
+                window.location = "{{$redirect}}";
+            });
         </script>
     @endif
     @php
