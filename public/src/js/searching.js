@@ -11,7 +11,7 @@ const search = () => {
 
     let x = year+month
     let ketemu = 0;
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {          // mencari x
         if (data[i].id === x) {
             ketemu++;
             data[i].classList.remove('d-none');
@@ -19,12 +19,12 @@ const search = () => {
             data[i].classList.add('d-none');
         }
     }
-    // ketemu
-    if (ketemu === 0) {
+
+    if (ketemu === 0) {         // tidak ketemu
         notFound.classList.remove('d-none');
         found.classList.add('d-none');
-        // tidak ketemu
-    } else {
+
+    } else {                    // ketemu
         notFound.classList.add('d-none');
         found.classList.remove('d-none');
     }

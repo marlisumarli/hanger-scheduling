@@ -90,7 +90,9 @@
         Search
         <input aria-label="Search" class="form-control" type="month"
                id="searchData">
-        <button type="submit" class="btn-sm btn-secondary" onclick="search()">Search..</button>
+        <div class="d-flex">
+        <button type="submit" class="btn btn-sm btn-secondary ms-auto mt-2" onclick="search()">Search..</button>
+        </div>
     </div>
     <br>
     <div class="card text-center d-none" id="notFound">
