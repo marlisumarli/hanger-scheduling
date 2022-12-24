@@ -11,7 +11,7 @@ const search = () => {
 
     let x = year+month
     let ketemu = 0;
-    for (let i = 0; i < data.length; i++) {          // mencari x
+    for (let i = 0; i < data.length; i++) {   // mencari x
         if (data[i].id === x) {
             ketemu++;
             data[i].classList.remove('d-none');
